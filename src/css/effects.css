@@ -1,0 +1,91 @@
+/*
+ * The scenery in CSS, for when there is no canvas.
+ *   .nc-sky        the dusk sky in hard bands, night above, pink at the bottom
+ *   .nc-sun        the striped sun sitting on a horizon (set its width)
+ *   .nc-horizon    a cyan line with the sea under it
+ *   .nc-crt        scanlines and a vignette over an element
+ *   .nc-pixelated  nearest-neighbour scaling for pixel-art images
+ * <nc-scene> and <nc-sprite> get sensible boxes before their script runs.
+ */
+.nc-sky {
+  background-color: var(--nc-sky-0);
+  background-image: linear-gradient(
+    180deg,
+    var(--nc-sky-0) 0 22%,
+    var(--nc-sky-1) 22% 36%,
+    var(--nc-sky-2) 36% 48%,
+    var(--nc-sky-3) 48% 59%,
+    var(--nc-sky-4) 59% 69%,
+    var(--nc-sky-5) 69% 79%,
+    var(--nc-sky-6) 79% 90%,
+    var(--nc-sky-7) 90% 100%
+  );
+}
+
+.nc-sun {
+  display: block;
+  width: var(--nc-sun-size, 160px);
+  max-width: 100%;
+  aspect-ratio: 2 / 1;
+  /* A stepped half disc with hard bands that widen towards the horizon. */
+  clip-path: polygon(0 100%, 0 80%, 4% 60%, 10% 40%, 18% 25%, 28% 12%, 40% 4%, 60% 4%, 72% 12%, 82% 25%, 90% 40%, 96% 60%, 100% 80%, 100% 100%);
+  background:
+    linear-gradient(180deg, transparent 0 56%, var(--nc-sun-band, var(--nc-sky-5)) 56% 60%, transparent 60% 68%, var(--nc-sun-band, var(--nc-sky-5)) 68% 74%, transparent 74% 81%, var(--nc-sun-band, var(--nc-sky-5)) 81% 89%, transparent 89%),
+    linear-gradient(180deg, var(--nc-sun-0) 0 26%, var(--nc-sun-1) 26% 46%, var(--nc-sun-2) 46% 70%, var(--nc-sun-3) 70%);
+}
+
+.nc-horizon {
+  height: var(--nc-horizon-height, 48px);
+  background:
+    linear-gradient(var(--nc-cyan) 0 0) top / 100% var(--nc-u) no-repeat,
+    repeating-linear-gradient(180deg, #123372 0 6px, #1d4590 6px 8px, #123372 8px 14px, #0b2358 14px 18px);
+}
+
+.nc-crt {
+  position: relative;
+  isolation: isolate;
+}
+
+.nc-crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(180deg, rgb(0 0 0 / 0.14) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgb(5 3 12 / 0.5) 100%);
+}
+
+.nc-pixelated,
+.nc-pixelated :where(img, canvas) {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Before the script defines them: the scene shows the CSS sky, sprites hide their letters. */
+nc-scene {
+  display: block;
+  position: relative;
+}
+
+nc-scene:not(:defined)::before {
+  content: "";
+  display: block;
+  padding-top: var(--nc-scene-ratio, 50%);
+}
+
+nc-scene:not(:defined) {
+  background-color: var(--nc-sky-0);
+  background-image: linear-gradient(180deg, var(--nc-sky-0) 0 20%, var(--nc-sky-1) 20% 32%, var(--nc-sky-2) 32% 42%, var(--nc-sky-3) 42% 50%, var(--nc-sky-4) 50% 55%, var(--nc-sky-5) 55% 60%, #123372 60% 87%, #a8846a 87%);
+}
+
+nc-scene[fixed] {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+nc-sprite { display: inline-block; vertical-align: middle; line-height: 0; }
+nc-sprite:not(:defined) { visibility: hidden; font-size: 0; }

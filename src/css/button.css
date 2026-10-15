@@ -1,0 +1,167 @@
+/*
+ * .nc-btn — a small box that lights up: on hover and focus the edge colour
+ * fills it and the letters go dark. Pressed, selected or current
+ * (aria-pressed, aria-selected, aria-current, .is-active) stays lit, so a
+ * row of buttons is also a set of tabs or a toggle group.
+ *   --pink --gold --lime --violet --red   colours
+ *   --solid   lit at rest
+ *   --ghost   no box until hovered
+ *   --sm --lg --icon --block              sizes
+ * Classless: every <button> and button-type <input> inside .nc.
+ */
+.nc-btn,
+:where(.nc) :where(button, input:is([type="button"], [type="submit"], [type="reset"])) {
+  --nc-edge: var(--nc-accent);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nc-space-2);
+  min-height: 32px;
+  margin: var(--nc-u);
+  /* The letters sit in the top 7/8 of the em: one more pixel above than below centres them. */
+  padding: 9px 12px 7px;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  text-decoration: none;
+  text-shadow: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--nc-edge);
+  background: var(--nc-surface);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nc-btn:focus-visible,
+.nc-btn[aria-pressed="true"],
+.nc-btn[aria-selected="true"],
+.nc-btn[aria-current]:not([aria-current="false"]),
+.nc-btn.is-active,
+:where(.nc) :where(button:focus-visible, input:is([type="button"], [type="submit"], [type="reset"]):focus-visible),
+:where(.nc) :where(button[aria-pressed="true"], button[aria-selected="true"]) {
+  outline: none;
+  color: var(--nc-ink);
+  background: var(--nc-edge);
+}
+
+@media (hover: hover) {
+  .nc-btn:hover,
+  :where(.nc) :where(button:hover, input:is([type="button"], [type="submit"], [type="reset"]):hover) {
+    color: var(--nc-ink);
+    background: var(--nc-edge);
+  }
+}
+
+.nc-btn:active,
+:where(.nc) :where(button:active, input:is([type="button"], [type="submit"], [type="reset"]):active) {
+  color: var(--nc-ink);
+  background: color-mix(in srgb, var(--nc-edge) 72%, var(--nc-ink));
+}
+
+.nc-btn:disabled,
+.nc-btn[aria-disabled="true"],
+:where(.nc) :where(button:disabled, input:is([type="button"], [type="submit"], [type="reset"]):disabled) {
+  --nc-edge: var(--nc-slate);
+  color: var(--nc-slate);
+  background: var(--nc-surface);
+  cursor: not-allowed;
+}
+
+.nc-btn--pink { --nc-edge: var(--nc-pink); }
+.nc-btn--gold { --nc-edge: var(--nc-gold); }
+.nc-btn--lime { --nc-edge: var(--nc-lime); }
+.nc-btn--violet { --nc-edge: var(--nc-violet); }
+.nc-btn--red { --nc-edge: var(--nc-red); }
+
+.nc-btn--solid {
+  color: var(--nc-ink);
+  background: var(--nc-edge);
+}
+
+@media (hover: hover) {
+  .nc-btn--solid:hover {
+    background: color-mix(in srgb, var(--nc-edge) 70%, var(--nc-white));
+  }
+}
+
+.nc-btn--solid:focus-visible {
+  background: color-mix(in srgb, var(--nc-edge) 70%, var(--nc-white));
+}
+
+.nc-btn--ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
+.nc-btn--ghost:focus-visible,
+.nc-btn--ghost[aria-pressed="true"],
+.nc-btn--ghost[aria-selected="true"],
+.nc-btn--ghost[aria-current]:not([aria-current="false"]),
+.nc-btn--ghost.is-active {
+  color: var(--nc-edge);
+  background: color-mix(in srgb, var(--nc-edge) 16%, transparent);
+  box-shadow:
+    0 calc(-1 * var(--nc-u)) 0 0 var(--nc-edge),
+    0 var(--nc-u) 0 0 var(--nc-edge),
+    calc(-1 * var(--nc-u)) 0 0 0 var(--nc-edge),
+    var(--nc-u) 0 0 0 var(--nc-edge);
+}
+
+@media (hover: hover) {
+  .nc-btn--ghost:hover {
+    color: var(--nc-edge);
+    background: color-mix(in srgb, var(--nc-edge) 16%, transparent);
+    box-shadow:
+      0 calc(-1 * var(--nc-u)) 0 0 var(--nc-edge),
+      0 var(--nc-u) 0 0 var(--nc-edge),
+      calc(-1 * var(--nc-u)) 0 0 0 var(--nc-edge),
+      var(--nc-u) 0 0 0 var(--nc-edge);
+  }
+}
+
+.nc-btn--sm {
+  min-height: 24px;
+  padding: 5px 8px 3px;
+}
+
+.nc-btn--lg {
+  min-height: 48px;
+  padding: 14px 20px 10px;
+  font-size: var(--nc-size-2);
+}
+
+.nc-btn--icon {
+  width: 32px;
+  min-width: 32px;
+  padding: 2px 0 0;
+}
+
+.nc-btn--lg.nc-btn--icon {
+  width: 48px;
+  min-width: 48px;
+}
+
+.nc-btn--block {
+  display: flex;
+  width: calc(100% - 2 * var(--nc-u));
+}
+
+/* A row of buttons. */
+.nc-btns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nc-space-3);
+}
+
+.nc-btns > .nc-btn { margin: var(--nc-u); }

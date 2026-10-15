@@ -1,0 +1,66 @@
+/*
+ * The three faces.
+ *   Neon Pixel     the 5×7 letters — the interface's voice. Built from the
+ *                  canvas font (src/js/font.js) by `npm run font`; the
+ *                  bundled CSS carries it inline, so it never flashes.
+ *   Space Grotesk  the human voice: prose and long text.
+ *   Space Mono     the machine voice: code, numbers, what people type.
+ * Paths are relative to this file in the repo; the build points them at
+ * dist/fonts/ (next to dist/neon-coast.css).
+ */
+@font-face {
+  font-family: "Neon Pixel";
+  font-style: normal;
+  font-weight: 400;
+  /* block, not swap: the grid must never be drawn in a fallback face. */
+  font-display: block;
+  src: url("../../dist/fonts/neon-pixel.woff2") format("woff2"), url("../../dist/fonts/neon-pixel.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../../dist/fonts/space-grotesk-latin-300-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../dist/fonts/space-grotesk-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../../dist/fonts/space-grotesk-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../dist/fonts/space-grotesk-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../dist/fonts/space-mono-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../dist/fonts/space-mono-latin-700-normal.woff2") format("woff2");
+}

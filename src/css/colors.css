@@ -1,0 +1,65 @@
+/* Generated from src/js/tokens.js by `npm run build` — edit that file, not this one. */
+:root {
+  /* The palette by name */
+  --nc-ink: #0b0616;
+  --nc-night: #1c1030;
+  --nc-dusk: #2a1f4a;
+  --nc-slate: #5a5285;
+  --nc-haze: #8f86b8;
+  --nc-lavender: #cfc6ff;
+  --nc-white: #fff4ff;
+  --nc-cyan: #2ff3ff;
+  --nc-cyan-deep: #1a9fc4;
+  --nc-blue: #2f5fd0;
+  --nc-blue-deep: #1a2f78;
+  --nc-pink: #ff2fa0;
+  --nc-pink-deep: #b01874;
+  --nc-rose: #ff8ae0;
+  --nc-violet: #9a4ff0;
+  --nc-violet-deep: #54259e;
+  --nc-gold: #ffd23f;
+  --nc-gold-deep: #c4861c;
+  --nc-cream: #fff1b0;
+  --nc-orange: #ff8a3d;
+  --nc-red: #ff3b5c;
+  --nc-red-deep: #9e1638;
+  --nc-lime: #b6ff4a;
+  --nc-lime-deep: #4f9a2a;
+  --nc-teal: #3fd8b0;
+  --nc-teal-deep: #1f7a6e;
+  --nc-plum: #3a1a4a;
+  --nc-plum-light: #7a3a8a;
+
+  /* The dusk sky, top to horizon, and the striped sun, top to bottom */
+  --nc-sky-0: #0b0616;
+  --nc-sky-1: #140b26;
+  --nc-sky-2: #1c1030;
+  --nc-sky-3: #2a1a4c;
+  --nc-sky-4: #43246e;
+  --nc-sky-5: #6a2a7c;
+  --nc-sky-6: #a8347e;
+  --nc-sky-7: #e0508a;
+  --nc-sun-0: #fff1b0;
+  --nc-sun-1: #ffd23f;
+  --nc-sun-2: #ff8a3d;
+  --nc-sun-3: #ff2fa0;
+
+  /* Interface colours */
+  --nc-text: #f2e9ff;
+  --nc-text-muted: #b9a8d9;
+  --nc-text-subtle: #8f86b8;
+  --nc-surface: rgba(11, 6, 22, 0.88);
+  --nc-field: #140b26;
+  --nc-quiet: #6a5aa8;
+  --nc-rule: #54259e;
+  --nc-box-rule: rgba(47, 243, 255, 0.35);
+
+  /* Roles: what each colour is for */
+  --nc-bg: var(--nc-ink);
+  --nc-accent: var(--nc-cyan);
+  --nc-hot: var(--nc-pink);
+  --nc-prize: var(--nc-gold);
+  --nc-ok: var(--nc-lime);
+  --nc-warn: var(--nc-orange);
+  --nc-danger: var(--nc-red);
+}

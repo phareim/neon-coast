@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neon Coast</title>
+  <meta name="description" content="The pixel look of phareim.no as a design system: one CSS file for HTML, a canvas kit for games, two custom elements.">
+  <meta name="theme-color" content="#0b0616">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%230b0616'/%3E%3Crect y='5' width='16' height='5' fill='%236a2a7c'/%3E%3Cpath fill='%23ffd23f' d='M6 3h4v1h1v1h1v5H4V5h1V4h1z'/%3E%3Crect x='4' y='7' width='8' height='1' fill='%236a2a7c'/%3E%3Crect x='4' y='9' width='8' height='1' fill='%23ff2fa0'/%3E%3Crect y='10' width='16' height='1' fill='%232ff3ff'/%3E%3Crect y='11' width='16' height='5' fill='%23123372'/%3E%3Crect x='5' y='12' width='6' height='1' fill='%23ff8a3d'/%3E%3Crect x='6' y='14' width='4' height='1' fill='%23ff2fa0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="dist/neon-coast.css">
+  <script type="module" src="dist/neon-coast.js"></script>
+  <style>
+    /* Only what this page needs on top of the system. */
+    .hero { position: relative; height: min(72vh, 640px); min-height: 360px; overflow: hidden; }
+    .hero nc-scene { position: absolute; inset: 0; }
+    .hero-inner { position: relative; padding-top: clamp(40px, 12vh, 120px); }
+    .hero .nc-title { margin: 8px 0 12px; }
+    .hero p { margin: 0; }
+    .lead { max-width: 36em; margin: 32px 0 8px; font-size: 1.25rem; font-weight: 300; color: var(--nc-white); }
+    .toc { position: relative; padding-block: 8px 0; }
+    .toc .nc-tabs { gap: 0 4px; }
+    #game { image-rendering: pixelated; }
+    section { padding-block: 24px 8px; }
+    section > h2 { scroll-margin-top: 16px; }
+    .demo { margin: 0 0 24px; }
+    .demo + pre { margin-top: -8px; }
+    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin: 0 0 24px; }
+    .sw { display: grid; grid-template-columns: 40px 1fr; gap: 2px 12px; align-items: center; font-size: 0.875rem; }
+    .sw .chip { grid-row: span 2; width: 40px; height: 40px; box-shadow: 0 0 0 2px var(--nc-dusk); }
+    .sw code { background: none; padding: 0; color: var(--nc-text); }
+    .sw span { color: var(--nc-text-subtle); font-family: var(--nc-font-mono); font-size: 0.8125rem; }
+    .ramp { display: flex; height: 40px; margin: 0 0 8px; box-shadow: 0 0 0 2px var(--nc-dusk); }
+    .ramp span { flex: 1; }
+    .glyphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 8px; margin: 0 0 24px; }
+    .glyphs span { display: grid; place-items: center; height: 48px; font: 32px/1 var(--nc-font-pixel); -webkit-font-smoothing: none; color: var(--nc-text); background: var(--nc-night); }
+    .sizes p { margin: 0 0 8px; font-family: var(--nc-font-pixel); text-transform: uppercase; -webkit-font-smoothing: none; line-height: 1.25; color: var(--nc-white); text-shadow: var(--nc-drop); }
+    .voices { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .scenes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+    .scenes figure { margin: 0; }
+    .scenes nc-scene { box-shadow: 0 0 0 2px var(--nc-quiet); margin: 2px; }
+    .scenes figcaption { font-family: var(--nc-font-mono); }
+    .sprites { display: flex; flex-wrap: wrap; gap: 24px; align-items: end; }
+    .sprites figure { margin: 0; text-align: center; }
+    .sprites figcaption { font-family: var(--nc-font-mono); }
+    #game { display: block; width: 100%; height: 320px; background: var(--nc-ink); }
+    .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 0 0 16px; }
+    .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; align-items: start; }
+    .cssonly { position: relative; height: 200px; display: grid; justify-items: center; align-content: end; overflow: hidden; }
+    .cssonly .nc-sun { margin-bottom: -2px; }
+    footer { margin-top: 48px; padding-bottom: 48px; color: var(--nc-text-subtle); }
+  </style>
+</head>
+<body class="nc">
+  <div class="hero">
+    <nc-scene scene="coast" pixels="160" sun="0.68"></nc-scene>
+    <div class="hero-inner nc-wrap">
+      <p class="nc-hud">DESIGN SYSTEM · V0.1</p>
+      <h1 class="nc-title">Neon Coast</h1>
+      <p class="nc-hint nc-blink">▶ Press start</p>
+    </div>
+  </div>
+
+  <nav class="toc nc-wrap" aria-label="Sections">
+    <p class="lead">The pixel look of phareim.no for any page or game: one CSS file for HTML, a canvas kit for pixel worlds, and two elements that need no code at all.</p>
+    <div class="nc-tabs">
+      <a class="nc-btn nc-btn--ghost" href="#start">Start</a>
+      <a class="nc-btn nc-btn--ghost" href="#colours">Colours</a>
+      <a class="nc-btn nc-btn--ghost" href="#type">Type</a>
+      <a class="nc-btn nc-btn--ghost" href="#boxes">Boxes</a>
+      <a class="nc-btn nc-btn--ghost" href="#buttons">Buttons</a>
+      <a class="nc-btn nc-btn--ghost" href="#forms">Forms</a>
+      <a class="nc-btn nc-btn--ghost" href="#data">Data</a>
+      <a class="nc-btn nc-btn--ghost" href="#scenery">Scenery</a>
+      <a class="nc-btn nc-btn--ghost" href="#canvas">Canvas</a>
+    </div>
+  </nav>
+
+  <main class="nc-wrap">
+    <section id="start">
+      <h2>Start</h2>
+      <p>Two lines in the <code>&lt;head&gt;</code>, one class on the <code>&lt;body&gt;</code>. Plain HTML inside <code>class="nc"</code> takes the look — headings, links, lists, buttons, forms, tables — and the <code>.nc-*</code> classes add the rest. The script is only needed for the canvas kit, <code>&lt;nc-scene&gt;</code> and <code>&lt;nc-sprite&gt;</code>.</p>
+<pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phareim/neon-coast@master/dist/neon-coast.css"&gt;
+&lt;script type="module" src="https://cdn.jsdelivr.net/gh/phareim/neon-coast@master/dist/neon-coast.js"&gt;&lt;/script&gt;
+
+&lt;body class="nc"&gt;
+  &lt;h1&gt;Hello, coast&lt;/h1&gt;
+  &lt;div class="nc-box"&gt;A dialog box.&lt;/div&gt;
+  &lt;button&gt;▶ Start&lt;/button&gt;
+&lt;/body&gt;</code></pre>
+      <div class="two">
+        <div>
+          <h3>The rules</h3>
+          <ul>
+            <li>Pixel letters at <strong>8 px steps</strong> only: 16, 24, 32, 48, 64.</li>
+            <li>Edges are <strong>one unit</strong> (2 px) with notched corners. No rounded corners, no soft shadows — only the hard drop and the neon glow.</li>
+            <li><strong>Cyan</strong> is the interface, <strong>pink</strong> is the call to action (and you), <strong>gold</strong> is treasure.</li>
+            <li>Pixel letters for the interface, Space Grotesk for prose, Space Mono for code and typing.</li>
+            <li>Things blink in steps; they never slide or fade. Backgrounds may move, chrome does not.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Plain HTML</h3>
+          <blockquote>A night town on the neon coast, the sun stuck on the horizon.</blockquote>
+          <p>Links look like <a href="#start">this</a>, code like <code>--nc-accent</code>, keys like <kbd>Esc</kbd> <kbd>A</kbd> <kbd>↑</kbd>, and <mark>marked text</mark> like this.</p>
+          <ol>
+            <li>Walk up to a cabinet.</li>
+            <li>Press <kbd>A</kbd>.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="colours">
+      <h2>Colours</h2>
+      <p>One palette, shared by CSS and canvas. Each colour is a custom property (<code>--nc-cyan</code>) and a sprite letter (<code>c</code>). Roles say what a colour is for — retint a whole area by setting <code>--nc-accent</code> on it.</p>
+      <h3>Roles</h3>
+      <div class="swatches" id="roles"></div>
+      <h3>Palette</h3>
+      <div class="swatches" id="palette"></div>
+      <h3>Sky and sun</h3>
+      <div class="ramp" id="sky"></div>
+      <div class="ramp" id="sun"></div>
+    </section>
+
+    <section id="type">
+      <h2>Type</h2>
+      <div class="voices">
+        <div class="nc-box">
+          <p class="nc-hud">PIXEL · THE INTERFACE</p>
+          <p class="nc-pixel nc-size-2 nc-white nc-drop">Neon Pixel 5×7 — ÆØÅ!</p>
+          <p class="nc-dim nc-pixel">Capitals only, crisp at 8 px steps.</p>
+        </div>
+        <div class="nc-box">
+          <p class="nc-hud">GROTESK · PROSE</p>
+          <p style="font-size:1.25rem">Space Grotesk carries what a person would write: paragraphs, descriptions, long text.</p>
+        </div>
+        <div class="nc-box">
+          <p class="nc-hud">MONO · THE MACHINE</p>
+          <p style="font-family:var(--nc-font-mono)">Space Mono for code, numbers and what people type: 0123 &lt;/&gt;</p>
+        </div>
+      </div>
+      <h3>Sizes</h3>
+      <div class="sizes">
+        <p class="nc-size-5">64 Coast</p>
+        <p class="nc-size-4">48 Coast</p>
+        <p class="nc-size-3">32 The neon coast</p>
+        <p class="nc-size-2">24 The neon coast at night</p>
+        <p class="nc-size-1">16 The neon coast at night, the sun on the horizon</p>
+        <p class="nc-size-0">8 The neon coast at night, the sun stuck on the horizon. Fine print for sharp screens.</p>
+      </div>
+      <h3>Styles</h3>
+      <div class="nc-stack" style="--nc-gap:12px">
+        <p class="nc-title" style="font-size:48px">.nc-title</p>
+        <p class="nc-hud">.nc-hud — score 004200</p>
+        <p class="nc-hint">.nc-hint — ▶ press start</p>
+        <p class="nc-hud nc-blink">.nc-blink — insert coin</p>
+        <p class="nc-pixel nc-dim">.nc-dim — the path ends here</p>
+        <p class="nc-loading nc-pixel nc-muted">.nc-loading — syncing</p>
+        <div><span class="nc-banner">The Neon Coast</span></div>
+      </div>
+      <h3>Glyphs</h3>
+      <p>Lower case draws as upper case. Å, Ä, Ö, Ü, É and È carry their marks above the cap height; arrows, hearts and symbols are in the font, so they work as icons.</p>
+      <div class="glyphs" id="glyphs"></div>
+    </section>
+
+    <section id="boxes">
+      <h2>Boxes</h2>
+      <div class="nc-grid">
+        <div class="nc-box"><p class="nc-hud">.nc-box</p><p>The dialog box: a dark panel, a cyan edge with open corners and a faint rule inside the top.</p></div>
+        <div class="nc-box nc-box--pink"><p class="nc-hint">--pink</p><p>For you, and for what wants an answer.</p></div>
+        <div class="nc-box nc-box--gold"><p class="nc-pixel nc-gold">--gold</p><p>For the treasure: prizes, the podium.</p></div>
+        <div class="nc-box nc-box--quiet nc-box--flat"><p class="nc-pixel nc-muted">--quiet --flat</p><p>For things that should not shout.</p></div>
+      </div>
+      <h3>Dialog</h3>
+      <div class="two">
+        <div class="nc-dialog" id="talk">
+          <p>The Keeper looks up. "Follow the road east, past the beach. The shrine waits." <span class="nc-more"></span></p>
+        </div>
+        <div>
+          <p><code>.nc-dialog</code> works on a <code>&lt;div&gt;</code> or a real <code>&lt;dialog&gt;</code>.</p>
+          <button class="nc-btn nc-btn--pink" id="open-dialog">▶ Open a dialog</button>
+          <dialog class="nc-dialog" id="modal">
+            <form method="dialog">
+              <p>Start over? Your quest and items will be gone.</p>
+              <p style="text-align:right;margin:16px 0 0"><button class="nc-btn" value="no">No</button> <button class="nc-btn nc-btn--pink" value="yes">Yes</button></p>
+            </form>
+          </dialog>
+        </div>
+      </div>
+      <h3>Alerts</h3>
+      <div class="nc-alert"><p>Your run was saved to the Hall of Fame.</p></div>
+      <div class="nc-alert nc-alert--ok"><p>Name changed to NEON OTTER.</p></div>
+      <div class="nc-alert nc-alert--warn"><p>Sound is off. Turn it on with ♪.</p></div>
+      <div class="nc-alert nc-alert--danger"><p>The board did not answer. You are offline.</p></div>
+    </section>
+
+    <section id="buttons">
+      <h2>Buttons</h2>
+      <p>A button lights up under the pointer and on focus. <code>aria-pressed</code>, <code>aria-selected</code> and <code>aria-current</code> keep it lit, so a row of them is a set of tabs.</p>
+      <div class="row">
+        <button class="nc-btn">Continue</button>
+        <button class="nc-btn nc-btn--pink">▶ Start</button>
+        <button class="nc-btn nc-btn--gold">◆ Shop</button>
+        <button class="nc-btn nc-btn--lime">✓ Save</button>
+        <button class="nc-btn nc-btn--violet">♪ Radio</button>
+        <button class="nc-btn nc-btn--red">× Quit</button>
+        <button class="nc-btn" disabled>Locked</button>
+      </div>
+      <div class="row">
+        <button class="nc-btn nc-btn--solid">Solid</button>
+        <button class="nc-btn nc-btn--solid nc-btn--pink">Solid pink</button>
+        <button class="nc-btn nc-btn--ghost">Ghost</button>
+        <button class="nc-btn" aria-pressed="true">Pressed</button>
+      </div>
+      <div class="row">
+        <button class="nc-btn nc-btn--sm">Small</button>
+        <button class="nc-btn">Default</button>
+        <button class="nc-btn nc-btn--lg nc-btn--pink">▶ Large</button>
+        <button class="nc-btn nc-btn--icon" aria-label="Previous">◀</button>
+        <button class="nc-btn nc-btn--icon nc-btn--pink" aria-label="Next">▶</button>
+        <button class="nc-btn nc-btn--icon nc-btn--gold" aria-label="Home">⌂</button>
+      </div>
+      <h3>Tabs</h3>
+      <div class="nc-tabs" role="tablist" id="tabs">
+        <button class="nc-btn" role="tab" aria-selected="true">Galaga</button>
+        <button class="nc-btn" role="tab" aria-selected="false">Tetris</button>
+        <button class="nc-btn" role="tab" aria-selected="false">Breakout</button>
+      </div>
+      <h3>Classless</h3>
+      <p>Inside <code>class="nc"</code> a bare <code>&lt;button&gt;</code> is already one: <button>Like this</button></p>
+    </section>
+
+    <section id="forms">
+      <h2>Forms</h2>
+      <div class="two">
+        <form class="nc-box nc-box--quiet" onsubmit="event.preventDefault()">
+          <div class="nc-field">
+            <label class="nc-label" for="f-name">Pilot name</label>
+            <input class="nc-input nc-input--pixel" id="f-name" value="Neon Otter" maxlength="16">
+          </div>
+          <div class="nc-field">
+            <label class="nc-label" for="f-mail">E-mail</label>
+            <input class="nc-input" id="f-mail" type="email" placeholder="you@phareim.no" required>
+            <span class="nc-help">Only for the newsletter. Typed text is in Space Mono.</span>
+          </div>
+          <div class="nc-field">
+            <label class="nc-label" for="f-ship">Ship</label>
+            <select class="nc-select" id="f-ship">
+              <option>Arwing</option>
+              <option>Rex &amp; Nova</option>
+              <option>G-Type</option>
+            </select>
+          </div>
+          <div class="nc-field">
+            <label class="nc-label" for="f-note">Message</label>
+            <textarea class="nc-textarea" id="f-note" placeholder="Say hello to the keeper…"></textarea>
+          </div>
+          <button class="nc-btn nc-btn--pink">▶ Send</button>
+        </form>
+        <div>
+          <fieldset class="nc-fieldset">
+            <legend class="nc-label">Options</legend>
+            <label class="nc-choice nc-label"><input class="nc-check" type="checkbox" checked> Show hints</label>
+            <label class="nc-choice nc-label"><input class="nc-check" type="checkbox"> Hard mode</label>
+            <label class="nc-choice nc-label"><input class="nc-check" type="checkbox" id="mixed"> Some of them</label>
+          </fieldset>
+          <fieldset class="nc-fieldset">
+            <legend class="nc-label">Controls</legend>
+            <label class="nc-choice nc-label"><input class="nc-radio" type="radio" name="ctl" checked> Keyboard</label>
+            <label class="nc-choice nc-label"><input class="nc-radio" type="radio" name="ctl"> Touch</label>
+            <label class="nc-choice nc-label"><input class="nc-radio" type="radio" name="ctl"> Gamepad</label>
+          </fieldset>
+          <fieldset class="nc-fieldset">
+            <legend class="nc-label">Sound</legend>
+            <label class="nc-choice nc-label"><input class="nc-switch" type="checkbox" role="switch" checked> Music</label>
+            <label class="nc-choice nc-label"><input class="nc-switch" type="checkbox" role="switch"> Effects</label>
+            <label class="nc-label" for="f-vol" style="display:block;margin-top:12px">Volume</label>
+            <input class="nc-range" id="f-vol" type="range" min="0" max="12" value="8">
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <section id="data">
+      <h2>Data</h2>
+      <div class="two">
+        <div>
+          <h3>Meters</h3>
+          <p class="nc-label">Hold Esc to quit</p>
+          <div class="nc-meter nc-meter--pink" style="--nc-value:.6" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" id="hold"></div>
+          <p class="nc-label" style="margin-top:16px">Shield</p>
+          <div class="nc-meter" style="--nc-value:.85" role="meter" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+          <p class="nc-label" style="margin-top:16px">Gold</p>
+          <div class="nc-meter nc-meter--gold" style="--nc-value:.34;--nc-cells:20" role="meter" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+          <p class="nc-label" style="margin-top:16px">Download (fluid)</p>
+          <div class="nc-meter nc-meter--lime nc-meter--fluid" style="--nc-value:.5;--nc-cells:24" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+          <h3>Badges</h3>
+          <p><span class="nc-badge">New</span> <span class="nc-badge nc-badge--pink">You</span> <span class="nc-badge nc-badge--gold">#1</span> <span class="nc-badge nc-badge--lime">Online</span> <span class="nc-badge nc-badge--violet">Beta</span> <span class="nc-badge nc-badge--quiet">Parked</span> <span class="nc-badge nc-badge--outline">Outline</span></p>
+          <h3>Keys</h3>
+          <p><kbd class="nc-kbd">←</kbd><kbd class="nc-kbd">→</kbd> move · <kbd class="nc-kbd">Space</kbd> jump · <kbd class="nc-kbd">Esc</kbd> pause</p>
+        </div>
+        <div>
+          <h3>Menu</h3>
+          <div class="nc-box" style="max-width:320px">
+            <ul class="nc-menu">
+              <li><button aria-current="true">Continue</button></li>
+              <li><button>New game</button></li>
+              <li><button>Sound: on</button></li>
+              <li><button disabled>Hall of Fame</button></li>
+              <li><a href="#start">Back to town</a></li>
+            </ul>
+          </div>
+          <h3>Disclosure</h3>
+          <details class="nc-details">
+            <summary>How do I play?</summary>
+            <p>Walk up to a cabinet and press A. Escape takes you back to the town.</p>
+          </details>
+        </div>
+      </div>
+      <h3>Table</h3>
+      <div class="nc-box">
+        <table class="nc-table">
+          <caption>World ranking · Galaga</caption>
+          <thead><tr><th>#</th><th>Pilot</th><th class="nc-num">Score</th></tr></thead>
+          <tbody>
+            <tr class="is-prize"><td>01</td><td>Modem Walrus</td><td class="nc-num">128 400</td></tr>
+            <tr class="is-prize"><td>02</td><td>Neon Otter</td><td class="nc-num">96 150</td></tr>
+            <tr class="is-prize"><td>03</td><td>Pixel Heron</td><td class="nc-num">71 900</td></tr>
+            <tr><td>04</td><td>Dusk Badger</td><td class="nc-num">44 020</td></tr>
+            <tr class="is-hot"><td>05</td><td>You ◀</td><td class="nc-num">39 870</td></tr>
+            <tr><td>06</td><td>Laser Moose</td><td class="nc-num">12 300</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <hr class="nc-rule nc-rule--neon">
+    </section>
+
+    <section id="scenery">
+      <h2>Scenery</h2>
+      <p><code>&lt;nc-scene&gt;</code> paints the coast at dusk on a canvas — stars that twinkle, a swell, palms in the wind — lit by the stage's light map and finished with bloom, scanlines and a vignette. It stops when off screen and stands still for people who ask for reduced motion.</p>
+      <div class="scenes">
+        <figure><nc-scene scene="coast"></nc-scene><figcaption>scene="coast" (default)</figcaption></figure>
+        <figure><nc-scene scene="town"></nc-scene><figcaption>scene="town"</figcaption></figure>
+        <figure><nc-scene scene="hills" sun="0.7"></nc-scene><figcaption>scene="hills" sun="0.7"</figcaption></figure>
+        <figure><nc-scene scene="dusk" pixels="90"></nc-scene><figcaption>scene="dusk" pixels="90"</figcaption></figure>
+      </div>
+<pre><code>&lt;nc-scene scene="coast"&gt;&lt;/nc-scene&gt;               &lt;!-- 2:1 unless you size it --&gt;
+&lt;nc-scene scene="town" fixed&gt;&lt;/nc-scene&gt;          &lt;!-- behind the whole page --&gt;
+&lt;nc-scene scene="hills" pixels="120" still bare&gt;&lt;/nc-scene&gt;</code></pre>
+      <h3>Without a script</h3>
+      <div class="two">
+        <div class="cssonly nc-sky nc-crt"><span class="nc-sun"></span></div>
+        <div class="cssonly nc-sky"><span class="nc-sun" style="--nc-sun-size:220px"></span><div class="nc-horizon" style="width:100%;margin-top:-2px"></div></div>
+      </div>
+      <p><code>.nc-sky</code>, <code>.nc-sun</code>, <code>.nc-horizon</code> and <code>.nc-crt</code> are plain CSS.</p>
+
+      <h3>Sprites</h3>
+      <p><code>&lt;nc-sprite&gt;</code> draws pixel art written as text, one palette letter per pixel. Pick a ready-made one with <code>name</code>, or write your own.</p>
+      <div class="sprites" id="sprites"></div>
+      <div class="two" style="margin-top:24px">
+<pre><code>&lt;nc-sprite scale="8"&gt;
+  .kk.kk.
+  kmpkppk
+  kpppppk
+  .kpppk.
+  ..kpk..
+  ...k...
+&lt;/nc-sprite&gt;</code></pre>
+        <div class="row">
+          <nc-sprite scale="8" label="A heart">
+            .kk.kk.
+            kmpkppk
+            kpppppk
+            .kpppk.
+            ..kpk..
+            ...k...
+          </nc-sprite>
+          <nc-sprite scale="8" colors="p:#2ff3ff m:#fff4ff" label="A cyan heart">
+            .kk.kk.
+            kmpkppk
+            kpppppk
+            .kpppk.
+            ..kpk..
+            ...k...
+          </nc-sprite>
+          <nc-sprite scale="6" shade="v m V" label="A violet ghost">
+            ..XXXX..
+            .XXXXXX.
+            XXwkXwkX
+            XXXXXXXX
+            XXXXXXXX
+            X.XX.XX.
+          </nc-sprite>
+        </div>
+      </div>
+    </section>
+
+    <section id="canvas">
+      <h2>Canvas</h2>
+      <p>The same look for games. Draw into a small logical buffer, ask for lights, and the stage scales it by a whole number, lights it, blooms it and lays the HUD on top. Sprites, the 5×7 font and the scenery painters all work in logical pixels.</p>
+      <div class="nc-frame nc-frame--cyan" style="display:block"><canvas id="game"></canvas></div>
+<pre><code>import { createPixelStage, sprite, SPRITES, drawText, drawHearts, drawMeter,
+         paintSky, paintSun, paintSea, drawStars, DUSK } from 'neon-coast'
+
+const stage = createPixelStage(canvas, { minH: 120 })
+stage.resize(canvas.clientWidth, canvas.clientHeight)
+
+function frame(ms) {
+  const t = ms / 1000, g = stage.begin(), { vw, vh } = stage
+  paintSky(g, vw, 70)
+  drawStars(g, vw, 64, t)
+  g.drawImage(sunLayer, 0, 0)          // paintSun() once into its own canvas
+  stage.emitImage(sunLayer)            // …which the light map leaves at full brightness
+  paintSea(g, 0, vw, 70, vh, { sunX: vw / 2, time: t })
+  g.drawImage(sprite(BOAT), 40 + Math.sin(t) * 20, 86)
+  stage.light(vw / 2, 60, 70, DUSK.sun3, 0.5)
+  drawHearts(stage.hud, 4, 4, 5, 6)
+  drawText(stage.hud, 'SCORE 004200', 4, 14, '#2ff3ff', '#0b0616')
+  stage.present({ ambient: '#b0a4dc' })
+  requestAnimationFrame(frame)
+}
+requestAnimationFrame(frame)</code></pre>
+    </section>
+
+    <footer>
+      <hr>
+      <p class="nc-pixel nc-subtle">Neon Coast · drawn from <a href="https://phareim.no">phareim.no</a> · <a href="https://github.com/phareim/neon-coast">source</a></p>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { COLORS, PAL, SKY, SUN, ROLES, GLYPHS, ABOVE, SPRITES, createPixelStage, makeCanvas, sprite, drawText, drawHearts, drawMeter, drawBanner, paintSky, paintSun, paintSea, paintHeadland, drawStars, paintReflection, DUSK } from './dist/neon-coast.js'
+
+    const letterOf = hex => Object.keys(PAL).find(k => PAL[k] === hex) ?? ''
+    const swatch = (name, hex, note) => `<div class="sw"><span class="chip" style="background:var(--nc-${name})"></span><code>--nc-${name}</code><span>${hex}${note ? ' · ' + note : ''}</span></div>`
+    document.getElementById('roles').innerHTML = Object.entries(ROLES).map(([role, c]) => swatch(role, COLORS[c], c)).join('')
+    document.getElementById('palette').innerHTML = Object.entries(COLORS).map(([n, hex]) => swatch(n, hex, `'${letterOf(hex)}'`)).join('')
+    document.getElementById('sky').innerHTML = SKY.map((_, i) => `<span style="background:var(--nc-sky-${i})" title="--nc-sky-${i}"></span>`).join('')
+    document.getElementById('sun').innerHTML = SUN.map((_, i) => `<span style="background:var(--nc-sun-${i})" title="--nc-sun-${i}"></span>`).join('')
+    const chars = [...Object.keys(GLYPHS).filter(c => c !== ' '), ...Object.keys(ABOVE).filter(c => !GLYPHS[c])]
+    document.getElementById('glyphs').innerHTML = chars.map(c => `<span title="U+${c.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}">${c.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')}</span>`).join('')
+    document.getElementById('sprites').innerHTML = Object.keys(SPRITES).map(n => `<figure><nc-sprite name="${n}" scale="6" label="${n}"></nc-sprite><figcaption>${n}</figcaption></figure>`).join('')
+
+    document.getElementById('mixed').indeterminate = true
+    const modal = document.getElementById('modal')
+    document.getElementById('open-dialog').addEventListener('click', () => modal.showModal())
+    for (const tab of document.querySelectorAll('#tabs [role=tab]')) {
+      tab.addEventListener('click', () => {
+        for (const t of document.querySelectorAll('#tabs [role=tab]')) t.setAttribute('aria-selected', String(t === tab))
+      })
+    }
+
+    // The canvas demo: a boat on the coast, with a HUD.
+    const BOAT = [
+      '.....w.....',
+      '.....ww....',
+      '.....wcw...',
+      '.....wccw..',
+      '.....wcccw.',
+      '.....k.....',
+      'kkkkkkkkkkk',
+      '.kpppppppk.',
+      '..kPPPPPk..',
+    ]
+    const canvas = document.getElementById('game')
+    const stage = createPixelStage(canvas, { minW: 160, minH: 120 })
+    let sun = null
+    const fit = () => { stage.resize(canvas.clientWidth, canvas.clientHeight); sun = null }
+    new ResizeObserver(fit).observe(canvas)
+    fit()
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    function frame(ms) {
+      const t = still ? 2 : ms / 1000
+      const g = stage.begin()
+      const { vw, vh } = stage
+      const horizon = Math.round(vh * 0.58)
+      paintSky(g, vw, horizon + 1)
+      drawStars(g, vw, horizon - 6, t)
+      if (!sun) {
+        // The sun on a layer of its own, so emitImage can keep it at full brightness.
+        sun = makeCanvas(vw, horizon)
+        paintSun(sun.getContext('2d'), vw / 2, horizon - 4, Math.round(vh * 0.2))
+      }
+      g.drawImage(sun, 0, 0)
+      stage.emitImage(sun)
+      paintHeadland(g, 0, Math.round(vw * 0.3), horizon, Math.round(vh * 0.14), 'left')
+      paintHeadland(g, Math.round(vw * 0.75), Math.round(vw * 0.25) + 1, horizon, Math.round(vh * 0.1), 'right')
+      paintSea(g, 0, vw, horizon, vh, { time: t })
+      const bx = Math.round(vw * 0.5 + Math.sin(t * 0.4) * vw * 0.3)
+      const by = Math.round(vh * 0.74 + Math.sin(t * 1.7) * 1.5)
+      g.drawImage(sprite(BOAT), bx - 5, by)
+      stage.light(bx + 1, by + 4, 16, '#2ff3ff', 0.6)
+      stage.light(vw / 2, horizon - 8, vh * 0.7, DUSK.sun3, 0.5)
+      drawHearts(stage.hud, 4, 4, 5, 6)
+      drawText(stage.hud, 'SCORE ' + String(Math.floor(t * 37) % 1000000).padStart(6, '0'), stage.hw - 72, 4, '#2ff3ff', '#0b0616')
+      drawMeter(stage.hud, 4, 14, (t * 0.2) % 1, { cells: 12 })
+      drawBanner(stage.hud, 'THE NEON COAST', stage.hw / 2, stage.hh - 18, Math.min(1, Math.max(0, Math.sin(t * 0.5) * 2)))
+      stage.present({ ambient: '#b0a4dc', afterLight: gg => paintReflection(gg, horizon, vh, vw / 2, vh * 0.32, t) })
+      if (!still) requestAnimationFrame(frame)
+    }
+    requestAnimationFrame(frame)
+  </script>
+</body>
+</html>

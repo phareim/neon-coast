@@ -1,0 +1,42 @@
+/*
+ * Tokens that are not colours (the colours are in colors.css, generated
+ * from src/js/tokens.js). Everything is a custom property on :root, so a
+ * page or any element can override it.
+ */
+:root {
+  /* One pixel of interface chrome. Box edges, rules and shadows are whole units. */
+  --nc-u: 2px;
+
+  /* Faces: pixel for the interface, body for prose, mono for code and input. */
+  --nc-font-pixel: "Neon Pixel", "Space Mono", ui-monospace, monospace;
+  --nc-font-body: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --nc-font-mono: "Space Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+  --nc-font-input: var(--nc-font-mono);
+
+  /* Pixel text sizes. One font pixel is an eighth of the size, so the
+     letters are crisp only at multiples of 8 px. */
+  --nc-size-0: 8px;
+  --nc-size-1: 16px;
+  --nc-size-2: 24px;
+  --nc-size-3: 32px;
+  --nc-size-4: 48px;
+  --nc-size-5: 64px;
+
+  /* Space, on a 4 px grid. */
+  --nc-space-1: 4px;
+  --nc-space-2: 8px;
+  --nc-space-3: 12px;
+  --nc-space-4: 16px;
+  --nc-space-5: 24px;
+  --nc-space-6: 32px;
+  --nc-space-7: 48px;
+  --nc-space-8: 64px;
+
+  /* Text shadows. The drop is one font pixel down-right at any size; the
+     glow takes the text's own colour. */
+  --nc-drop: 0.125em 0.125em 0 var(--nc-ink);
+  --nc-glow: 0 0 0.5em color-mix(in srgb, currentColor 55%, transparent);
+
+  /* Width of .nc-wrap and of a classless page's columns. */
+  --nc-wrap: 960px;
+}

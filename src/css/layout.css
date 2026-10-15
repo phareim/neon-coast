@@ -1,0 +1,61 @@
+/*
+ * Layout helpers, nothing clever.
+ *   .nc-page     at least the viewport tall, on the night background
+ *   .nc-wrap     a centred column (--nc-wrap, 960 px) with side padding
+ *   .nc-stack    children in a column, --nc-gap apart (16 px)
+ *   .nc-cluster  children in a wrapping row, --nc-gap apart (12 px)
+ *   .nc-grid     cards that fill the row, at least --nc-min wide (240 px)
+ *   .nc-center   centre the content both ways
+ *   .nc-spread   a row with its ends pushed apart
+ */
+.nc-page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--nc-bg);
+  color: var(--nc-text);
+}
+
+.nc-wrap {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--nc-wrap);
+  margin-inline: auto;
+  padding-inline: var(--nc-space-4);
+}
+
+.nc-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nc-gap, var(--nc-space-4));
+}
+
+.nc-stack > * { margin-block: 0; }
+
+.nc-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nc-gap, var(--nc-space-3));
+}
+
+.nc-cluster > * { margin-block: 0; }
+
+.nc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--nc-min, 240px), 100%), 1fr));
+  gap: var(--nc-gap, var(--nc-space-5));
+}
+
+.nc-center {
+  display: grid;
+  place-items: center;
+}
+
+.nc-spread {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nc-gap, var(--nc-space-3));
+}

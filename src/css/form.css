@@ -1,0 +1,328 @@
+/*
+ * Forms. Fields are dark wells with a quiet violet edge that turns cyan on
+ * focus and red when invalid; what people type is in the mono face
+ * (--nc-font-input; .nc-input--pixel for name-entry screens).
+ *   .nc-field     label + control + help, stacked
+ *   .nc-label     a pixel-font label        .nc-help   small print under a field
+ *   .nc-input .nc-textarea .nc-select
+ *   .nc-check     checkbox                  .nc-radio  radio
+ *   .nc-switch    on/off (a checkbox with role="switch")
+ *   .nc-range     slider
+ * Classless: the same controls inside .nc need no class.
+ */
+.nc-field {
+  display: grid;
+  gap: var(--nc-space-2);
+  margin: 0 0 var(--nc-space-4);
+}
+
+.nc-field > :is(label, .nc-label, .nc-help) { margin: 0; }
+
+.nc-label,
+:where(.nc) :where(label, legend) {
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  color: var(--nc-text-muted);
+}
+
+:where(.nc) :where(label) {
+  display: block;
+  margin: 0 0 var(--nc-space-2);
+  cursor: pointer;
+}
+
+.nc-help {
+  font-family: var(--nc-font-body);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--nc-text-subtle);
+}
+
+/* Text fields. */
+.nc-input,
+.nc-textarea,
+.nc-select,
+:where(.nc) :where(
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="button"], [type="submit"], [type="reset"], [type="hidden"], [type="file"], [type="color"], [type="image"]),
+  textarea,
+  select
+) {
+  --nc-edge: var(--nc-quiet);
+  box-sizing: border-box;
+  display: block;
+  width: calc(100% - 2 * var(--nc-u));
+  min-height: 40px;
+  margin: var(--nc-u);
+  padding: 8px 12px;
+  font-family: var(--nc-font-input);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--nc-text);
+  background-color: var(--nc-field);
+  border: 0;
+  border-radius: 0;
+  caret-color: var(--nc-hot);
+  appearance: none;
+}
+
+:where(.nc) :where(
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="button"], [type="submit"], [type="reset"], [type="hidden"], [type="file"], [type="color"], [type="image"]),
+  textarea,
+  select
+) {
+  margin-bottom: var(--nc-space-4);
+}
+
+.nc-input::placeholder,
+.nc-textarea::placeholder,
+:where(.nc) :where(input, textarea)::placeholder {
+  color: var(--nc-text-subtle);
+  opacity: 1;
+}
+
+.nc-input:focus,
+.nc-textarea:focus,
+.nc-select:focus,
+:where(.nc) :where(input:focus, textarea:focus, select:focus) {
+  --nc-edge: var(--nc-accent);
+  outline: none;
+}
+
+/* :is() keeps older browsers that lack :user-invalid from dropping the whole rule. */
+.nc-input:is(:user-invalid, [aria-invalid="true"]),
+.nc-textarea:is(:user-invalid, [aria-invalid="true"]),
+.nc-select:is(:user-invalid, [aria-invalid="true"]),
+:where(.nc) :where(input:user-invalid, textarea:user-invalid, select:user-invalid, [aria-invalid="true"]) {
+  --nc-edge: var(--nc-danger);
+}
+
+.nc-input:disabled,
+.nc-textarea:disabled,
+.nc-select:disabled,
+:where(.nc) :where(input:disabled, textarea:disabled, select:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nc-input--pixel {
+  font-family: var(--nc-font-pixel);
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+.nc-textarea,
+:where(.nc) :where(textarea) {
+  min-height: 112px;
+  resize: vertical;
+}
+
+/* The select's ▼ is three pixel rows in the accent colour. */
+.nc-select,
+:where(.nc) :where(select) {
+  padding-right: 40px;
+  cursor: pointer;
+  background-image:
+    linear-gradient(var(--nc-accent) 0 0),
+    linear-gradient(var(--nc-accent) 0 0),
+    linear-gradient(var(--nc-accent) 0 0);
+  background-size: 10px 2px, 6px 2px, 2px 2px;
+  background-position:
+    right 16px top calc(50% - 2px),
+    right 18px top 50%,
+    right 20px top calc(50% + 2px);
+  background-repeat: no-repeat;
+}
+
+.nc-select[multiple],
+:where(.nc) :where(select[multiple]) {
+  padding-right: 12px;
+  background-image: none;
+}
+
+/* Checkbox and radio: a dark square that fills with the accent. */
+.nc-check,
+.nc-radio,
+:where(.nc) :where(input[type="checkbox"]:not([role="switch"]), input[type="radio"]) {
+  --nc-edge: var(--nc-quiet);
+  box-sizing: border-box;
+  flex: none;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: var(--nc-u) 10px var(--nc-u) var(--nc-u);
+  vertical-align: -4px;
+  background: var(--nc-field);
+  border: 0;
+  border-radius: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.nc-check:checked,
+:where(.nc) :where(input[type="checkbox"]:not([role="switch"]):checked) {
+  --nc-edge: var(--nc-accent);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' shape-rendering='crispEdges'%3E%3Cpath fill='%230b0616' d='M7 2h2v1H7zM6 3h2v1H6zM1 4h2v1H1zM5 4h2v1H5zM2 5h4v1H2zM3 6h2v1H3z'/%3E%3C/svg%3E") center / 100% 100% no-repeat,
+    var(--nc-accent);
+}
+
+.nc-check:indeterminate,
+:where(.nc) :where(input[type="checkbox"]:indeterminate) {
+  --nc-edge: var(--nc-accent);
+  background: linear-gradient(var(--nc-accent) 0 0) center / 10px 4px no-repeat, var(--nc-field);
+}
+
+.nc-radio:checked,
+:where(.nc) :where(input[type="radio"]:checked) {
+  --nc-edge: var(--nc-accent);
+  background: linear-gradient(var(--nc-accent) 0 0) center / 8px 8px no-repeat, var(--nc-field);
+}
+
+.nc-check:focus-visible,
+.nc-radio:focus-visible,
+.nc-switch:focus-visible,
+:where(.nc) :where(input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible) {
+  outline: var(--nc-u) solid var(--nc-hot);
+  outline-offset: calc(2 * var(--nc-u));
+}
+
+.nc-check:disabled,
+.nc-radio:disabled,
+.nc-switch:disabled,
+:where(.nc) :where(input[type="checkbox"]:disabled, input[type="radio"]:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* A label with a control in front of it. */
+.nc-choice {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+/* Switch: a knob that jumps (no slide) from slate to lit. */
+.nc-switch,
+:where(.nc) :where(input[type="checkbox"][role="switch"]) {
+  --nc-edge: var(--nc-quiet);
+  box-sizing: border-box;
+  flex: none;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  margin: var(--nc-u) 10px var(--nc-u) var(--nc-u);
+  vertical-align: -4px;
+  background:
+    linear-gradient(var(--nc-slate) 0 0) 4px 50% / 12px 12px no-repeat,
+    var(--nc-field);
+  border: 0;
+  border-radius: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.nc-switch:checked,
+:where(.nc) :where(input[type="checkbox"][role="switch"]:checked) {
+  --nc-edge: var(--nc-accent);
+  background:
+    linear-gradient(var(--nc-ink) 0 0) calc(100% - 4px) 50% / 12px 12px no-repeat,
+    var(--nc-accent);
+}
+
+/* Range: a well with a block for a thumb. */
+.nc-range,
+:where(.nc) :where(input[type="range"]) {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.nc-range::-webkit-slider-runnable-track,
+:where(.nc) :where(input[type="range"])::-webkit-slider-runnable-track {
+  height: 8px;
+  background: var(--nc-field);
+  box-shadow: 0 0 0 var(--nc-u) var(--nc-quiet);
+}
+
+.nc-range::-webkit-slider-thumb,
+:where(.nc) :where(input[type="range"])::-webkit-slider-thumb {
+  width: 12px;
+  height: 24px;
+  margin-top: -8px;
+  background: var(--nc-accent);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 0 0 var(--nc-u) var(--nc-ink);
+  appearance: none;
+}
+
+.nc-range::-moz-range-track,
+:where(.nc) :where(input[type="range"])::-moz-range-track {
+  height: 8px;
+  background: var(--nc-field);
+  box-shadow: 0 0 0 var(--nc-u) var(--nc-quiet);
+}
+
+.nc-range::-moz-range-progress,
+:where(.nc) :where(input[type="range"])::-moz-range-progress {
+  height: 8px;
+  background: color-mix(in srgb, var(--nc-accent) 45%, var(--nc-field));
+}
+
+.nc-range::-moz-range-thumb,
+:where(.nc) :where(input[type="range"])::-moz-range-thumb {
+  width: 12px;
+  height: 24px;
+  background: var(--nc-accent);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 0 0 var(--nc-u) var(--nc-ink);
+}
+
+.nc-range:focus-visible,
+:where(.nc) :where(input[type="range"]:focus-visible) { outline: none; }
+
+.nc-range:focus-visible::-webkit-slider-thumb,
+:where(.nc) :where(input[type="range"]:focus-visible)::-webkit-slider-thumb { background: var(--nc-hot); }
+
+.nc-range:focus-visible::-moz-range-thumb,
+:where(.nc) :where(input[type="range"]:focus-visible)::-moz-range-thumb { background: var(--nc-hot); }
+
+/* Fieldset: a quiet box; the legend sits inside it, not on the edge. */
+.nc-fieldset,
+:where(.nc) :where(fieldset) {
+  --nc-edge: var(--nc-quiet);
+  box-sizing: border-box;
+  min-width: 0;
+  margin: var(--nc-u) var(--nc-u) var(--nc-space-4);
+  padding: var(--nc-space-4);
+  background: var(--nc-surface);
+  border: 0;
+  border-radius: 0;
+}
+
+.nc-fieldset > legend,
+:where(.nc) :where(fieldset > legend) {
+  float: left;
+  width: 100%;
+  margin: 0 0 var(--nc-space-3);
+  padding: 0;
+  color: var(--nc-accent);
+}
+
+.nc-fieldset > legend + *,
+:where(.nc) :where(fieldset > legend + *) { clear: both; }

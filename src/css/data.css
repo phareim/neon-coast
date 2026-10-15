@@ -1,0 +1,355 @@
+/*
+ * Showing things.
+ *   .nc-meter    a bar that fills in whole cells; set --nc-value (0–1)
+ *   .nc-badge    a small solid tag
+ *   .nc-kbd      a key cap (classless: <kbd>)
+ *   .nc-menu     a list of choices with the ▶ cursor
+ *   .nc-table    the high-score table (classless: <table>)
+ *   .nc-tabs     a row of .nc-btn; aria-selected lights one
+ *   .nc-rule     a divider (classless: <hr>); --dots --neon
+ *   .nc-details  disclosure with ▶/▼ (classless: <details>)
+ *   .nc-loading  dots that count up after a word
+ */
+
+/* Meter: cells of 6 px with 2 px gaps by default (--nc-cell: 8px). */
+.nc-meter {
+  --nc-edge: var(--nc-quiet);
+  --nc-value: 0;
+  --nc-cells: 12;
+  --nc-cell: 8px;
+  --nc-meter-color: var(--nc-accent);
+  --nc-meter-empty: var(--nc-dusk);
+  --nc-fill: calc(var(--nc-value) * 100%);
+  box-sizing: content-box;
+  display: block;
+  width: calc(var(--nc-cells) * var(--nc-cell));
+  max-width: calc(100% - 5 * var(--nc-u));
+  height: 8px;
+  margin: var(--nc-u);
+  padding: var(--nc-u) var(--nc-u) var(--nc-u) calc(2 * var(--nc-u));
+  background-image:
+    linear-gradient(90deg, transparent calc(100% - var(--nc-u)), var(--nc-field) 0),
+    linear-gradient(90deg, var(--nc-meter-color) var(--nc-fill), var(--nc-meter-empty) 0),
+    linear-gradient(var(--nc-field) 0 0);
+  background-size: calc(100% / var(--nc-cells)) 100%, 100% 100%, 100% 100%;
+  background-repeat: repeat-x, no-repeat, no-repeat;
+  background-origin: content-box, content-box, border-box;
+  background-clip: content-box, content-box, border-box;
+}
+
+/* Whole cells only: the fill snaps down to the last full cell. */
+@supports (width: calc(round(down, 2.5, 1) * 1px)) {
+  .nc-meter { --nc-fill: calc(round(down, var(--nc-value) * var(--nc-cells), 1) / var(--nc-cells) * 100%); }
+}
+
+.nc-meter--pink { --nc-meter-color: var(--nc-pink); }
+.nc-meter--gold { --nc-meter-color: var(--nc-gold); }
+.nc-meter--lime { --nc-meter-color: var(--nc-lime); }
+.nc-meter--red { --nc-meter-color: var(--nc-red); }
+.nc-meter--fluid { width: auto; max-width: none; }
+
+/* Classless <progress>: the same well, cells filling from the left. */
+:where(.nc) :where(progress) {
+  --nc-edge: var(--nc-quiet);
+  box-sizing: border-box;
+  display: block;
+  width: calc(100% - 2 * var(--nc-u));
+  height: 12px;
+  margin: var(--nc-u);
+  padding: 0;
+  color: var(--nc-accent);
+  background: var(--nc-field);
+  border: 2px solid var(--nc-field);
+  border-radius: 0;
+  appearance: none;
+}
+
+:where(.nc) :where(progress)::-webkit-progress-bar { background: var(--nc-dusk); }
+
+:where(.nc) :where(progress)::-webkit-progress-value {
+  background: repeating-linear-gradient(90deg, var(--nc-accent) 0 6px, var(--nc-field) 6px 8px);
+}
+
+:where(.nc) :where(progress)::-moz-progress-bar {
+  background: repeating-linear-gradient(90deg, var(--nc-accent) 0 6px, var(--nc-field) 6px 8px);
+}
+
+/* Badge: a solid notched tag. --pink --gold --lime --violet --red --quiet --outline */
+.nc-badge {
+  --nc-edge: var(--nc-accent);
+  box-sizing: border-box;
+  display: inline-block;
+  margin: var(--nc-u);
+  padding: 3px 6px 1px;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  text-shadow: none;
+  white-space: nowrap;
+  vertical-align: 0.1em;
+  color: var(--nc-ink);
+  background: var(--nc-edge);
+}
+
+.nc-badge--pink { --nc-edge: var(--nc-pink); }
+.nc-badge--gold { --nc-edge: var(--nc-gold); }
+.nc-badge--lime { --nc-edge: var(--nc-lime); }
+.nc-badge--violet { --nc-edge: var(--nc-violet); }
+.nc-badge--red { --nc-edge: var(--nc-red); }
+.nc-badge--quiet { --nc-edge: var(--nc-quiet); color: var(--nc-text); }
+.nc-badge--outline { color: var(--nc-edge); background: var(--nc-surface); }
+
+/* Key cap: the edge with a thicker bottom. */
+.nc-kbd,
+:where(.nc) :where(kbd) {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 24px;
+  margin: var(--nc-u) var(--nc-u) calc(2 * var(--nc-u));
+  padding: 3px 5px 1px;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  text-shadow: none;
+  vertical-align: 0.1em;
+  color: var(--nc-text);
+  background: var(--nc-dusk);
+  box-shadow:
+    0 calc(-1 * var(--nc-u)) 0 0 var(--nc-slate),
+    calc(-1 * var(--nc-u)) 0 0 0 var(--nc-slate),
+    var(--nc-u) 0 0 0 var(--nc-slate),
+    0 calc(2 * var(--nc-u)) 0 0 var(--nc-slate);
+}
+
+/* Menu: the ▶ cursor marks the item under the pointer, the focused one and the current one. */
+.nc-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+.nc-menu > li { margin: 0; }
+.nc-menu > li::marker { content: none; }
+
+.nc-menu :is(a, button) {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--nc-space-2);
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+  padding: 7px 8px 5px 28px;
+  white-space: normal;
+  user-select: auto;
+  font: inherit;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: inherit;
+  text-decoration: none;
+  text-shadow: var(--nc-drop);
+  color: var(--nc-text);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.nc-menu :is(a, button)::before {
+  content: "▶";
+  position: absolute;
+  left: 8px;
+  color: var(--nc-accent);
+  visibility: hidden;
+}
+
+.nc-menu :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], .is-active) {
+  outline: none;
+  color: var(--nc-accent);
+  background: none;
+}
+
+.nc-menu :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], .is-active)::before {
+  visibility: visible;
+}
+
+.nc-menu :is(a, button):disabled { color: var(--nc-slate); cursor: not-allowed; }
+.nc-menu :is(a, button):disabled::before { visibility: hidden; }
+
+/* Table: rows 32 px tall between two violet rules. Mark a row with
+   .is-hot (you, pink) or .is-prize (the podium, gold); .nc-num right-aligns. */
+.nc-table,
+:where(.nc) :where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-table {
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+.nc-table th,
+:where(.nc) :where(th) {
+  padding: 8px;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  color: var(--nc-text-subtle);
+  border-bottom: var(--nc-u) solid var(--nc-rule);
+}
+
+.nc-table td,
+:where(.nc) :where(td) {
+  padding: 7px 8px 5px;
+  height: 32px;
+  box-sizing: border-box;
+  color: var(--nc-text);
+}
+
+.nc-table td { text-shadow: var(--nc-drop); }
+
+.nc-table tbody tr:last-child td,
+:where(.nc) :where(tbody tr:last-child td) {
+  border-bottom: var(--nc-u) solid var(--nc-rule);
+}
+
+.nc-table caption,
+:where(.nc) :where(caption) {
+  padding: 0 0 8px;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  text-align: left;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  color: var(--nc-text-muted);
+}
+
+.nc-num { text-align: right; }
+.nc-table td.nc-num { color: var(--nc-accent); }
+
+.nc-table tr.is-prize td { color: var(--nc-prize); }
+
+.nc-table tr:is(.is-hot, [aria-current]:not([aria-current="false"])) td {
+  color: var(--nc-hot);
+  background: rgb(255 47 160 / 0.16);
+  box-shadow: inset 0 var(--nc-u) 0 var(--nc-hot), inset 0 calc(-1 * var(--nc-u)) 0 var(--nc-hot);
+}
+
+.nc-table tr:is(.is-hot, [aria-current]:not([aria-current="false"])) td:first-child {
+  box-shadow: inset 0 var(--nc-u) 0 var(--nc-hot), inset 0 calc(-1 * var(--nc-u)) 0 var(--nc-hot), inset var(--nc-u) 0 0 var(--nc-hot);
+}
+
+.nc-table tr:is(.is-hot, [aria-current]:not([aria-current="false"])) td:last-child {
+  box-shadow: inset 0 var(--nc-u) 0 var(--nc-hot), inset 0 calc(-1 * var(--nc-u)) 0 var(--nc-hot), inset calc(-1 * var(--nc-u)) 0 0 var(--nc-hot);
+}
+
+/* Tabs: a row of buttons, one lit. */
+.nc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nc-space-3);
+  margin: 0 0 var(--nc-space-4);
+  padding: 0;
+}
+
+.nc-tabs > .nc-btn { margin: var(--nc-u); }
+
+/* Rules. */
+.nc-rule,
+:where(.nc) :where(hr) {
+  height: var(--nc-u);
+  margin: var(--nc-space-6) 0;
+  border: 0;
+  background: var(--nc-rule);
+}
+
+.nc-rule--dots {
+  background: repeating-linear-gradient(90deg, var(--nc-rule) 0 var(--nc-u), transparent var(--nc-u) calc(3 * var(--nc-u)));
+}
+
+.nc-rule--neon {
+  height: calc(2 * var(--nc-u));
+  background: linear-gradient(var(--nc-cyan) 50%, var(--nc-pink) 50%);
+}
+
+/* Details. */
+.nc-details > summary,
+:where(.nc) :where(details > summary) {
+  display: block;
+  padding: 4px 0;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  line-height: 1.5;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  text-shadow: var(--nc-drop);
+  color: var(--nc-accent);
+  cursor: pointer;
+  list-style: none;
+}
+
+.nc-details > summary::-webkit-details-marker,
+:where(.nc) :where(details > summary)::-webkit-details-marker { display: none; }
+
+.nc-details > summary::before,
+:where(.nc) :where(details > summary)::before {
+  content: "▶";
+  display: inline-block;
+  width: 1.25em;
+}
+
+.nc-details[open] > summary::before,
+:where(.nc) :where(details[open] > summary)::before { content: "▼"; }
+
+/* "SYNCING" + dots that count up in steps. */
+.nc-loading::after {
+  content: "...";
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: nc-dots 1.2s steps(4, jump-none) infinite;
+}
+
+@keyframes nc-dots {
+  to { width: 0.75em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-loading::after { width: auto; animation: none; }
+}

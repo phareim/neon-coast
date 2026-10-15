@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Star Catcher</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%230b0616'/%3E%3Crect y='5' width='16' height='5' fill='%236a2a7c'/%3E%3Cpath fill='%23ffd23f' d='M6 3h4v1h1v1h1v5H4V5h1V4h1z'/%3E%3Crect x='4' y='7' width='8' height='1' fill='%236a2a7c'/%3E%3Crect x='4' y='9' width='8' height='1' fill='%23ff2fa0'/%3E%3Crect y='10' width='16' height='1' fill='%232ff3ff'/%3E%3Crect y='11' width='16' height='5' fill='%23123372'/%3E%3Crect x='5' y='12' width='6' height='1' fill='%23ff8a3d'/%3E%3Crect x='6' y='14' width='4' height='1' fill='%23ff2fa0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../dist/neon-coast.css">
+  <style>
+    html, body { height: 100%; }
+    body { overflow: hidden; }
+    canvas { display: block; width: 100vw; height: 100vh; height: 100dvh; image-rendering: pixelated; touch-action: none; }
+  </style>
+</head>
+<body class="nc">
+  <canvas id="game" role="img" aria-label="Star Catcher: steer the boat with the arrow keys or a finger and catch the falling stars"></canvas>
+  <script type="module">
+    // A whole game on the Neon Coast canvas kit, in about a hundred lines:
+    // the pixel stage, scenery painters, string-map sprites, the 5×7 font and HUD shapes.
+    import {
+      createPixelStage, makeCanvas, sprite, putC, SPRITES, COLORS, DUSK,
+      drawText, textWidth, drawBigText, bigTextWidth, drawHearts, drawBanner,
+      paintSky, paintSun, paintHeadland, paintSea, paintReflection, drawStars,
+    } from '../dist/neon-coast.js'
+
+    const BOAT = [
+      '.....w.....',
+      '.....ww....',
+      '.....wcw...',
+      '.....wccw..',
+      '.....wcccw.',
+      '.....k.....',
+      'kkkkkkkkkkk',
+      '.kpppppppk.',
+      '..kPPPPPk..',
+    ]
+
+    const canvas = document.getElementById('game')
+    const stage = createPixelStage(canvas, { minW: 160, minH: 150 })
+    let back = null, front = null
+    function fit() { stage.resize(innerWidth, innerHeight); back = front = null }
+    addEventListener('resize', fit)
+    fit()
+
+    const s = { mode: 'title', x: 80, stars: [], sparks: [], score: 0, hp: 6, spawn: 1, banner: 0, best: 0 }
+    try { s.best = Number(localStorage.getItem('nc-star-catcher')) || 0 } catch {}
+
+    const keys = new Set()
+    let pointer = null
+    addEventListener('keydown', e => {
+      keys.add(e.key)
+      if ((e.key === ' ' || e.key === 'Enter') && s.mode !== 'play') { e.preventDefault(); start() }
+    })
+    addEventListener('keyup', e => keys.delete(e.key))
+    canvas.addEventListener('pointerdown', e => { pointer = e.clientX; if (s.mode !== 'play') start() })
+    canvas.addEventListener('pointermove', e => { if (pointer != null) pointer = e.clientX })
+    addEventListener('pointerup', () => { pointer = null })
+
+    function start() {
+      Object.assign(s, { mode: 'play', x: stage.vw / 2, stars: [], sparks: [], score: 0, hp: 6, spawn: 0.6, banner: 2.2 })
+    }
+
+    function update(dt) {
+      const { vw, vh } = stage
+      const boatY = vh - 20
+      if (s.mode !== 'play') return
+      const dir = (keys.has('ArrowRight') || keys.has('d') ? 1 : 0) - (keys.has('ArrowLeft') || keys.has('a') ? 1 : 0)
+      s.x += dir * 110 * dt
+      if (pointer != null) s.x += (stage.px(pointer) - s.x) * Math.min(1, dt * 12)
+      s.x = Math.max(6, Math.min(vw - 6, s.x))
+      s.spawn -= dt
+      if (s.spawn <= 0) {
+        s.spawn = Math.max(0.35, 1.1 - s.score / 400)
+        s.stars.push({ x: 8 + Math.random() * (vw - 16), y: -6, v: 28 + s.score / 8 + Math.random() * 12 })
+      }
+      for (const st of s.stars) st.y += st.v * dt
+      for (const st of s.stars) {
+        if (Math.abs(st.x - s.x) < 9 && st.y > boatY - 4 && st.y < boatY + 6) {
+          st.gone = true
+          s.score += 10
+          for (let i = 0; i < 8; i++) s.sparks.push({ x: st.x, y: st.y, vx: (Math.random() - 0.5) * 60, vy: -Math.random() * 50, t: 0.5 })
+        } else if (st.y > vh - 6) {
+          st.gone = true
+          s.hp -= 2
+        }
+      }
+      s.stars = s.stars.filter(st => !st.gone)
+      for (const p of s.sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 120 * dt; p.t -= dt }
+      s.sparks = s.sparks.filter(p => p.t > 0)
+      s.banner = Math.max(0, s.banner - dt)
+      if (s.hp <= 0) {
+        s.mode = 'over'
+        s.best = Math.max(s.best, s.score)
+        try { localStorage.setItem('nc-star-catcher', String(s.best)) } catch {}
+      }
+    }
+
+    function draw(t) {
+      const { vw, vh, hud, hw, hh } = stage
+      const horizon = Math.round(vh * 0.5)
+      if (!back) {
+        // Static layers, painted once per size: the sky behind the stars, the sun and capes in front.
+        back = makeCanvas(vw, vh)
+        paintSky(back.getContext('2d'), vw, horizon + 1)
+        front = makeCanvas(vw, horizon)
+        const f = front.getContext('2d')
+        paintSun(f, vw / 2, horizon - 10, Math.round(vh * 0.18))
+        paintHeadland(f, 0, Math.round(vw * 0.3), horizon, Math.round(vh * 0.12), 'left')
+        paintHeadland(f, Math.round(vw * 0.72), Math.round(vw * 0.28) + 1, horizon, Math.round(vh * 0.09), 'right')
+      }
+      const g = stage.begin()
+      g.drawImage(back, 0, 0)
+      drawStars(g, vw, horizon - 6, t)
+      g.drawImage(front, 0, 0)
+      stage.emitImage(front)
+      paintSea(g, 0, vw, horizon, vh, { time: t })
+      stage.light(vw / 2, horizon - 12, vh * 0.6, DUSK.sun3, 0.5)
+      for (const st of s.stars) {
+        putC(g, sprite(SPRITES.star), st.x, st.y)
+        stage.light(st.x, st.y, 14, COLORS.gold, 0.8)
+      }
+      const boatY = vh - 20 + Math.round(Math.sin(t * 2) * 1)
+      putC(g, sprite(BOAT), s.x, boatY)
+      stage.light(s.x, boatY, 18, COLORS.cyan, 0.6)
+
+      drawHearts(hud, 4, 4, Math.max(0, s.hp), 6)
+      const score = String(s.score).padStart(5, '0')
+      drawText(hud, score, hw - textWidth(score) - 4, 4, COLORS.cyan, COLORS.ink)
+      const centre = (text, y, color, n = 1) => n > 1
+        ? drawBigText(hud, text, Math.round((hw - bigTextWidth(text, n)) / 2), y, n, color, COLORS.ink)
+        : drawText(hud, text, Math.round((hw - textWidth(text)) / 2), y, color, COLORS.ink)
+      const blink = Math.floor(t * 2) % 2 === 0
+      if (s.mode === 'title') {
+        centre('STAR CATCHER', Math.round(hh * 0.22), COLORS.pink, 2)
+        centre('CATCH THE FALLING STARS', Math.round(hh * 0.22) + 22, COLORS.white)
+        if (blink) centre('▶ PRESS SPACE OR TAP', Math.round(hh * 0.22) + 36, COLORS.cyan)
+      } else if (s.mode === 'over') {
+        centre('GAME OVER', Math.round(hh * 0.22), COLORS.pink, 2)
+        centre(`SCORE ${s.score} · BEST ${s.best}`, Math.round(hh * 0.22) + 22, COLORS.gold)
+        if (blink) centre('▶ AGAIN', Math.round(hh * 0.22) + 36, COLORS.cyan)
+      }
+      drawBanner(hud, 'THE NEON COAST', hw / 2, Math.round(hh * 0.3), Math.min(1, s.banner * 2))
+
+      stage.present({
+        ambient: '#b0a4dc',
+        afterLight: gg => {
+          paintReflection(gg, horizon, vh, vw / 2, vh * 0.3, t)
+          for (const p of s.sparks) { gg.fillStyle = p.t > 0.25 ? COLORS.cream : COLORS.gold; gg.fillRect(Math.round(p.x), Math.round(p.y), 1, 1) }
+        },
+      })
+    }
+
+    let last = 0
+    function frame(ms) {
+      const dt = Math.min(0.05, last ? (ms - last) / 1000 : 0)
+      last = ms
+      update(dt)
+      draw(ms / 1000)
+      requestAnimationFrame(frame)
+    }
+    requestAnimationFrame(frame)
+  </script>
+</body>
+</html>

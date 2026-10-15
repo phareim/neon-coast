@@ -1,0 +1,129 @@
+/*
+ * Pixel text.
+ *   .nc-pixel    the pixel font on anything (sizes: keep to 8 px steps)
+ *   .nc-prose    back to the body font inside pixel text
+ *   .nc-title    the big pink title with a hard shadow and a glow
+ *   .nc-hud      cyan interface text (scores, labels)
+ *   .nc-hint     pink call to action ("PRESS START")
+ *   .nc-dim      muted
+ *   .nc-blink    blinks in steps, never fades
+ *   .nc-banner   white letters between a cyan and a pink line
+ *   .nc-size-0…5 8, 16, 24, 32, 48, 64 px
+ *   .nc-drop / .nc-glow   the hard shadow / shadow plus glow
+ * Colours: .nc-cyan .nc-pink .nc-gold .nc-lime .nc-violet .nc-orange
+ * .nc-red .nc-white .nc-muted .nc-subtle
+ */
+.nc-pixel,
+.nc-title,
+.nc-hud,
+.nc-hint,
+.nc-banner {
+  font-family: var(--nc-font-pixel);
+  font-weight: 400;
+  font-synthesis: none;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+/* 1.5 keeps every baseline on a whole pixel at 8 px steps (16 → 24). */
+.nc-pixel { line-height: 1.5; }
+
+.nc-prose {
+  font-family: var(--nc-font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-transform: none;
+  -webkit-font-smoothing: auto;
+  text-shadow: none;
+}
+
+.nc-title {
+  font-size: var(--nc-size-4);
+  line-height: 1.25;
+  color: var(--nc-title, var(--nc-hot));
+  text-shadow: var(--nc-drop), var(--nc-glow);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 800px) {
+  .nc-title { font-size: var(--nc-size-5); }
+}
+
+@media (max-width: 479px) {
+  .nc-title { font-size: var(--nc-size-3); }
+}
+
+.nc-hud,
+.nc-hint {
+  font-size: var(--nc-size-1);
+  line-height: 1.25;
+  text-shadow: var(--nc-drop), 0 0 10px color-mix(in srgb, currentColor 50%, transparent);
+}
+
+.nc-hud { color: var(--nc-accent); }
+.nc-hint { color: var(--nc-hot); }
+
+.nc-dim { color: var(--nc-text-muted); }
+
+.nc-drop { text-shadow: var(--nc-drop); }
+.nc-glow { text-shadow: var(--nc-drop), var(--nc-glow); }
+
+.nc-size-0 { font-size: var(--nc-size-0); line-height: 1.25; }
+.nc-size-1 { font-size: var(--nc-size-1); line-height: 1.25; }
+.nc-size-2 { font-size: var(--nc-size-2); line-height: 1.25; }
+.nc-size-3 { font-size: var(--nc-size-3); line-height: 1.25; }
+.nc-size-4 { font-size: var(--nc-size-4); line-height: 1.25; }
+.nc-size-5 { font-size: var(--nc-size-5); line-height: 1.25; }
+
+.nc-cyan { color: var(--nc-cyan); }
+.nc-pink { color: var(--nc-pink); }
+.nc-gold { color: var(--nc-gold); }
+.nc-lime { color: var(--nc-lime); }
+.nc-violet { color: var(--nc-violet); }
+.nc-orange { color: var(--nc-orange); }
+.nc-red { color: var(--nc-red); }
+.nc-white { color: var(--nc-white); }
+.nc-muted { color: var(--nc-text-muted); }
+.nc-subtle { color: var(--nc-text-subtle); }
+
+.nc-blink { animation: nc-blink 1.1s steps(1) infinite; }
+
+@keyframes nc-blink {
+  50% { opacity: 0.35; }
+}
+
+/* The area banner (Neon Shrine's place names). */
+.nc-banner {
+  display: inline-block;
+  padding: 10px 16px 8px;
+  font-size: var(--nc-size-2);
+  line-height: 1.25;
+  color: var(--nc-white);
+  text-shadow: 0.125em 0.125em 0 var(--nc-hot);
+  background: rgb(11 6 22 / 0.6);
+  box-shadow:
+    inset 0 var(--nc-u) 0 var(--nc-accent),
+    inset 0 calc(-1 * var(--nc-u)) 0 var(--nc-hot);
+}
+
+/* The blinking ▼ that asks for the next line of a dialog. */
+.nc-more::after {
+  content: "▼";
+  display: inline-block;
+  margin-left: 0.5em;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  line-height: 1;
+  color: var(--nc-accent);
+  text-shadow: none;
+  animation: nc-blink 0.66s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-blink,
+  .nc-more::after { animation: none; }
+}

@@ -1,0 +1,181 @@
+/*
+ * The classless layer: put class="nc" on <body> (or any container) and
+ * plain HTML inside it takes the look — headings in the pixel font, links,
+ * lists, quotes, code, rules. Buttons, forms, tables and dialogs follow in
+ * their own files.
+ *
+ * Every rule here is wrapped in :where(), so it has no specificity: any
+ * class, yours or a .nc-* component, wins without a fight.
+ */
+:where(.nc) {
+  color-scheme: dark;
+  background-color: var(--nc-bg);
+  color: var(--nc-text);
+  font-family: var(--nc-font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  accent-color: var(--nc-accent);
+  caret-color: var(--nc-hot);
+  scrollbar-color: var(--nc-violet-deep) var(--nc-night);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+:where(body.nc) {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* A classless page: the body's own header, main and footer get a column. */
+:where(body.nc) > :where(header, main, footer) {
+  box-sizing: border-box;
+  max-width: var(--nc-wrap);
+  margin-inline: auto;
+  padding: var(--nc-space-5) var(--nc-space-4);
+}
+
+:where(.nc) ::selection {
+  background: var(--nc-hot);
+  color: var(--nc-ink);
+  text-shadow: none;
+}
+
+/* Headings speak in the pixel font. */
+:where(.nc) :where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--nc-font-pixel);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  line-height: 1.25;
+  text-shadow: var(--nc-drop);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  margin: var(--nc-space-6) 0 var(--nc-space-4);
+}
+
+:where(.nc) :where(h1) {
+  font-size: var(--nc-size-4);
+  color: var(--nc-hot);
+  text-shadow: var(--nc-drop), var(--nc-glow);
+  margin-top: var(--nc-space-5);
+}
+
+:where(.nc) :where(h2) {
+  font-size: var(--nc-size-3);
+  color: var(--nc-accent);
+}
+
+:where(.nc) :where(h3) {
+  font-size: var(--nc-size-2);
+  color: var(--nc-text);
+}
+
+:where(.nc) :where(h4, h5, h6) {
+  font-size: var(--nc-size-1);
+  color: var(--nc-text);
+  margin: var(--nc-space-5) 0 var(--nc-space-2);
+}
+
+:where(.nc) :where(h5, h6) { color: var(--nc-text-muted); }
+
+@media (max-width: 479px) {
+  :where(.nc) :where(h1) { font-size: var(--nc-size-3); }
+  :where(.nc) :where(h2) { font-size: var(--nc-size-2); }
+}
+
+:where(.nc) :where(p, ul, ol, dl, blockquote, pre, table, figure, details, fieldset) {
+  margin: 0 0 var(--nc-space-4);
+}
+
+:where(.nc) :where(a) {
+  color: var(--nc-accent);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--nc-u);
+  text-underline-offset: 0.25em;
+}
+
+:where(.nc) :where(a:hover) { color: var(--nc-hot); }
+
+:where(.nc) :where(a:focus-visible),
+:where(.nc) :where(summary:focus-visible) {
+  outline: var(--nc-u) solid var(--nc-hot);
+  outline-offset: var(--nc-u);
+}
+
+:where(.nc) :where(strong, b) {
+  font-weight: 700;
+  color: var(--nc-white);
+}
+
+:where(.nc) :where(small) { font-size: 0.875em; }
+
+:where(.nc) :where(mark) {
+  background: var(--nc-prize);
+  color: var(--nc-ink);
+  padding: 0 0.15em;
+}
+
+/* Lists: square bullets in the interface colour. */
+:where(.nc) :where(ul, ol) { padding-left: 1.5em; }
+:where(.nc) :where(ul) { list-style: square; }
+:where(.nc) :where(li)::marker { color: var(--nc-accent); }
+:where(.nc) :where(ol > li)::marker { font-family: var(--nc-font-mono); font-size: 0.875em; }
+:where(.nc) :where(dt) { font-weight: 500; color: var(--nc-white); }
+:where(.nc) :where(dd) { margin: 0 0 var(--nc-space-2) var(--nc-space-4); color: var(--nc-text-muted); }
+
+:where(.nc) :where(blockquote) {
+  padding: var(--nc-space-1) 0 var(--nc-space-1) var(--nc-space-4);
+  margin-left: 0;
+  margin-right: 0;
+  color: var(--nc-text-muted);
+  box-shadow: inset var(--nc-u) 0 0 var(--nc-hot);
+}
+
+/* Code: the machine voice. */
+:where(.nc) :where(code, samp, var) {
+  font-family: var(--nc-font-mono);
+  font-size: 0.875em;
+  font-style: normal;
+}
+
+:where(.nc) :where(code) {
+  color: var(--nc-rose);
+  background: var(--nc-night);
+  padding: 0.1em 0.35em;
+}
+
+:where(.nc) :where(pre) {
+  --nc-edge: var(--nc-quiet);
+  box-sizing: border-box;
+  margin-inline: var(--nc-u);
+  padding: var(--nc-space-4);
+  overflow: auto;
+  font-family: var(--nc-font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--nc-text);
+  background: var(--nc-night);
+  tab-size: 2;
+}
+
+:where(.nc) :where(pre code) {
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+}
+
+:where(.nc) :where(img, video) {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(.nc) :where(figcaption) {
+  margin-top: var(--nc-space-2);
+  font-size: 0.875rem;
+  color: var(--nc-text-subtle);
+}

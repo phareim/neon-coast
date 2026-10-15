@@ -1,0 +1,188 @@
+/*
+ * The edge: every framed thing in the system has the same one-unit edge
+ * with notched corners — four shadows, each offset one way, so the corners
+ * stay open. No border-radius and no soft shadows anywhere. The colour is
+ * --nc-edge, which each component sets; the edge sits outside the element
+ * like an outline, so leave it one unit of room.
+ */
+.nc-box,
+.nc-alert,
+.nc-dialog,
+.nc-frame,
+.nc-btn,
+.nc-badge,
+.nc-input,
+.nc-select,
+.nc-textarea,
+.nc-check,
+.nc-radio,
+.nc-switch,
+.nc-meter,
+.nc-fieldset,
+:where(.nc) :where(
+  button,
+  input:not([type="range"], [type="hidden"], [type="file"], [type="color"], [type="image"]),
+  select,
+  textarea,
+  pre,
+  fieldset,
+  dialog,
+  progress
+) {
+  box-shadow:
+    0 calc(-1 * var(--nc-u)) 0 0 var(--nc-edge),
+    0 var(--nc-u) 0 0 var(--nc-edge),
+    calc(-1 * var(--nc-u)) 0 0 0 var(--nc-edge),
+    var(--nc-u) 0 0 0 var(--nc-edge);
+}
+
+/* Windows high contrast drops box-shadows: draw the edge as an outline there. */
+@media (forced-colors: active) {
+  .nc-box, .nc-alert, .nc-dialog, .nc-frame, .nc-btn, .nc-badge, .nc-input, .nc-select,
+  .nc-textarea, .nc-check, .nc-radio, .nc-switch, .nc-meter, .nc-kbd, .nc-fieldset,
+  :where(.nc) :where(button, input, select, textarea, pre, fieldset, dialog, kbd) {
+    outline: var(--nc-u) solid;
+  }
+}
+
+/*
+ * .nc-box — the dialog box from Neon Shrine: a dark panel, the edge, and a
+ * faint cyan rule inside the top edge.
+ *   --pink --gold --lime --violet --quiet   edge colours
+ *   --flat                                  without the inner rule
+ *   --solid                                 opaque fill
+ */
+.nc-box {
+  --nc-edge: var(--nc-accent);
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--nc-box-pad, var(--nc-space-4));
+  color: var(--nc-text);
+  background: var(--nc-surface);
+  border: 0;
+  border-radius: 0;
+}
+
+.nc-box::before {
+  content: "";
+  position: absolute;
+  top: calc(2 * var(--nc-u));
+  left: calc(2 * var(--nc-u));
+  right: calc(2 * var(--nc-u));
+  height: var(--nc-u);
+  background: var(--nc-box-rule);
+  pointer-events: none;
+}
+
+.nc-box > :first-child { margin-top: 0; }
+.nc-box > :last-child { margin-bottom: 0; }
+
+.nc-box--pink { --nc-edge: var(--nc-pink); }
+.nc-box--gold { --nc-edge: var(--nc-gold); }
+.nc-box--lime { --nc-edge: var(--nc-lime); }
+.nc-box--violet { --nc-edge: var(--nc-violet); }
+.nc-box--quiet { --nc-edge: var(--nc-quiet); }
+.nc-box--flat::before { display: none; }
+.nc-box--solid { background: var(--nc-ink); }
+
+/*
+ * .nc-dialog — what people in the world say: white pixel letters with a
+ * plum shadow in a pink box. Works on <dialog> and on any block. Add
+ * <span class="nc-more"></span> for the blinking ▼.
+ */
+.nc-dialog,
+:where(.nc) :where(dialog) {
+  --nc-edge: var(--nc-hot);
+  box-sizing: border-box;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: var(--nc-space-4) 20px;
+  margin-block: var(--nc-u);
+  color: var(--nc-white);
+  background: var(--nc-surface);
+  border: 0;
+  border-radius: 0;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  text-shadow: 0.125em 0.125em 0 var(--nc-plum);
+}
+
+:where(.nc) :where(dialog) { margin: auto; }
+.nc-dialog > :first-child { margin-top: 0; }
+.nc-dialog > :last-child { margin-bottom: 0; }
+
+dialog.nc-dialog { margin: auto; }
+
+dialog.nc-dialog::backdrop,
+:where(.nc) :where(dialog)::backdrop {
+  background: rgb(11 6 22 / 0.6);
+}
+
+.nc-dialog .nc-more { float: right; }
+
+/*
+ * .nc-alert — a status line in a box: --ok (lime ✓), --warn (orange !),
+ * --danger (red ×); the plain one is cyan ◈.
+ */
+.nc-alert {
+  --nc-edge: var(--nc-accent);
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nc-space-3);
+  margin: var(--nc-u) var(--nc-u) var(--nc-space-4);
+  padding: var(--nc-space-3) var(--nc-space-4);
+  line-height: 24px;
+  color: var(--nc-text);
+  background: var(--nc-surface);
+}
+
+.nc-alert::before {
+  content: "◈";
+  flex: none;
+  width: 16px;
+  text-align: center;
+  font-family: var(--nc-font-pixel);
+  font-size: var(--nc-size-1);
+  line-height: 24px;
+  color: var(--nc-edge);
+  text-shadow: var(--nc-drop);
+}
+
+.nc-alert > * { margin: 0; }
+.nc-alert--ok { --nc-edge: var(--nc-ok); }
+.nc-alert--ok::before { content: "✓"; }
+.nc-alert--warn { --nc-edge: var(--nc-warn); }
+.nc-alert--warn::before { content: "!"; }
+.nc-alert--danger { --nc-edge: var(--nc-danger); }
+.nc-alert--danger::before { content: "×"; }
+
+/*
+ * .nc-frame — the edge alone, for pictures, avatars and canvases; pixel
+ * art scales up nearest-neighbour inside it. --gold --pink --cyan
+ */
+.nc-frame {
+  --nc-edge: var(--nc-quiet);
+  display: inline-block;
+  box-sizing: border-box;
+  margin: var(--nc-u);
+  vertical-align: middle;
+  background: var(--nc-night);
+  image-rendering: pixelated;
+}
+
+.nc-frame > :where(img, canvas, video) {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.nc-frame--gold { --nc-edge: var(--nc-gold-deep); }
+.nc-frame--pink { --nc-edge: var(--nc-pink); }
+.nc-frame--cyan { --nc-edge: var(--nc-cyan); }
