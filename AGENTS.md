@@ -14,6 +14,12 @@ documentation; this file is how to work on the repo.
   the repo). `dist/fonts/` is only touched by `npm run font` / `npm run fonts`.
 - `index.html` — the style guide, also the visual test page. `examples/` —
   a classless page and a small game.
+- `design-system/` — the claude.ai Design System version: brand book
+  (`README.md`), component guidelines and previews, the cover, the sun mark.
+  `npm run design-system` adds the generated tokens.json, bundle.css,
+  bundle.js, fonts and sprite SVGs into `build/design-system/project/`
+  (ignored). Previews load tokens.css + `components/bundle.css` +
+  `components/bundle.js`, so they use the real classes.
 
 ## Workflow
 

@@ -1,0 +1,37 @@
+<!-- @dsCard group="Canvas" height=230 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stage — preview</title>
+<style>
+  body { margin: 0; min-height: 0; padding: 18px 20px; }
+  body { padding: 0; }
+</style>
+</head>
+<body class="nc">
+<canvas id="c" style="display:block;width:100%;height:230px;image-rendering:pixelated"></canvas>
+<script>
+var N = window.NeonCoast, c = document.getElementById('c')
+var stage = N.createPixelStage(c, { minW: 160, minH: 110 }), sun = null
+function fit() { stage.resize(c.clientWidth, c.clientHeight); sun = null }
+new ResizeObserver(fit).observe(c); fit()
+var still = matchMedia('(prefers-reduced-motion: reduce)').matches
+function frame(ms) {
+  var t = still ? 2 : ms / 1000, g = stage.begin(), vw = stage.vw, vh = stage.vh, hz = Math.round(vh * 0.58)
+  N.paintSky(g, vw, hz + 1)
+  N.drawStars(g, vw, hz - 6, t)
+  if (!sun) { sun = N.makeCanvas(vw, hz); N.paintSun(sun.getContext('2d'), vw / 2, hz - 6, Math.round(vh * 0.2)) }
+  g.drawImage(sun, 0, 0); stage.emitImage(sun)
+  N.paintHeadland(g, 0, Math.round(vw * 0.3), hz, Math.round(vh * 0.14), 'left')
+  N.paintSea(g, 0, vw, hz, vh, { time: t })
+  stage.light(vw / 2, hz - 8, vh * 0.7, N.COLORS.pink, 0.5)
+  N.drawHearts(stage.hud, 4, 4, 5, 6)
+  N.drawText(stage.hud, 'SCORE ' + String(Math.floor(t * 37) % 1000000).padStart(6, '0'), stage.hw - 72, 4, N.COLORS.cyan, N.COLORS.ink)
+  stage.present({ ambient: '#b0a4dc', afterLight: function (gg) { N.paintReflection(gg, hz, vh, vw / 2, vh * 0.32, t) } })
+  if (!still) requestAnimationFrame(frame)
+}
+requestAnimationFrame(frame)
+</script>
+</body>
+</html>

@@ -326,6 +326,23 @@ dist/        neon-coast.css · neon-coast.min.css · neon-coast.js · neon-coast
 index.html   the style guide          examples/   hello.html · game.html
 ```
 
+## In claude.ai
+
+Neon Coast is also a Design System artifact in claude.ai, so slides,
+designs and pages made there can use it. Its brand book, component
+guidelines and previews live in `design-system/`; the tokens, the component
+stylesheet (`components/bundle.css`, the library's CSS minus its tokens) and
+the script (`components/bundle.js`, the library as one classic script
+defining `window.NeonCoast`) are generated from `src/`. To update it after a
+change here, run
+
+```bash
+npm run design-system     # → build/design-system/project/
+```
+
+and publish the changed files under `project/` to the artifact (the sprite
+SVGs under `assets/` are uploads recorded in its `design-system.json`).
+
 ## Coming from phareim.no
 
 The system is drawn from `themes/base/pixel/` on phareim.no. The names map

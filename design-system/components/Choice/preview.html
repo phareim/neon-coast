@@ -1,0 +1,31 @@
+<!-- @dsCard group="Forms" height=170 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Choice — preview</title>
+<style>
+  body { margin: 0; min-height: 0; padding: 18px 20px; }
+</style>
+</head>
+<body class="nc">
+<div class="nc-cluster" style="align-items:flex-start;--nc-gap:40px">
+  <div>
+    <label class="nc-choice nc-label"><input class="nc-check" type="checkbox" checked> Show hints</label>
+    <label class="nc-choice nc-label"><input class="nc-check" type="checkbox"> Hard mode</label>
+    <label class="nc-choice nc-label"><input class="nc-check" type="checkbox" id="mixed"> Some of them</label>
+  </div>
+  <div>
+    <label class="nc-choice nc-label"><input class="nc-radio" type="radio" name="c" checked> Keyboard</label>
+    <label class="nc-choice nc-label"><input class="nc-radio" type="radio" name="c"> Touch</label>
+  </div>
+  <div>
+    <label class="nc-choice nc-label"><input class="nc-switch" type="checkbox" role="switch" checked> Music</label>
+    <label class="nc-choice nc-label"><input class="nc-switch" type="checkbox" role="switch"> Effects</label>
+  </div>
+</div>
+<script>
+document.getElementById('mixed').indeterminate = true
+</script>
+</body>
+</html>

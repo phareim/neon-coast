@@ -1,0 +1,57 @@
+<!-- @dsCard height=320 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Neon Coast</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--nc-bg); color: var(--nc-text); font-family: var(--font-body); overflow: hidden; }
+  .cover { position: relative; width: 960px; height: 320px; overflow: hidden; }
+  .art { position: absolute; inset: 0; display: block; }
+  .sky { fill: var(--nc-sky-5); }
+  .line { fill: var(--nc-cyan); }
+  .sea { fill: var(--nc-blue-deep); }
+  .gold { fill: var(--nc-gold); }
+  .hot { fill: var(--nc-hot); }
+  rect { rx: var(--nc-radius); }
+  .words { position: absolute; left: var(--nc-space-5); bottom: var(--nc-space-5); max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-pixel); font-size: 120px; line-height: 114px; font-weight: 400; color: var(--nc-text); text-shadow: var(--nc-drop); -webkit-font-smoothing: none; }
+  .tag { margin: var(--nc-space-3) 0 0; font-size: 14px; line-height: 20px; color: var(--nc-text-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+<svg class="art" viewBox="0 0 960 320" width="960" height="320" aria-hidden="true">
+<!--
+  blocks      nc-sky-5 432x200 bled off the top and right (the dusk) · nc-cyan 432x8 (nc-space-2, the horizon) · nc-blue-deep 432x112 bled off the bottom (the sea) — about 45% of 960x320
+  arrangement a strip of unequal horizontal bands, the way the brand composes its scenes, from x=528 (nc-space-7 clear of the name)
+  pattern     the literal motif, from the README's "the sun stuck on the horizon": the striped sun in nc-space-2 rows of nc-gold over nc-hot, bands widening toward the horizon, and its reflection as nc-space-2 dashes at an nc-space-4 pitch
+  scales      every side a multiple of nc-space-2 (8px); gutter nc-space-7; corners nc-radius (0)
+-->
+<rect class="sky" x="528" y="0" width="432" height="200"/>
+<rect class="line" x="528" y="200" width="432" height="8"/>
+<rect class="sea" x="528" y="208" width="432" height="112"/>
+<rect class="gold" x="712" y="96" width="64" height="8"/>
+<rect class="gold" x="696" y="104" width="96" height="8"/>
+<rect class="gold" x="680" y="112" width="128" height="8"/>
+<rect class="gold" x="672" y="120" width="144" height="8"/>
+<rect class="gold" x="664" y="128" width="160" height="8"/>
+<rect class="gold" x="656" y="136" width="176" height="8"/>
+<rect class="hot" x="656" y="144" width="176" height="8"/>
+<rect class="hot" x="648" y="160" width="192" height="8"/>
+<rect class="hot" x="640" y="176" width="208" height="8"/>
+<rect class="gold" x="664" y="216" width="160" height="8"/>
+<rect class="gold" x="680" y="232" width="128" height="8"/>
+<rect class="hot" x="696" y="248" width="96" height="8"/>
+<rect class="hot" x="712" y="264" width="64" height="8"/>
+<rect class="hot" x="720" y="280" width="48" height="8"/>
+<rect class="hot" x="728" y="296" width="32" height="8"/>
+</svg>
+<div class="words">
+<h1 class="name">Neon<br>Coast</h1>
+<p class="tag">Night, neon and the sun stuck on the horizon.</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!-- @dsCard group="Actions" height=90 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tabs — preview</title>
+<style>
+  body { margin: 0; min-height: 0; padding: 18px 20px; }
+</style>
+</head>
+<body class="nc">
+<div class="nc-tabs" role="tablist" id="tabs">
+  <button class="nc-btn" role="tab" aria-selected="true">Galaga</button>
+  <button class="nc-btn" role="tab" aria-selected="false">Tetris</button>
+  <button class="nc-btn" role="tab" aria-selected="false">Breakout</button>
+</div>
+<script>
+document.querySelectorAll('#tabs [role=tab]').forEach(function (tab, _, all) {
+  tab.addEventListener('click', function () { all.forEach(function (t) { t.setAttribute('aria-selected', String(t === tab)) }) })
+})
+</script>
+</body>
+</html>
