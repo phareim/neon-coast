@@ -89,6 +89,15 @@ export const SKY = ['#0b0616', '#140b26', '#1c1030', '#2a1a4c', '#43246e', '#6a2
 /** The striped sun, top to bottom. CSS: `--nc-sun-0` … `--nc-sun-3`. */
 export const SUN = ['#fff1b0', '#ffd23f', '#ff8a3d', '#ff2fa0']
 
+/**
+ * The 16-bit window, top band to bottom: the gradient the next machine had the
+ * colours for. CSS: `--nc-window-0` … `--nc-window-4`.
+ */
+export const WINDOW = ['#3a46c8', '#2f38b0', '#262c98', '#1d2180', '#151868']
+
+/** The same window in teal, for the second voice. CSS: `--nc-window-teal-0` … `-4`. */
+export const WINDOW_TEAL = ['#1f7a9a', '#1a6888', '#155676', '#104464', '#0b3252']
+
 /** Interface colours that are not sprite colours. CSS: `--nc-<name>`. */
 export const UI = {
   text: '#f2e9ff',
@@ -104,6 +113,10 @@ export const UI = {
   rule: '#54259e',
   /** The faint cyan line inside the top edge of a box. */
   'box-rule': 'rgba(47, 243, 255, 0.35)',
+  /** The 16-bit window: its white bevel, the dark line round it, and the shadow under its letters. */
+  'window-edge': '#f4f6ff',
+  'window-shade': '#0a0e30',
+  'window-hi': 'rgba(160, 190, 255, 0.5)',
 }
 
 /**

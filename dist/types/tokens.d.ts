@@ -48,6 +48,13 @@ export const COLORS: {
 export const SKY: string[];
 /** The striped sun, top to bottom. CSS: `--nc-sun-0` … `--nc-sun-3`. */
 export const SUN: string[];
+/**
+ * The 16-bit window, top band to bottom: the gradient the next machine had the
+ * colours for. CSS: `--nc-window-0` … `--nc-window-4`.
+ */
+export const WINDOW: string[];
+/** The same window in teal, for the second voice. CSS: `--nc-window-teal-0` … `-4`. */
+export const WINDOW_TEAL: string[];
 /** Interface colours that are not sprite colours. CSS: `--nc-<name>`. */
 export const UI: {
     text: string;
@@ -63,6 +70,10 @@ export const UI: {
     rule: string;
     /** The faint cyan line inside the top edge of a box. */
     'box-rule': string;
+    /** The 16-bit window: its white bevel, the dark line round it, and the shadow under its letters. */
+    'window-edge': string;
+    'window-shade': string;
+    'window-hi': string;
 };
 export namespace ROLES {
     let bg: string;

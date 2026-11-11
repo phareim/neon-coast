@@ -392,6 +392,8 @@ var COLORS = {
 };
 var SKY = ["#0b0616", "#140b26", "#1c1030", "#2a1a4c", "#43246e", "#6a2a7c", "#a8347e", "#e0508a"];
 var SUN = ["#fff1b0", "#ffd23f", "#ff8a3d", "#ff2fa0"];
+var WINDOW = ["#3a46c8", "#2f38b0", "#262c98", "#1d2180", "#151868"];
+var WINDOW_TEAL = ["#1f7a9a", "#1a6888", "#155676", "#104464", "#0b3252"];
 var UI = {
   text: "#f2e9ff",
   "text-muted": "#b9a8d9",
@@ -405,7 +407,11 @@ var UI = {
   /** Divider lines. */
   rule: "#54259e",
   /** The faint cyan line inside the top edge of a box. */
-  "box-rule": "rgba(47, 243, 255, 0.35)"
+  "box-rule": "rgba(47, 243, 255, 0.35)",
+  /** The 16-bit window: its white bevel, the dark line round it, and the shadow under its letters. */
+  "window-edge": "#f4f6ff",
+  "window-shade": "#0a0e30",
+  "window-hi": "rgba(160, 190, 255, 0.5)"
 };
 var ROLES = {
   bg: "ink",
@@ -663,6 +669,40 @@ var SPRITES = {
     ".XXX.XXX.",
     ".XXX.XXX."
   ], "c", "w", "C"),
+  /* The three ways phareim.no's world is shown: the top-down tile grid, the isometric cube, the pencil. */
+  "view-grid": [
+    "ccccccccc",
+    "c...c...c",
+    "c...c...c",
+    "c...c...c",
+    "ccccccccc",
+    "c...c...c",
+    "c...c...c",
+    "c...c...c",
+    "ccccccccc"
+  ],
+  "view-cube": [
+    "....c....",
+    "..cc.cc..",
+    "cc.....cc",
+    "c.cc.cc.c",
+    "c...c...c",
+    "c...c...c",
+    "c...c...c",
+    ".cc.c.cc.",
+    "...ccc..."
+  ],
+  "view-pencil": [
+    "......cc.",
+    ".....c.cc",
+    "....c.ccc",
+    "...c.ccc.",
+    "..c.ccc..",
+    ".c.ccc...",
+    "c.ccc....",
+    "c.cc.....",
+    "ccc......"
+  ],
   cursor: [
     "k.....",
     "kck...",
@@ -1607,6 +1647,47 @@ function drawBox(g, x, y, w, h, opts = {}) {
     g.fillRect(x + 2, y + 2, w - 4, 1);
   }
 }
+function drawWindow(g, x, y, w, h, opts = {}) {
+  const bands = opts.bands ?? (opts.teal ? WINDOW_TEAL : WINDOW);
+  for (let r = 0; r < h; r++) {
+    const f = r / Math.max(1, h - 1) * (bands.length - 1);
+    const i = Math.min(bands.length - 1, Math.floor(f));
+    g.fillStyle = bands[i];
+    g.fillRect(x, y + r, w, 1);
+    if (f - i > 0.75 && i + 1 < bands.length) {
+      g.fillStyle = bands[i + 1];
+      for (let c = (r + x) % 2; c < w; c += 2) g.fillRect(x + c, y + r, 1, 1);
+    }
+  }
+  g.fillStyle = UI["window-shade"];
+  g.fillRect(x + 2, y - 1, w - 4, 1);
+  g.fillRect(x + 2, y + h, w - 4, 1);
+  g.fillRect(x - 1, y + 2, 1, h - 4);
+  g.fillRect(x + w, y + 2, 1, h - 4);
+  g.fillRect(x, y, 2, 1);
+  g.fillRect(x, y + 1, 1, 1);
+  g.fillRect(x + w - 2, y, 2, 1);
+  g.fillRect(x + w - 1, y + 1, 1, 1);
+  g.fillRect(x, y + h - 1, 2, 1);
+  g.fillRect(x, y + h - 2, 1, 1);
+  g.fillRect(x + w - 2, y + h - 1, 2, 1);
+  g.fillRect(x + w - 1, y + h - 2, 1, 1);
+  g.fillStyle = UI["window-edge"];
+  g.fillRect(x + 2, y, w - 4, 1);
+  g.fillRect(x + 2, y + h - 1, w - 4, 1);
+  g.fillRect(x, y + 2, 1, h - 4);
+  g.fillRect(x + w - 1, y + 2, 1, h - 4);
+  g.fillRect(x + 1, y + 1, 1, 1);
+  g.fillRect(x + w - 2, y + 1, 1, 1);
+  g.fillRect(x + 1, y + h - 2, 1, 1);
+  g.fillRect(x + w - 2, y + h - 2, 1, 1);
+  g.fillStyle = UI["window-hi"];
+  g.fillRect(x + 2, y + 1, w - 4, 1);
+  g.fillRect(x + 1, y + 2, 1, h - 4);
+  g.fillStyle = "rgba(6, 8, 40, 0.45)";
+  g.fillRect(x + 2, y + h - 2, w - 4, 1);
+  g.fillRect(x + w - 2, y + 2, 1, h - 4);
+}
 function drawDialog(g, text, x, y, w, opts = {}) {
   const { chars = Infinity, more = false, time = 0, edge = COLORS.pink } = opts;
   const lines = wrapText(text, w - 16);
@@ -1679,6 +1760,8 @@ export {
   SPRITES,
   SUN,
   UI,
+  WINDOW,
+  WINDOW_TEAL,
   bayer,
   bigTextWidth,
   createPixelStage,
@@ -1693,6 +1776,7 @@ export {
   drawMeter,
   drawStars,
   drawText,
+  drawWindow,
   glowSprite,
   glyphAbove,
   glyphRows,

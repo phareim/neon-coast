@@ -6,6 +6,7 @@
  * like an outline, so leave it one unit of room.
  */
 .nc-box,
+.nc-window,
 .nc-alert,
 .nc-dialog,
 .nc-frame,
@@ -38,7 +39,7 @@
 
 /* Windows high contrast drops box-shadows: draw the edge as an outline there. */
 @media (forced-colors: active) {
-  .nc-box, .nc-alert, .nc-dialog, .nc-frame, .nc-btn, .nc-badge, .nc-input, .nc-select,
+  .nc-box, .nc-window, .nc-alert, .nc-dialog, .nc-frame, .nc-btn, .nc-badge, .nc-input, .nc-select,
   .nc-textarea, .nc-check, .nc-radio, .nc-switch, .nc-meter, .nc-kbd, .nc-fieldset,
   :where(.nc) :where(button, input, select, textarea, pre, fieldset, dialog, kbd) {
     outline: var(--nc-u) solid;
@@ -84,6 +85,62 @@
 .nc-box--quiet { --nc-edge: var(--nc-quiet); }
 .nc-box--flat::before { display: none; }
 .nc-box--solid { background: var(--nc-ink); }
+
+/*
+ * .nc-window — the 16-bit window (the isometric view's dialog box on
+ * phareim.no): a blue gradient in five hard bands, a white bevel with a
+ * dark line round it, white letters with a dark shadow. Where the box is
+ * the 8-bit cabinet, this is the next machine.
+ *   --teal     the second voice
+ */
+.nc-window {
+  --nc-edge: var(--nc-window-edge);
+  --nc-window-a: var(--nc-window-0);
+  --nc-window-b: var(--nc-window-1);
+  --nc-window-c: var(--nc-window-2);
+  --nc-window-d: var(--nc-window-3);
+  --nc-window-e: var(--nc-window-4);
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--nc-box-pad, var(--nc-space-4));
+  color: var(--nc-white);
+  text-shadow: var(--nc-u) var(--nc-u) 0 var(--nc-window-shade);
+  background-color: var(--nc-window-c);
+  background-image: linear-gradient(
+    180deg,
+    var(--nc-window-a) 0 20%,
+    var(--nc-window-b) 20% 40%,
+    var(--nc-window-c) 40% 60%,
+    var(--nc-window-d) 60% 80%,
+    var(--nc-window-e) 80% 100%
+  );
+  border: 0;
+  border-radius: 0;
+  /* The dark line outside the bevel: the window stands off whatever is behind it. */
+  outline: var(--nc-u) solid var(--nc-window-shade);
+  outline-offset: var(--nc-u);
+}
+
+/* The bevel's light: one unit inside the top and the left. */
+.nc-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: var(--nc-u) solid var(--nc-window-hi);
+  border-left: var(--nc-u) solid var(--nc-window-hi);
+  pointer-events: none;
+}
+
+.nc-window > :first-child { margin-top: 0; }
+.nc-window > :last-child { margin-bottom: 0; }
+
+.nc-window--teal {
+  --nc-window-a: var(--nc-window-teal-0);
+  --nc-window-b: var(--nc-window-teal-1);
+  --nc-window-c: var(--nc-window-teal-2);
+  --nc-window-d: var(--nc-window-teal-3);
+  --nc-window-e: var(--nc-window-teal-4);
+}
 
 /*
  * .nc-dialog — what people in the world say: white pixel letters with a
