@@ -3,7 +3,7 @@
  * area banner, cell meters and hearts — the same shapes the CSS draws for
  * HTML (.nc-box, .nc-banner, .nc-meter), for HUDs inside a pixel stage.
  */
-import { COLORS, UI } from './tokens.js'
+import { COLORS, UI, WINDOW, WINDOW_TEAL } from './tokens.js'
 import { drawText, textWidth, wrapText, GLYPH_H } from './font.js'
 import { sprite, SPRITES } from './sprites.js'
 
@@ -31,6 +31,50 @@ export function drawBox(g, x, y, w, h, opts = {}) {
     g.fillStyle = UI['box-rule']
     g.fillRect(x + 2, y + 2, w - 4, 1)
   }
+}
+
+/**
+ * The 16-bit window: a gradient in five bands with a dithered row where two
+ * meet, a white bevel with cut corners and a dark line round it. The same
+ * shape as `.nc-window`, for a HUD that wants the next machine's look.
+ * @param {CanvasRenderingContext2D} g
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @param {{ bands?: readonly string[], teal?: boolean }} [opts]
+ */
+export function drawWindow(g, x, y, w, h, opts = {}) {
+  const bands = opts.bands ?? (opts.teal ? WINDOW_TEAL : WINDOW)
+  for (let r = 0; r < h; r++) {
+    const f = (r / Math.max(1, h - 1)) * (bands.length - 1)
+    const i = Math.min(bands.length - 1, Math.floor(f))
+    g.fillStyle = bands[i]
+    g.fillRect(x, y + r, w, 1)
+    // The row before a band changes is every other pixel of the next one.
+    if (f - i > 0.75 && i + 1 < bands.length) {
+      g.fillStyle = bands[i + 1]
+      for (let c = (r + x) % 2; c < w; c += 2) g.fillRect(x + c, y + r, 1, 1)
+    }
+  }
+  // Dark outside, with the corners cut.
+  g.fillStyle = UI['window-shade']
+  g.fillRect(x + 2, y - 1, w - 4, 1); g.fillRect(x + 2, y + h, w - 4, 1)
+  g.fillRect(x - 1, y + 2, 1, h - 4); g.fillRect(x + w, y + 2, 1, h - 4)
+  g.fillRect(x, y, 2, 1); g.fillRect(x, y + 1, 1, 1); g.fillRect(x + w - 2, y, 2, 1); g.fillRect(x + w - 1, y + 1, 1, 1)
+  g.fillRect(x, y + h - 1, 2, 1); g.fillRect(x, y + h - 2, 1, 1); g.fillRect(x + w - 2, y + h - 1, 2, 1); g.fillRect(x + w - 1, y + h - 2, 1, 1)
+  // The white bevel.
+  g.fillStyle = UI['window-edge']
+  g.fillRect(x + 2, y, w - 4, 1); g.fillRect(x + 2, y + h - 1, w - 4, 1)
+  g.fillRect(x, y + 2, 1, h - 4); g.fillRect(x + w - 1, y + 2, 1, h - 4)
+  g.fillRect(x + 1, y + 1, 1, 1); g.fillRect(x + w - 2, y + 1, 1, 1); g.fillRect(x + 1, y + h - 2, 1, 1); g.fillRect(x + w - 2, y + h - 2, 1, 1)
+  // Light inside the top and left, shade inside the bottom and right.
+  g.fillStyle = UI['window-hi']
+  g.fillRect(x + 2, y + 1, w - 4, 1)
+  g.fillRect(x + 1, y + 2, 1, h - 4)
+  g.fillStyle = 'rgba(6, 8, 40, 0.45)'
+  g.fillRect(x + 2, y + h - 2, w - 4, 1)
+  g.fillRect(x + w - 2, y + 2, 1, h - 4)
 }
 
 /**

@@ -14,6 +14,21 @@ export function drawBox(g: CanvasRenderingContext2D, x: number, y: number, w: nu
     rule?: boolean;
 }): void;
 /**
+ * The 16-bit window: a gradient in five bands with a dithered row where two
+ * meet, a white bevel with cut corners and a dark line round it. The same
+ * shape as `.nc-window`, for a HUD that wants the next machine's look.
+ * @param {CanvasRenderingContext2D} g
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @param {{ bands?: readonly string[], teal?: boolean }} [opts]
+ */
+export function drawWindow(g: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, opts?: {
+    bands?: readonly string[];
+    teal?: boolean;
+}): void;
+/**
  * A dialog: wrapped text in a pink box. `chars` types it out (characters
  * shown so far); `more` blinks the ▼ that asks for the next line.
  * Returns the box height.

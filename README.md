@@ -147,6 +147,7 @@ smaller container if only part of a page should take the look.
 | `.nc-dialog` | what people say: white pixel letters in a pink box; works on `<dialog>` | add `<span class="nc-more"></span>` for the blinking ▼ |
 | `.nc-alert` | a status line in a box | `--ok` `--warn` `--danger` |
 | `.nc-frame` | the edge alone, for images, avatars and canvases | `--gold` `--pink` `--cyan` |
+| `.nc-window` | the 16-bit window: a blue gradient in five hard bands, a white bevel, white letters with a dark shadow (the isometric view's dialog box on phareim.no) | `--teal` |
 | `.nc-btn` | lights up on hover and focus; stays lit with `aria-pressed`, `aria-selected`, `aria-current` or `.is-active` | `--pink` `--gold` `--lime` `--violet` `--red` · `--solid` `--ghost` · `--sm` `--lg` `--icon` `--block` |
 | `.nc-btns`, `.nc-tabs` | a row of buttons; tabs are buttons with `aria-selected` | |
 | `.nc-field`, `.nc-label`, `.nc-help` | a form row: label, control, small print | |
@@ -234,7 +235,8 @@ Pixel art written as text, one palette letter per pixel, `.` for see-through:
 ```
 
 `name` picks a ready-made sprite: `heart`, `heart-half`, `heart-empty`,
-`gem`, `key`, `bomb`, `coin`, `star`, `home`, `cursor`, `sun`. `scale` is CSS
+`gem`, `key`, `bomb`, `coin`, `star`, `home`, `cursor`, `sun`, and the three
+ways phareim.no's world is shown: `view-grid`, `view-cube`, `view-pencil`. `scale` is CSS
 pixels per sprite pixel (4), `colors` overrides palette letters, `shade`
 ("body hi lo") outlines and shades a shape drawn with `X`, `flip` mirrors
 it, and `label` gives it an accessible name (without one it is decorative).
@@ -278,7 +280,7 @@ requestAnimationFrame(frame)
 | sprites | `sprite(rows, palette?, flip?)`, `silhouette`, `put`, `putC`, `shade`, `relight`, `pixelize`, `bayer`, `mix`, `SPRITES` |
 | font | `drawText`, `drawBigText`, `textWidth`, `bigTextWidth`, `wrapText`, `glyphRows`, `glyphAbove`, `GLYPHS`, `GLYPH_H` |
 | scenery | `paintSky`, `drawStars`, `paintSun`, `paintRidge`, `paintHeadland`, `paintSea`, `paintReflection`, `paintBeach`, `paintPalm`, `paintTreeLine`, `paintHouse`, `paintGrass`, `paintLamp`, `ditherGradient`, `disc`, `rect`, `hash2`, `noise1`, `DUSK` |
-| ui | `drawBox`, `drawDialog`, `drawBanner`, `drawMeter`, `drawHearts` |
+| ui | `drawBox`, `drawWindow` (the 16-bit window), `drawDialog`, `drawBanner`, `drawMeter`, `drawHearts` |
 | tokens | `PAL`, `COLORS`, `SKY`, `SUN`, `UI`, `ROLES` |
 | elements | `NcScene`, `NcSprite`, `defineElements`, `parseRows` |
 

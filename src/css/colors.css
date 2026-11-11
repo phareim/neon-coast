@@ -43,6 +43,16 @@
   --nc-sun-1: #ffd23f;
   --nc-sun-2: #ff8a3d;
   --nc-sun-3: #ff2fa0;
+  --nc-window-0: #3a46c8;
+  --nc-window-1: #2f38b0;
+  --nc-window-2: #262c98;
+  --nc-window-3: #1d2180;
+  --nc-window-4: #151868;
+  --nc-window-teal-0: #1f7a9a;
+  --nc-window-teal-1: #1a6888;
+  --nc-window-teal-2: #155676;
+  --nc-window-teal-3: #104464;
+  --nc-window-teal-4: #0b3252;
 
   /* Interface colours */
   --nc-text: #f2e9ff;
@@ -53,6 +63,9 @@
   --nc-quiet: #6a5aa8;
   --nc-rule: #54259e;
   --nc-box-rule: rgba(47, 243, 255, 0.35);
+  --nc-window-edge: #f4f6ff;
+  --nc-window-shade: #0a0e30;
+  --nc-window-hi: rgba(160, 190, 255, 0.5);
 
   /* Roles: what each colour is for */
   --nc-bg: var(--nc-ink);

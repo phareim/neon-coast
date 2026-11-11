@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { PAL, COLORS, SKY, SUN, UI, ROLES } from '../src/js/tokens.js'
+import { PAL, COLORS, SKY, SUN, UI, ROLES, WINDOW, WINDOW_TEAL } from '../src/js/tokens.js'
 
 const hex = /^#[0-9a-f]{6}$/
 
@@ -20,6 +20,18 @@ test('named colours are palette colours, roles name colours', () => {
   for (const v of [...SKY, ...SUN]) assert.match(v, hex)
   assert.equal(SKY.length, 8)
   assert.equal(SUN.length, 4)
+})
+
+test('the 16-bit window is five bands, light at the top, in both voices', () => {
+  const lum = (h) => parseInt(h.slice(1, 3), 16) * 0.299 + parseInt(h.slice(3, 5), 16) * 0.587 + parseInt(h.slice(5, 7), 16) * 0.114
+  for (const bands of [WINDOW, WINDOW_TEAL]) {
+    assert.equal(bands.length, 5)
+    for (const v of bands) assert.match(v, hex)
+    for (let i = 1; i < bands.length; i++) assert.ok(lum(bands[i]) < lum(bands[i - 1]), 'each band is darker than the one above')
+  }
+  const css = readFileSync(new URL('../src/css/colors.css', import.meta.url), 'utf8')
+  WINDOW.forEach((v, i) => assert.ok(css.includes(`--nc-window-${i}: ${v};`)))
+  WINDOW_TEAL.forEach((v, i) => assert.ok(css.includes(`--nc-window-teal-${i}: ${v};`)))
 })
 
 test('colors.css carries every token', () => {

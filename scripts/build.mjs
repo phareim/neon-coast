@@ -16,7 +16,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as esbuild from 'esbuild'
-import { COLORS, SKY, SUN, UI, ROLES, PAL } from '../src/js/tokens.js'
+import { COLORS, SKY, SUN, UI, ROLES, PAL, WINDOW, WINDOW_TEAL } from '../src/js/tokens.js'
 
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const pkg = JSON.parse(readFileSync(join(repo, 'package.json'), 'utf8'))
@@ -37,6 +37,8 @@ const colorsCss = [
   '  /* The dusk sky, top to horizon, and the striped sun, top to bottom */',
   ...SKY.map((v, i) => `  --nc-sky-${i}: ${v};`),
   ...SUN.map((v, i) => `  --nc-sun-${i}: ${v};`),
+  ...WINDOW.map((v, i) => `  --nc-window-${i}: ${v};`),
+  ...WINDOW_TEAL.map((v, i) => `  --nc-window-teal-${i}: ${v};`),
   '',
   '  /* Interface colours */',
   ...Object.entries(UI).map(([k, v]) => `  --nc-${k}: ${v};`),
@@ -92,6 +94,8 @@ const tokens = {
   color: COLORS,
   sky: SKY,
   sun: SUN,
+  window: WINDOW,
+  windowTeal: WINDOW_TEAL,
   ui: UI,
   role: Object.fromEntries(Object.entries(ROLES).map(([k, v]) => [k, COLORS[/** @type {keyof typeof COLORS} */ (v)]])),
   palette: PAL,
