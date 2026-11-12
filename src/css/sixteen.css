@@ -1,0 +1,537 @@
+/*
+ * The 16-bit language — opt-in, next to the 8-bit one, never instead of it.
+ * The next machine's look from phareim.no's isometric view: windows with a
+ * gradient in hard five-bit bands, a bevelled border with round corners, a
+ * dark line inside and a soft shadow under them; proportional letters twice
+ * as fine (Neon Pixel 16) with a one-pixel drop shadow; the pointing glove;
+ * the bobbing "more" arrow.
+ *
+ * Two ways in:
+ *   .nc-win, .nc-btn16, .nc-text16, …   components that work anywhere
+ *   .nc-16 (on body or any container)   re-dresses the 8-bit components
+ *                                       inside it: boxes, dialogs and alerts
+ *                                       become windows, buttons 16-bit
+ *                                       buttons, pixel text the 16-bit font
+ *
+ * One 16-bit pixel is --nc-px16 (half of --nc-u: 1 px). Every size here is a
+ * whole number of them, written out as calc(n * var(--nc-px16)) so that
+ * setting --nc-px16 on any element (2px: every 16-bit pixel two) scales
+ * everything inside it. The letters are crisp at 14, 28, 42 and 56 px
+ * (--nc-size16-1 … -4, the sizes at the root's --nc-px16). The window's colours and the
+ * pictures (frame, glove, arrow, hearts) are generated into colors.css from
+ * src/js/tokens.js and src/js/ui16.js.
+ */
+:root {
+  --nc-px16: calc(var(--nc-u) / 2);
+  --nc-font-16: "Neon Pixel 16", "Neon Pixel", "Space Mono", ui-monospace, monospace;
+  --nc-size16-1: calc(14 * var(--nc-px16));
+  --nc-size16-2: calc(28 * var(--nc-px16));
+  --nc-size16-3: calc(42 * var(--nc-px16));
+  --nc-size16-4: calc(56 * var(--nc-px16));
+  /* The dialog's line pitch: twelve-pixel capitals and ten between. */
+  --nc-line16: calc(22 * var(--nc-px16));
+  /* The letters' shadow: one font pixel right, below and the corner between, at any size. */
+  --nc-drop16:
+    calc(1em / 14) 0 0 var(--nc-text16-shadow),
+    0 calc(1em / 14) 0 var(--nc-text16-shadow),
+    calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-shadow);
+  /* A one-pixel line all the way round: letters straight on the world, the chosen answer. */
+  --nc-rim16:
+    calc(-1em / 14) calc(-1em / 14) 0 var(--nc-text16-rim),
+    0 calc(-1em / 14) 0 var(--nc-text16-rim),
+    calc(1em / 14) calc(-1em / 14) 0 var(--nc-text16-rim),
+    calc(-1em / 14) 0 0 var(--nc-text16-rim),
+    calc(1em / 14) 0 0 var(--nc-text16-rim),
+    calc(-1em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
+    0 calc(1em / 14) 0 var(--nc-text16-rim),
+    calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-rim);
+}
+
+/*
+ * The scope: inside .nc-16 the 8-bit letters become the 16-bit ones. The
+ * pixel font, its sizes (rounded to the 16-bit steps so they stay crisp)
+ * and the drop shadow are tokens, so everything that reads them follows.
+ */
+.nc-16 {
+  --nc-font-pixel: var(--nc-font-16);
+  --nc-size-0: calc(14 * var(--nc-px16));
+  --nc-size-1: calc(14 * var(--nc-px16));
+  --nc-size-2: calc(28 * var(--nc-px16));
+  --nc-size-3: calc(28 * var(--nc-px16));
+  --nc-size-4: calc(42 * var(--nc-px16));
+  --nc-size-5: calc(56 * var(--nc-px16));
+  --nc-drop: calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-shadow);
+}
+
+/* ---- letters --------------------------------------------------------------- */
+
+/*
+ * .nc-text16 — the 16-bit letters on anything: 14 px, white, the drop.
+ *   --dim --hot --cool --prize --ok   colours (all AA on a hot window and on the night)
+ *   --rim                              a one-pixel line all the way round, for text on the world
+ * .nc-h16 — a heading: 28 px.  .nc-label16 — a small dim label.
+ */
+.nc-text16,
+.nc-h16,
+.nc-label16,
+.nc-win,
+.nc-plate16,
+.nc-btn16,
+.nc-choices16,
+.nc-16 :is(.nc-dialog, .nc-btn),
+:where(.nc-16) :where(dialog, button, input:is([type="button"], [type="submit"], [type="reset"])) {
+  font-family: var(--nc-font-16);
+  font-weight: 400;
+  font-synthesis: none;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+.nc-text16 {
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(22 * var(--nc-px16));
+  color: var(--nc-text16);
+  text-shadow: var(--nc-drop16);
+}
+
+.nc-h16 {
+  margin: calc(24 * var(--nc-px16)) 0 calc(12 * var(--nc-px16));
+  font-size: calc(28 * var(--nc-px16));
+  /* 36 = 28 + 4 + 4: the baseline stays on a whole font pixel. */
+  line-height: calc(36 * var(--nc-px16));
+  color: var(--nc-text16);
+  text-shadow: var(--nc-drop16);
+  text-wrap: balance;
+}
+
+.nc-label16 {
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(14 * var(--nc-px16));
+  color: var(--nc-text16-dim);
+  text-shadow: var(--nc-drop16);
+}
+
+.nc-text16--dim { color: var(--nc-text16-dim); }
+.nc-text16--hot { color: var(--nc-text16-hot); }
+.nc-text16--cool { color: var(--nc-text16-cool); }
+.nc-text16--prize { color: var(--nc-text16-prize); }
+.nc-text16--ok { color: var(--nc-text16-ok); }
+.nc-text16--rim { text-shadow: var(--nc-rim16); }
+
+/* ---- the window ------------------------------------------------------------ */
+
+/*
+ * .nc-win — the 16-bit window. The gradient is the game's, in its hard
+ * five-bit bands (a new colour wherever a channel steps), stretched over the
+ * window like the machine's per-scanline colour; the frame (outline, the
+ * three-pixel bevel, the inner dark line and the three-step shadow) is one
+ * picture laid round it with border-image, so its round corners are whole
+ * pixels. The outline reaches one pixel out and the shadow five; the
+ * margin leaves them room.
+ *   --cool   sea green down to night blue: the pause screen, the item box
+ *   --flat   no shadow (windows inside windows)
+ * Long prose can go back to the body face with .nc-prose inside.
+ */
+.nc-win,
+.nc-plate16,
+.nc-btn16,
+.nc-16 :is(.nc-box, .nc-dialog, .nc-alert, .nc-btn),
+:where(.nc-16) :where(dialog, button, input:is([type="button"], [type="submit"], [type="reset"])) {
+  --nc-win-ramp: var(--nc-win-hot);
+  --nc-win-frame: var(--nc-win-frame-hot);
+  position: relative;
+  box-sizing: border-box;
+  min-height: calc(16 * var(--nc-px16));
+  margin: var(--nc-px16) calc(5 * var(--nc-px16)) calc(5 * var(--nc-px16)) var(--nc-px16);
+  /* The gradient fills the window inside the three pixels of the bevel. */
+  background:
+    var(--nc-win-ramp)
+    calc(3 * var(--nc-px16)) calc(3 * var(--nc-px16)) /
+    calc(100% - 6 * var(--nc-px16)) calc(100% - 6 * var(--nc-px16))
+    no-repeat border-box;
+  background-color: transparent;
+  border: 0 solid transparent;
+  border-radius: 0;
+  border-image-source: var(--nc-win-frame);
+  /* Nine pixels from each edge of the picture hold the corners, the bevel and the inner line. */
+  border-image-slice: 9;
+  border-image-width: calc(9 * var(--nc-px16));
+  border-image-outset: var(--nc-px16) calc(5 * var(--nc-px16)) calc(5 * var(--nc-px16)) var(--nc-px16);
+  border-image-repeat: stretch;
+  box-shadow: none;
+  outline: 0;
+  image-rendering: pixelated;
+}
+
+.nc-win,
+.nc-16 :is(.nc-box, .nc-dialog, .nc-alert),
+:where(.nc-16) :where(dialog) {
+  padding: calc(12 * var(--nc-px16)) calc(16 * var(--nc-px16)) calc(14 * var(--nc-px16));
+  color: var(--nc-text16);
+}
+
+.nc-win,
+.nc-16 .nc-dialog,
+:where(.nc-16) :where(dialog) {
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(22 * var(--nc-px16));
+  text-shadow: var(--nc-drop16);
+}
+
+.nc-win > :first-child { margin-top: 0; }
+.nc-win > :last-child { margin-bottom: 0; }
+.nc-win :where(p) { margin: 0 0 calc(8 * var(--nc-px16)); }
+.nc-win :where(p):last-child,
+.nc-win :where(p):has(+ .nc-more16:last-child) { margin-bottom: 0; }
+
+.nc-win--cool,
+.nc-16 :is(.nc-box--quiet, .nc-box--violet) {
+  --nc-win-ramp: var(--nc-win-cool);
+  --nc-win-frame: var(--nc-win-frame-cool);
+}
+
+.nc-win--flat {
+  --nc-win-frame: var(--nc-win-frame-hot-flat);
+  margin: var(--nc-px16);
+  border-image-outset: var(--nc-px16);
+}
+
+.nc-win--flat.nc-win--cool { --nc-win-frame: var(--nc-win-frame-cool-flat); }
+
+/* In the scope, the 8-bit boxes drop their inner cyan rule and their edge. */
+.nc-16 .nc-box::before { display: none; }
+.nc-16 .nc-alert::before { color: var(--nc-text16-cool); text-shadow: var(--nc-drop16); }
+.nc-16 .nc-alert--ok::before { color: var(--nc-text16-ok); }
+.nc-16 .nc-alert--warn::before { color: var(--nc-text16-prize); }
+.nc-16 .nc-alert--danger::before { color: var(--nc-text16-hot); }
+
+/*
+ * .nc-plate16 — the speaker's name on a plate riding the window's top edge
+ * (first child of a .nc-win): a cool window, gold letters.
+ */
+.nc-plate16 {
+  --nc-win-ramp: var(--nc-win-plate);
+  --nc-win-frame: var(--nc-win-frame-cool);
+  display: inline-block;
+  min-height: 0;
+  padding: calc(6 * var(--nc-px16)) calc(12 * var(--nc-px16));
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(14 * var(--nc-px16));
+  color: var(--nc-text16-prize);
+  text-shadow: var(--nc-drop16);
+  white-space: nowrap;
+}
+
+.nc-win > .nc-plate16 {
+  position: absolute;
+  top: calc(-18 * var(--nc-px16));
+  left: calc(12 * var(--nc-px16));
+  z-index: 1;
+  margin: 0;
+}
+
+/* A window with a plate makes room for it above, and starts its text under it. */
+.nc-win:has(> .nc-plate16) {
+  margin-top: calc(19 * var(--nc-px16));
+  padding-top: calc(16 * var(--nc-px16));
+}
+
+/*
+ * .nc-more16 — the "more" arrow: dips a pixel, comes back, and is gone for a
+ * moment in between, in steps. In a window it sits in the bottom-right.
+ * In the scope, .nc-more becomes it.
+ */
+.nc-more16,
+.nc-16 .nc-more {
+  display: inline-block;
+  width: calc(11 * var(--nc-px16));
+  height: calc(6 * var(--nc-px16));
+  vertical-align: middle;
+  background: var(--nc-more16) 0 0 / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  animation: nc-more16 0.625s steps(1) infinite;
+}
+
+.nc-16 .nc-more::after { content: none; }
+
+.nc-win .nc-more16,
+.nc-16 :is(.nc-dialog, .nc-box) .nc-more {
+  position: absolute;
+  right: calc(12 * var(--nc-px16));
+  bottom: calc(8 * var(--nc-px16));
+  float: none;
+}
+
+@keyframes nc-more16 {
+  0% { transform: none; visibility: visible; }
+  36% { transform: translateY(var(--nc-px16)); }
+  72% { visibility: hidden; }
+}
+
+/* ---- buttons --------------------------------------------------------------- */
+
+/*
+ * .nc-btn16 — a small window with white letters. Under the pointer, on
+ * focus, pressed or current it turns to the cool tone with gold letters;
+ * pressing it sinks the letters a pixel. In the scope every .nc-btn and
+ * plain button is one.
+ *   --cool   cool at rest (it lights hot)
+ */
+.nc-btn16,
+.nc-16 .nc-btn,
+:where(.nc-16) :where(button, input:is([type="button"], [type="submit"], [type="reset"])):where(:not(.nc-menu *, .nc-choices16 *)) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(6 * var(--nc-px16));
+  min-height: calc(28 * var(--nc-px16));
+  padding: calc(7 * var(--nc-px16)) calc(12 * var(--nc-px16));
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(14 * var(--nc-px16));
+  white-space: nowrap;
+  vertical-align: middle;
+  text-decoration: none;
+  text-shadow: var(--nc-drop16);
+  color: var(--nc-text16);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nc-btn16--cool {
+  --nc-win-ramp: var(--nc-win-cool);
+  --nc-win-frame: var(--nc-win-frame-cool);
+}
+
+.nc-btn16:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-active),
+.nc-16 .nc-btn:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-active),
+:where(.nc-16) :where(button:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"])):where(:not(.nc-menu *, .nc-choices16 *)) {
+  --nc-win-ramp: var(--nc-win-plate);
+  --nc-win-frame: var(--nc-win-frame-cool);
+  color: var(--nc-text16-prize);
+  background-color: transparent;
+}
+
+.nc-btn16--cool:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-active) {
+  --nc-win-ramp: var(--nc-win-hot);
+  --nc-win-frame: var(--nc-win-frame-hot);
+}
+
+@media (hover: hover) {
+  .nc-btn16:hover,
+  .nc-16 .nc-btn:hover,
+  :where(.nc-16) :where(button:hover):where(:not(.nc-menu *, .nc-choices16 *)) {
+    --nc-win-ramp: var(--nc-win-plate);
+    --nc-win-frame: var(--nc-win-frame-cool);
+    color: var(--nc-text16-prize);
+    background-color: transparent;
+  }
+
+  .nc-btn16--cool:hover {
+    --nc-win-ramp: var(--nc-win-hot);
+    --nc-win-frame: var(--nc-win-frame-hot);
+  }
+}
+
+.nc-btn16:active,
+.nc-16 .nc-btn:active,
+:where(.nc-16) :where(button:active):where(:not(.nc-menu *, .nc-choices16 *)) {
+  color: var(--nc-text16-prize);
+  padding-top: calc(8 * var(--nc-px16));
+  padding-bottom: calc(6 * var(--nc-px16));
+  background-color: transparent;
+}
+
+.nc-btn16:is(:disabled, [aria-disabled="true"]),
+.nc-16 .nc-btn:is(:disabled, [aria-disabled="true"]),
+:where(.nc-16) :where(button:disabled) {
+  --nc-win-ramp: var(--nc-win-hot);
+  --nc-win-frame: var(--nc-win-frame-hot);
+  color: var(--nc-text16-faint);
+  cursor: not-allowed;
+}
+
+/* ---- choices ---------------------------------------------------------------- */
+
+/*
+ * .nc-choices16 — the answers to a question, with the pointing glove at the
+ * chosen one (aria-current, aria-selected, aria-checked, hover or focus):
+ * a list of buttons or links, in a row (YES / NO) or, with --column, under
+ * each other. The chosen one is cyan with a dark line round it; the glove
+ * nudges toward it in steps. In the scope, .nc-menu takes the glove too.
+ */
+.nc-choices16 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 0 calc(24 * var(--nc-px16));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(22 * var(--nc-px16));
+}
+
+.nc-choices16--column { flex-direction: column; align-items: flex-start; }
+.nc-choices16 > li { margin: 0; }
+.nc-choices16 > li::marker { content: none; }
+
+.nc-choices16 :is(a, button),
+.nc-16 .nc-menu :is(a, button) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(22 * var(--nc-px16));
+  margin: 0;
+  /* Room on the left for the glove (14 pixels and 4 between). */
+  padding: 0 0 0 calc(18 * var(--nc-px16));
+  font: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+  text-shadow: var(--nc-drop16);
+  color: var(--nc-text16-dim);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.nc-choices16 :is(a, button)::before,
+.nc-16 .nc-menu :is(a, button)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: calc(14 * var(--nc-px16));
+  height: calc(11 * var(--nc-px16));
+  margin-top: calc(-5 * var(--nc-px16));
+  background: var(--nc-glove16) 0 0 / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  visibility: hidden;
+  animation: nc-glove16 0.667s steps(1) infinite;
+}
+
+.nc-16 .nc-menu :is(a, button) {
+  width: auto;
+  min-height: calc(28 * var(--nc-px16));
+  padding-left: calc(28 * var(--nc-px16));
+  color: var(--nc-text16);
+}
+
+.nc-16 .nc-menu :is(a, button)::before { left: calc(8 * var(--nc-px16)); }
+
+.nc-choices16 :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-checked="true"], .is-active),
+.nc-16 .nc-menu :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], .is-active) {
+  outline: none;
+  color: var(--nc-text16-cool);
+  text-shadow: var(--nc-rim16);
+  background: none;
+}
+
+.nc-choices16 :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-checked="true"], .is-active)::before,
+.nc-16 .nc-menu :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], .is-active)::before {
+  visibility: visible;
+}
+
+/* In a cool window the answers not chosen are white (dim would not read on it); the chosen one keeps its rim. */
+.nc-win--cool .nc-choices16 :is(a, button):not(:disabled) { color: var(--nc-text16); }
+.nc-win--cool .nc-choices16 :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-checked="true"], .is-active) { color: var(--nc-text16-cool); }
+
+.nc-choices16 :is(a, button):disabled,
+.nc-16 .nc-menu :is(a, button):disabled { color: var(--nc-text16-faint); text-shadow: var(--nc-drop16); cursor: not-allowed; }
+
+@keyframes nc-glove16 {
+  50% { transform: translateX(var(--nc-px16)); }
+}
+
+/* ---- meters and hearts ---------------------------------------------------- */
+
+/*
+ * .nc-meter16 — a bar in a dark trough with a bevel: the fill has a light
+ * top row and a dark bottom one, and ends on a whole pixel.
+ * style="--nc-value: .6".  --hot --prize --ok  (cyan by default)
+ * In the scope, .nc-meter becomes it.
+ */
+.nc-meter16,
+.nc-16 .nc-meter {
+  --nc-fill16: var(--nc-text16-cool);
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: calc(240 * var(--nc-px16));
+  height: calc(10 * var(--nc-px16));
+  margin: var(--nc-px16) var(--nc-px16) calc(2 * var(--nc-px16));
+  padding: 0;
+  border: var(--nc-px16) solid var(--nc-win-outline);
+  border-radius: 0;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--nc-fill16) 55%, white) 0 var(--nc-px16),
+      var(--nc-fill16) var(--nc-px16) calc(100% - 2 * var(--nc-px16)),
+      color-mix(in srgb, var(--nc-fill16) 55%, var(--nc-win-outline)) calc(100% - 2 * var(--nc-px16)))
+      0 0 / calc(var(--nc-value, 0) * 100%) 100% no-repeat,
+    linear-gradient(180deg, var(--nc-win-outline) 0 var(--nc-px16), color-mix(in srgb, var(--nc-win-hot-bottom) 50%, var(--nc-win-outline)) var(--nc-px16) calc(100% - var(--nc-px16)), var(--nc-win-hot-lo2) calc(100% - var(--nc-px16)));
+  box-shadow: calc(2 * var(--nc-px16)) calc(2 * var(--nc-px16)) 0 0 var(--nc-win-shadow-1);
+}
+
+/* The fill ends on a whole pixel. */
+@supports (width: round(down, 2.5px, 1px)) {
+  .nc-meter16,
+  .nc-16 .nc-meter {
+    background-size: round(down, calc(var(--nc-value, 0) * 100%), var(--nc-px16)) 100%, 100% 100%;
+  }
+}
+
+.nc-meter16--hot, .nc-16 .nc-meter--pink { --nc-fill16: var(--nc-text16-hot); }
+.nc-meter16--prize, .nc-16 .nc-meter--gold { --nc-fill16: var(--nc-text16-prize); }
+.nc-meter16--ok, .nc-16 .nc-meter--lime { --nc-fill16: var(--nc-text16-ok); }
+
+/*
+ * .nc-hearts16 — a row of hearts twice as fine as the 8-bit ones:
+ * <span class="nc-hearts16"><i class="nc-heart16"></i><i class="nc-heart16 nc-heart16--half"></i><i class="nc-heart16 nc-heart16--empty"></i></span>
+ * Give the row an aria-label ("Life: 3 of 6"); the hearts are pictures.
+ */
+.nc-hearts16 {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: calc(2 * var(--nc-px16));
+  vertical-align: middle;
+}
+
+.nc-heart16 {
+  display: inline-block;
+  width: calc(16 * var(--nc-px16));
+  height: calc(16 * var(--nc-px16));
+  background: var(--nc-heart16-full) 0 0 / 100% 100% no-repeat;
+  image-rendering: pixelated;
+}
+
+.nc-heart16--half { background-image: var(--nc-heart16-half); }
+.nc-heart16--empty { background-image: var(--nc-heart16-empty); }
+
+/* ---- the scope's text ------------------------------------------------------ */
+
+/* Titles and HUD text keep their colours and take the 16-bit shadow; the neon glow goes. */
+.nc-16 :is(.nc-title, .nc-hud, .nc-hint) { text-shadow: var(--nc-drop16); }
+:where(.nc-16) :where(h1, h2, h3, h4, h5, h6) { text-shadow: var(--nc-drop16); }
+
+/* ---- motion and forced colours -------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-more16,
+  .nc-16 .nc-more,
+  .nc-choices16 :is(a, button)::before,
+  .nc-16 .nc-menu :is(a, button)::before { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .nc-win, .nc-plate16, .nc-btn16, .nc-meter16,
+  .nc-16 :is(.nc-box, .nc-dialog, .nc-alert, .nc-btn, .nc-meter) {
+    border-image: none;
+    outline: var(--nc-px16) solid;
+  }
+}

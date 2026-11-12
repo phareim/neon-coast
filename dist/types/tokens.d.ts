@@ -1,4 +1,39 @@
 /**
+ * The colour of a tone's gradient at `f` (0 top, 1 bottom), each channel
+ * quantised to five bits, as the window painter does per scanline.
+ * @param {Tone16} tone
+ * @param {number} f
+ * @returns {string}
+ */
+export function rampAt(tone: Tone16, f: number): string;
+/**
+ * The bands of a tone's gradient: where the five-bit value of any channel
+ * changes, a new band starts. `from` drops the top of the ramp (0–1) and
+ * stretches the rest over the window; `at` is where each band starts, 0–1.
+ * @param {Tone16} tone
+ * @param {number} [from]
+ * @returns {{ color: string, at: number }[]}
+ */
+export function ramp5(tone: Tone16, from?: number): {
+    color: string;
+    at: number;
+}[];
+/**
+ * WCAG contrast ratio of two #rrggbb colours.
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
+export function contrast(a: string, b: string): number;
+/**
+ * How far down a tone's ramp every one of `texts` first reads at WCAG AA
+ * (4.5:1), in 1/256 steps. The ramps darken downwards, so the rest passes too.
+ * @param {Tone16} tone
+ * @param {readonly string[]} texts
+ * @returns {number}
+ */
+export function readableFrom(tone: Tone16, texts: readonly string[]): number;
+/**
  * Neon Coast colours — the one source of truth.
  *
  * `PAL` is the sprite palette: one letter per colour, so a sprite can be
@@ -75,12 +110,93 @@ export const UI: {
     'window-shade': string;
     'window-hi': string;
 };
-export namespace ROLES {
-    let bg: string;
-    let accent: string;
-    let hot: string;
-    let prize: string;
-    let ok: string;
-    let warn: string;
-    let danger: string;
+export namespace WIN16 {
+    let hot: Tone16;
+    let cool: Tone16;
+    let outline: string;
+    let inner: string;
+    let innerSoft: string;
+    let shadow: string[];
 }
+export namespace TEXT16 {
+    export let text: string;
+    let shadow_1: string;
+    export { shadow_1 as shadow };
+    export let rim: string;
+    export let dim: string;
+    export let faint: string;
+    let hot_1: string;
+    export { hot_1 as hot };
+    let cool_1: string;
+    export { cool_1 as cool };
+    export let prize: string;
+    export let ok: string;
+    export let more: string;
+    export let moreLo: string;
+}
+export namespace INK16 {
+    let k: string;
+    let w: string;
+    let m: string;
+    let p: string;
+    let P: string;
+    let D: string;
+    let K: string;
+    let u: string;
+    let g: string;
+}
+export function five(v: number): number;
+export namespace WIN16_RAMPS {
+    let hot_2: {
+        color: string;
+        at: number;
+    }[];
+    export { hot_2 as hot };
+    let cool_2: {
+        color: string;
+        at: number;
+    }[];
+    export { cool_2 as cool };
+    export let plate: {
+        color: string;
+        at: number;
+    }[];
+}
+export namespace ROLES {
+    export let bg: string;
+    export let accent: string;
+    let hot_3: string;
+    export { hot_3 as hot };
+    let prize_1: string;
+    export { prize_1 as prize };
+    let ok_1: string;
+    export { ok_1 as ok };
+    export let warn: string;
+    export let danger: string;
+}
+export type Tone16 = {
+    /**
+     * the gradient's first scanline, rgb
+     */
+    top: readonly [number, number, number];
+    /**
+     * its last scanline, rgb
+     */
+    bottom: readonly [number, number, number];
+    /**
+     * the bevel's two outer pixels, top and left
+     */
+    hi: string;
+    /**
+     * the bevel's two outer pixels, bottom and right
+     */
+    lo: string;
+    /**
+     * the bevel's softer inner pixel, top and left
+     */
+    hi2: string;
+    /**
+     * the bevel's softer inner pixel, bottom and right
+     */
+    lo2: string;
+};

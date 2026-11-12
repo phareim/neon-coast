@@ -47,6 +47,19 @@
     .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; align-items: start; }
     .cssonly { position: relative; height: 200px; display: grid; justify-items: center; align-content: end; overflow: hidden; }
     .cssonly .nc-sun { margin-bottom: -2px; }
+    .s16-ramps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px; margin: 0 0 24px; }
+    .s16-ramps figure { margin: 0; }
+    .s16-ramps span { display: block; height: 96px; box-shadow: 0 0 0 2px var(--nc-dusk); }
+    .s16-ramps figcaption { font-family: var(--nc-font-mono); font-size: 0.8125rem; color: var(--nc-text-subtle); margin-top: 8px; }
+    .s16-glyphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 8px; margin: 0 0 24px; }
+    .s16-glyphs span { display: grid; place-items: center; height: 44px; font: 28px/28px var(--nc-font-16); color: var(--nc-text16); text-shadow: var(--nc-drop16); background: var(--nc-night); }
+    .s16-sizes p { margin: 0 0 8px; }
+    .s16-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; align-items: start; }
+    .s16-pair > div { min-width: 0; }
+    .s16-scene { position: relative; height: 360px; overflow: hidden; box-shadow: 0 0 0 2px var(--nc-quiet); margin: 2px 2px 24px; }
+    .s16-scene nc-scene { position: absolute; inset: 0; }
+    .s16-scene .nc-win { position: absolute; left: 16px; right: 21px; bottom: 21px; max-width: 560px; margin: 0 auto; }
+    #game16 { display: block; width: 100%; height: 288px; image-rendering: pixelated; background: var(--nc-ink); }
     footer { margin-top: 48px; padding-bottom: 48px; color: var(--nc-text-subtle); }
   </style>
 </head>
@@ -72,6 +85,7 @@
       <a class="nc-btn nc-btn--ghost" href="#data">Data</a>
       <a class="nc-btn nc-btn--ghost" href="#scenery">Scenery</a>
       <a class="nc-btn nc-btn--ghost" href="#canvas">Canvas</a>
+      <a class="nc-btn nc-btn--ghost" href="#sixteen">16-bit</a>
     </div>
   </nav>
 
@@ -427,6 +441,131 @@ function frame(ms) {
 requestAnimationFrame(frame)</code></pre>
     </section>
 
+
+    <section id="sixteen">
+      <h2>The 16-bit language</h2>
+      <p>The next machine, from the isometric view on phareim.no: windows with a gradient in hard five-bit bands, a bevel with round corners and a soft shadow; letters twice as fine with a one-pixel drop; the pointing glove. It is opt-in and lives next to the 8-bit look: use the <code>.nc-win</code> family anywhere, or put <code>class="nc-16"</code> on a container to re-dress the 8-bit components inside it.</p>
+
+      <h3>Windows</h3>
+      <div class="s16-pair" style="padding:4px">
+        <div class="nc-win">
+          <p>The sun has hung on the horizon for three nights. Take the blade by the door, and mind the crabs on the coast road!</p>
+          <span class="nc-more16" aria-hidden="true"></span>
+        </div>
+        <div class="nc-win nc-win--cool">
+          <p class="nc-text16--prize">Quest</p>
+          <p>A knight guards the big key, north of the crystal room.</p>
+        </div>
+      </div>
+      <div class="nc-win" style="max-width:560px">
+        <span class="nc-plate16">Keeper</span>
+        <p>The arcade. Pizza Rescue, Nova and the rest are inside. Go in?</p>
+        <ul class="nc-choices16" aria-label="Answer">
+          <li><button aria-current="true">Yes</button></li>
+          <li><button>No</button></li>
+        </ul>
+      </div>
+<pre><code>&lt;div class="nc-win"&gt;
+  &lt;span class="nc-plate16"&gt;Keeper&lt;/span&gt;
+  &lt;p&gt;The arcade. Go in?&lt;/p&gt;
+  &lt;ul class="nc-choices16"&gt;&lt;li&gt;&lt;button aria-current="true"&gt;Yes&lt;/button&gt;&lt;/li&gt;&lt;li&gt;&lt;button&gt;No&lt;/button&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="nc-win nc-win--cool"&gt;…&lt;span class="nc-more16"&gt;&lt;/span&gt;&lt;/div&gt;</code></pre>
+
+      <h3>The bands</h3>
+      <p>Each window's gradient is the game's, a new colour wherever the five-bit value of a channel steps: hard stops, never a smooth CSS gradient. The CSS ramps start where every letter on them passes WCAG AA.</p>
+      <div class="s16-ramps">
+        <figure><span style="background:var(--nc-win-hot)"></span><figcaption>--nc-win-hot</figcaption></figure>
+        <figure><span style="background:var(--nc-win-cool)"></span><figcaption>--nc-win-cool</figcaption></figure>
+        <figure><span style="background:var(--nc-win-plate)"></span><figcaption>--nc-win-plate</figcaption></figure>
+      </div>
+
+      <h3>Letters</h3>
+      <p>Neon Pixel 16: twelve-pixel capitals on a fourteen-pixel line, proportional, uppercase. One font pixel is a fourteenth of the size, so it is crisp at 14, 28, 42 and 56 px only. The last eleven glyphs (▶ ◀ ▲ ▼ ■ | [ ] @ ❚ ♪) are in the webfont only.</p>
+      <div class="s16-sizes">
+        <p class="nc-text16" style="font-size:var(--nc-size16-4);line-height:var(--nc-size16-4)">56 Coast</p>
+        <p class="nc-text16" style="font-size:var(--nc-size16-3);line-height:var(--nc-size16-3)">42 The coast</p>
+        <p class="nc-h16" style="margin:0 0 8px">28 The neon coast</p>
+        <p class="nc-text16">14 The neon coast at night, the sun stuck on the horizon. Æ Ø Å É!</p>
+        <p class="nc-label16">.nc-label16 — a small dim label</p>
+        <p class="nc-text16"><span class="nc-text16--prize">Gold</span> · <span class="nc-text16--cool">cyan</span> · <span class="nc-text16--ok">lime</span> · <span class="nc-text16--hot">pink</span> · <span class="nc-text16--dim">dim</span> · <span class="nc-text16--rim">rim</span></p>
+      </div>
+      <div class="s16-glyphs" id="glyphs16"></div>
+
+      <h3>Buttons, choices, meters</h3>
+      <div class="row">
+        <button class="nc-btn16">Continue</button>
+        <button class="nc-btn16">▶ Start</button>
+        <button class="nc-btn16 nc-btn16--cool">Items</button>
+        <button class="nc-btn16" aria-pressed="true">Pressed</button>
+        <button class="nc-btn16" disabled>Locked</button>
+      </div>
+      <div class="s16-pair">
+        <div class="nc-win nc-win--cool">
+          <ul class="nc-choices16 nc-choices16--column" aria-label="Menu">
+            <li><button aria-current="true">Resume</button></li>
+            <li><button>Town</button></li>
+            <li><button>Sound on</button></li>
+            <li><button disabled>Hall of fame</button></li>
+          </ul>
+        </div>
+        <div>
+          <p class="nc-label16">Hold Esc to quit</p>
+          <div class="nc-meter16 nc-meter16--hot" style="--nc-value:.6" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+          <p class="nc-label16" style="margin-top:16px">Shield</p>
+          <div class="nc-meter16" style="--nc-value:.85" role="meter" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+          <p class="nc-label16" style="margin-top:16px">Gold</p>
+          <div class="nc-meter16 nc-meter16--prize" style="--nc-value:.34" role="meter" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+          <p class="nc-label16" style="margin-top:16px">Life</p>
+          <span class="nc-hearts16" role="img" aria-label="Life: 3½ of 6">
+            <i class="nc-heart16"></i><i class="nc-heart16"></i><i class="nc-heart16"></i><i class="nc-heart16 nc-heart16--half"></i><i class="nc-heart16 nc-heart16--empty"></i><i class="nc-heart16 nc-heart16--empty"></i>
+          </span>
+        </div>
+      </div>
+
+      <h3>8-bit and 16-bit, side by side</h3>
+      <p>The same markup twice: on the left as it is, on the right inside <code>class="nc-16"</code>.</p>
+      <div class="s16-pair">
+        <div>
+          <div class="nc-box"><p class="nc-hud">.nc-box</p><p>A dark panel with a cyan edge and open corners.</p></div>
+          <div class="nc-dialog" style="margin-top:16px"><p>"Follow the road east." <span class="nc-more"></span></p></div>
+          <p style="margin-top:16px"><button class="nc-btn">Continue</button> <button class="nc-btn nc-btn--pink">▶ Start</button></p>
+          <div class="nc-meter nc-meter--pink" style="--nc-value:.6" role="meter" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="nc-16">
+          <div class="nc-box"><p class="nc-hud">.nc-box</p><p>A dark panel with a cyan edge and open corners.</p></div>
+          <div class="nc-dialog" style="margin-top:16px"><p>"Follow the road east." <span class="nc-more"></span></p></div>
+          <p style="margin-top:16px"><button class="nc-btn">Continue</button> <button class="nc-btn nc-btn--pink">▶ Start</button></p>
+          <div class="nc-meter nc-meter--pink" style="--nc-value:.6" role="meter" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+
+      <h3>Sprites and the coast</h3>
+      <p><code>&lt;nc-sprite look="16"&gt;</code> takes 8-bit art up to twice the pixels with EPX and lets its dark outlines take the colour they hold (selout). <code>&lt;nc-scene look="16"&gt;</code> paints the coast at twice the pixels: the sky in knitted bands, the sun in its halo, clouds and ridges sliding at their own speeds, a sea that glints.</p>
+      <div class="sprites" id="sprites16"></div>
+      <div class="s16-scene" style="margin-top:24px">
+        <nc-scene look="16" sun="0.62"></nc-scene>
+        <div class="nc-win">
+          <span class="nc-plate16">Nova</span>
+          <p>Look — the sun is moving again.</p>
+          <span class="nc-more16" aria-hidden="true"></span>
+        </div>
+      </div>
+<pre><code>&lt;nc-scene look="16"&gt;&lt;/nc-scene&gt;
+&lt;nc-sprite name="heart" scale="8" look="16"&gt;&lt;/nc-sprite&gt;</code></pre>
+
+      <h3>On canvas</h3>
+      <div class="nc-frame nc-frame--cyan" style="display:block"><canvas id="game16"></canvas></div>
+<pre><code>import { drawWindow16, drawText16, wrapText16, drawGlove16, drawHearts16, drawMore16,
+         paintBands, ramp15, scale2x, selout, quantize15 } from 'neon-coast'
+
+paintBands(g, 0, 0, w, h, ramp15(['#100830', '#a83080', '#f8b070'], 12))   // knitted bands
+drawWindow16(g, 8, h - 64, w - 16, 56, { tone: 'hot' })
+wrapText16(text, w - 48).forEach((line, i) =&gt; drawText16(g, line, 24, h - 52 + i * 22, '#ffffff', '#0a0c38'))
+drawGlove16(g, 24, h - 20, t)            // the glove nudges with t; a constant holds it
+const big = selout(scale2x(sprite(SPRITES.gem)))</code></pre>
+    </section>
+
     <footer>
       <hr>
       <p class="nc-pixel nc-subtle">Neon Coast · drawn from <a href="https://phareim.no">phareim.no</a> · <a href="https://github.com/phareim/neon-coast">source</a></p>
@@ -434,7 +573,8 @@ requestAnimationFrame(frame)</code></pre>
   </main>
 
   <script type="module">
-    import { COLORS, PAL, SKY, SUN, ROLES, GLYPHS, ABOVE, SPRITES, createPixelStage, makeCanvas, sprite, drawText, drawHearts, drawMeter, drawBanner, paintSky, paintSun, paintSea, paintHeadland, drawStars, paintReflection, DUSK } from './dist/neon-coast.js'
+    import { COLORS, PAL, SKY, SUN, ROLES, GLYPHS, ABOVE, SPRITES, createPixelStage, makeCanvas, sprite, drawText, drawHearts, drawMeter, drawBanner, paintSky, paintSun, paintSea, paintHeadland, drawStars, paintReflection, DUSK,
+      GLYPHS16, WEBFONT16_EXTRA, TEXT16, DUSK16, drawText16, wrapText16, drawWindow16, drawGlove16, drawHearts16, paintBands, ramp15, scale2x, selout } from './dist/neon-coast.js'
 
     const letterOf = hex => Object.keys(PAL).find(k => PAL[k] === hex) ?? ''
     const swatch = (name, hex, note) => `<div class="sw"><span class="chip" style="background:var(--nc-${name})"></span><code>--nc-${name}</code><span>${hex}${note ? ' · ' + note : ''}</span></div>`
@@ -504,6 +644,41 @@ requestAnimationFrame(frame)</code></pre>
       if (!still) requestAnimationFrame(frame)
     }
     requestAnimationFrame(frame)
+
+    // The 16-bit section.
+    const g16 = [...Object.keys(GLYPHS16).filter(c => c !== ' '), ...Object.keys(WEBFONT16_EXTRA)]
+    document.getElementById('glyphs16').innerHTML = g16.map(c => `<span>${c.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')}</span>`).join('')
+    document.getElementById('sprites16').innerHTML = ['heart', 'gem', 'star', 'key', 'bomb', 'coin'].map(n => `<figure><nc-sprite name="${n}" scale="6" label="${n}"></nc-sprite> <nc-sprite name="${n}" scale="6" look="16" label="${n}, 16-bit"></nc-sprite><figcaption>${n}</figcaption></figure>`).join('')
+
+    // A 16-bit HUD on canvas, at one canvas pixel per 16-bit pixel, scaled up whole.
+    const c16 = document.getElementById('game16')
+    const gem = selout(scale2x(sprite(SPRITES.gem)))
+    function frame16(ms) {
+      const t = still ? 0.2 : ms / 1000
+      const k = Math.max(1, Math.floor(Math.min(c16.clientWidth / 320, c16.clientHeight / 144) * devicePixelRatio))
+      const w = Math.floor(c16.clientWidth * devicePixelRatio / k)
+      const h = Math.floor(c16.clientHeight * devicePixelRatio / k)
+      if (c16.width !== w || c16.height !== h) { c16.width = w; c16.height = h }
+      const g = c16.getContext('2d')
+      g.imageSmoothingEnabled = false
+      paintBands(g, 0, 0, w, h, ramp15(DUSK16.sky, 12), { dither: true })
+      drawHearts16(g, 8, 8, 7, 12)
+      g.drawImage(gem, 8, 30)
+      drawText16(g, '123', 30, 32, TEXT16.ok, TEXT16.shadow)
+      const ww = Math.min(w - 16, 300)
+      const x = Math.round((w - ww) / 2)
+      const lines = wrapText16('A heavy block with a moon carved in it. It won’t budge.', ww - 32)
+      const wh = lines.length * 22 + 18 + 22
+      const y = h - wh - 10
+      drawWindow16(g, x, y, ww, wh, { tone: 'hot' })
+      lines.forEach((line, i) => drawText16(g, line, x + 16, y + 13 + i * 22, TEXT16.text, TEXT16.shadow))
+      const oy = y + 13 + lines.length * 22
+      drawGlove16(g, x + Math.round(ww * 0.3) - 26, oy, t)
+      drawText16(g, 'PUSH', x + Math.round(ww * 0.3) - 8, oy, TEXT16.cool, TEXT16.rim, 1, 'rim')
+      drawText16(g, 'LEAVE', x + Math.round(ww * 0.7) - 8, oy, TEXT16.dim, TEXT16.shadow)
+      if (!still) requestAnimationFrame(frame16)
+    }
+    requestAnimationFrame(frame16)
   </script>
 </body>
 </html>

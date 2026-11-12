@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A 16-bit dialog</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%230b0616'/%3E%3Crect y='5' width='16' height='5' fill='%236a2a7c'/%3E%3Cpath fill='%23ffd23f' d='M6 3h4v1h1v1h1v5H4V5h1V4h1z'/%3E%3Crect x='4' y='7' width='8' height='1' fill='%236a2a7c'/%3E%3Crect x='4' y='9' width='8' height='1' fill='%23ff2fa0'/%3E%3Crect y='10' width='16' height='1' fill='%232ff3ff'/%3E%3Crect y='11' width='16' height='5' fill='%23123372'/%3E%3Crect x='5' y='12' width='6' height='1' fill='%23ff8a3d'/%3E%3Crect x='6' y='14' width='4' height='1' fill='%23ff2fa0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../dist/neon-coast.css">
+  <script type="module" src="../dist/neon-coast.js"></script>
+  <style>
+    /* Only the layout of this page: the coast fills the screen, the HUD sits on top, the window at the bottom. */
+    html, body { height: 100%; margin: 0; }
+    body { display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
+    .hud { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 16px; }
+    .talk { width: min(640px, 100% - 32px); margin: 0 auto 24px; }
+    .talk .nc-win { margin-inline: 1px 5px; }
+    /* On a big screen every 16-bit pixel is two: the whole language scales with one token, letters at 28 px. */
+    @media (min-width: 900px) { body { --nc-px16: 2px; } .talk { width: min(1040px, 100% - 32px); } }
+  </style>
+</head>
+<body class="nc">
+  <nc-scene look="16" fixed sun="0.62"></nc-scene>
+
+  <header class="hud">
+    <span class="nc-hearts16" role="img" aria-label="Life: 2½ of 4">
+      <i class="nc-heart16"></i><i class="nc-heart16"></i><i class="nc-heart16 nc-heart16--half"></i><i class="nc-heart16 nc-heart16--empty"></i>
+    </span>
+    <button class="nc-btn16 nc-btn16--cool" id="restart">Start over</button>
+  </header>
+
+  <div></div>
+
+  <main class="talk">
+    <div class="nc-win" role="dialog" aria-labelledby="who" aria-describedby="line">
+      <span class="nc-plate16" id="who">Keeper</span>
+      <p id="line">The sun has hung on the horizon for three nights. Will you take the blade by the door?</p>
+      <ul class="nc-choices16" role="listbox" aria-label="Answer" id="answers">
+        <li><button role="option" aria-selected="true">Yes</button></li>
+        <li><button role="option" aria-selected="false">Not yet</button></li>
+      </ul>
+    </div>
+  </main>
+
+  <script type="module">
+    // The answers: arrows move the glove, Enter or a tap answers.
+    const answers = [...document.querySelectorAll('#answers button')]
+    const line = document.getElementById('line')
+    const choose = i => answers.forEach((b, j) => b.setAttribute('aria-selected', String(i === j)))
+    answers.forEach((b, i) => {
+      b.addEventListener('focus', () => choose(i))
+      b.addEventListener('mouseenter', () => choose(i))
+      b.addEventListener('click', () => {
+        line.textContent = i === 0 ? 'Then go — and mind the crabs on the coast road!' : 'The blade will wait. The sun, too, it seems.'
+        document.getElementById('answers').hidden = true
+      })
+      b.addEventListener('keydown', e => {
+        const k = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0
+        if (k) { e.preventDefault(); answers[(i + k + answers.length) % answers.length].focus() }
+      })
+    })
+    document.getElementById('restart').addEventListener('click', () => location.reload())
+  </script>
+</body>
+</html>

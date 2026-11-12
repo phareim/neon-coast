@@ -3,7 +3,8 @@
  *
  * The CSS (neon-coast.css) styles HTML on its own. This module is the
  * canvas side: the palette, the 5×7 font, string-map sprites, the pixel
- * stage with its light map, scenery painters and canvas HUD shapes. It also
+ * stage with its light map, scenery painters and canvas HUD shapes, and the
+ * 16-bit language's letters, window, upscaler and coast. It also
  * registers <nc-scene> and <nc-sprite> as soon as it is imported.
  */
 import { defineElements } from './elements.js'
@@ -14,6 +15,10 @@ export * from './sprites.js'
 export * from './stage.js'
 export * from './scenery.js'
 export * from './ui.js'
+export * from './font16.js'
+export * from './pixel16.js'
+export * from './ui16.js'
+export * from './scenery16.js'
 export * from './elements.js'
 
 defineElements()

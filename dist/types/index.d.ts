@@ -4,4 +4,8 @@ export * from "./sprites.js";
 export * from "./stage.js";
 export * from "./scenery.js";
 export * from "./ui.js";
+export * from "./font16.js";
+export * from "./pixel16.js";
+export * from "./ui16.js";
+export * from "./scenery16.js";
 export * from "./elements.js";

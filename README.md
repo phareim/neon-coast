@@ -15,7 +15,7 @@ It comes in three layers, and you only take what you need:
 | **Elements** | `dist/neon-coast.js` | `<nc-scene>` (the coast as a live backdrop) and `<nc-sprite>` (pixel art written in the page). No code needed. |
 | **Canvas kit** | `dist/neon-coast.js` | The pixel stage with its light map, string-map sprites, the 5×7 font, scenery painters and HUD shapes — for games. |
 
-Open `index.html` (the style guide) or the two examples in `examples/` to see
+Open `index.html` (the style guide) or the examples in `examples/` to see
 all of it: `npm run serve` and then <http://localhost:5173/>.
 
 ## Start
@@ -147,7 +147,7 @@ smaller container if only part of a page should take the look.
 | `.nc-dialog` | what people say: white pixel letters in a pink box; works on `<dialog>` | add `<span class="nc-more"></span>` for the blinking ▼ |
 | `.nc-alert` | a status line in a box | `--ok` `--warn` `--danger` |
 | `.nc-frame` | the edge alone, for images, avatars and canvases | `--gold` `--pink` `--cyan` |
-| `.nc-window` | the 16-bit window: a blue gradient in five hard bands, a white bevel, white letters with a dark shadow (the isometric view's dialog box on phareim.no) | `--teal` |
+| `.nc-window` | the first sketch of the 16-bit window: a blue gradient in five hard bands, a white bevel. Kept as it is; new work should use `.nc-win` (see [the 16-bit language](#the-16-bit-language)) | `--teal` |
 | `.nc-btn` | lights up on hover and focus; stays lit with `aria-pressed`, `aria-selected`, `aria-current` or `.is-active` | `--pink` `--gold` `--lime` `--violet` `--red` · `--solid` `--ghost` · `--sm` `--lg` `--icon` `--block` |
 | `.nc-btns`, `.nc-tabs` | a row of buttons; tabs are buttons with `aria-selected` | |
 | `.nc-field`, `.nc-label`, `.nc-help` | a form row: label, control, small print | |
@@ -205,6 +205,7 @@ people who prefer reduced motion. Before the script runs it shows a CSS sky.
 | Attribute | Default | |
 |---|---|---|
 | `scene` | `coast` | `coast`, `town` (houses with lit windows, lamps), `hills`, `dusk` (just sky and sun) |
+| `look` | | `16`: the coast in the 16-bit language at twice the pixels (see below); `scene` is ignored |
 | `pixels` | `180` | logical pixels from top to bottom: fewer is chunkier |
 | `horizon` | `0.6` | where the horizon sits, 0–1 of the height |
 | `sun` | `0.5` | the sun's position, 0–1 of the width, or `none` |
@@ -239,7 +240,9 @@ Pixel art written as text, one palette letter per pixel, `.` for see-through:
 ways phareim.no's world is shown: `view-grid`, `view-cube`, `view-pencil`. `scale` is CSS
 pixels per sprite pixel (4), `colors` overrides palette letters, `shade`
 ("body hi lo") outlines and shades a shape drawn with `X`, `flip` mirrors
-it, and `label` gives it an accessible name (without one it is decorative).
+it, `label` gives it an accessible name (without one it is decorative), and
+`look="16"` gives it the 16-bit treatment: EPX up to twice the pixels, then
+selout (keep `scale` even, so a 16-bit pixel is a whole CSS pixel).
 
 ## Canvas kit
 
@@ -280,8 +283,12 @@ requestAnimationFrame(frame)
 | sprites | `sprite(rows, palette?, flip?)`, `silhouette`, `put`, `putC`, `shade`, `relight`, `pixelize`, `bayer`, `mix`, `SPRITES` |
 | font | `drawText`, `drawBigText`, `textWidth`, `bigTextWidth`, `wrapText`, `glyphRows`, `glyphAbove`, `GLYPHS`, `GLYPH_H` |
 | scenery | `paintSky`, `drawStars`, `paintSun`, `paintRidge`, `paintHeadland`, `paintSea`, `paintReflection`, `paintBeach`, `paintPalm`, `paintTreeLine`, `paintHouse`, `paintGrass`, `paintLamp`, `ditherGradient`, `disc`, `rect`, `hash2`, `noise1`, `DUSK` |
-| ui | `drawBox`, `drawWindow` (the 16-bit window), `drawDialog`, `drawBanner`, `drawMeter`, `drawHearts` |
-| tokens | `PAL`, `COLORS`, `SKY`, `SUN`, `UI`, `ROLES` |
+| ui | `drawBox`, `drawWindow` (the first 16-bit window sketch), `drawDialog`, `drawBanner`, `drawMeter`, `drawHearts` |
+| font16 | `drawText16`, `textWidth16`, `wrapText16`, `glyphRows16`, `glyphExtra16`, `GLYPHS16`, `MARKS16_ABOVE`, `MARKS16_BELOW`, `ALIAS16`, `WEBFONT16_EXTRA`, `WEBFONT16_ALIAS`, `CAP16`, `LINE16`, `ABOVE16`, `BELOW16` |
+| ui16 | `drawWindow16(ctx, x, y, w, h, { tone, unit })`, `drawMore16`, `drawGlove16`, `drawHearts16`, `window16Rects`, `more16Rects`, `rowsToRects`, `rectsToSvg`, `GLOVE16`, `HEARTS16`, `WIN16_LEAD`, `WIN16_TRAIL` |
+| pixel16 | `scale2x(canvas)` and `epx(pixels, w, h)` (EPX), `selout(canvas)` and `seloutPixels`, `quantize15(imageData, { dither })`, `paintBands(ctx, x, y, w, h, stops, { dither, knit })`, `ramp15(keys, n)` |
+| scenery16 | `paintSky16`, `paintSun16`, `paintRidge16`, `paintClouds16`, `paintSea16`, `paintGlints16`, `drawDrift`, `DUSK16` |
+| tokens | `PAL`, `COLORS`, `SKY`, `SUN`, `UI`, `ROLES`; 16-bit: `WIN16`, `WIN16_RAMPS`, `TEXT16`, `INK16`, `five`, `rampAt`, `ramp5`, `readableFrom`, `contrast` |
 | elements | `NcScene`, `NcSprite`, `defineElements`, `parseRows` |
 
 A few things the stage does for you: it picks the largest whole scale that
@@ -292,6 +299,127 @@ portrait phones while the HUD stays upright; and whatever you draw in
 `afterLight` (or mark with `emit`/`emitImage`) stays at full brightness,
 the way neon does.
 
+
+## The 16-bit language
+
+Next to the 8-bit cabinet there is a second form language: the 16-bit
+machine, the way the isometric view on phareim.no draws its windows —
+"how 16-bit *felt*" (Chrono Trigger, Final Fantasy VI, Secret of Mana) in
+the same dusk palette. It is **opt-in**: nothing 8-bit changes unless you
+ask for it. `examples/dialog16.html` is a whole screen of it.
+
+**When to use which.** The 8-bit look is the arcade: neon edges, the 5×7
+letters, hard scanlines — HUDs, scores, menus that shout. The 16-bit look
+is the story: dialog, a name plate, a question with the glove, an item box,
+a pause screen. Pick one per screen, or one per window; the coast behind
+can be either.
+
+Two ways in:
+
+```html
+<!-- Components that work anywhere -->
+<div class="nc-win">
+  <span class="nc-plate16">Keeper</span>
+  <p>The arcade. Go in?</p>
+  <ul class="nc-choices16"><li><button aria-current="true">Yes</button></li><li><button>No</button></li></ul>
+</div>
+
+<!-- Or re-dress the 8-bit components inside a container -->
+<section class="nc-16"> ….nc-box, .nc-dialog, .nc-btn, .nc-menu, .nc-meter, headings… </section>
+```
+
+| Class | What | Variants |
+|---|---|---|
+| `.nc-win` | the window: the game's gradient in hard five-bit bands, a three-pixel bevel with round corners (two of white, a softer one inside, each shaded bottom and right), a dark line inside, a soft three-step shadow; 16-bit letters | `--cool` (pause screen, item box) · `--flat` (no shadow) |
+| `.nc-plate16` | the speaker's name on a plate riding the window's top edge (first child of `.nc-win`) | |
+| `.nc-btn16` | a small window; under the pointer, on focus, pressed or current it turns cool with gold letters | `--cool` |
+| `.nc-choices16` | answers with the pointing glove at the chosen one (`aria-current`, `aria-selected`, `aria-checked`, hover, focus) | `--column` |
+| `.nc-more16` | the "more" arrow: dips a pixel, comes back, blinks out (bottom-right in a window) | |
+| `.nc-text16`, `.nc-h16`, `.nc-label16` | the 16-bit letters at 14 px, a 28-px heading, a small dim label | `.nc-text16--dim --hot --cool --prize --ok --rim` |
+| `.nc-meter16` | a bar in a bevelled trough, ending on a whole pixel: `style="--nc-value: .6"` | `--hot` `--prize` `--ok` |
+| `.nc-hearts16` + `.nc-heart16` | hearts twice as fine as the 8-bit ones | `.nc-heart16--half` `--empty` |
+| `.nc-16` | the scope: inside it `.nc-box`, `.nc-dialog`, `.nc-alert` and `<dialog>` become windows (`--quiet`/`--violet` boxes cool ones), `.nc-btn` and plain buttons 16-bit buttons, `.nc-menu` gets the glove, `.nc-more` the arrow, `.nc-meter` the 16-bit bar, and every pixel-font text the 16-bit font (`--nc-font-pixel` and the `--nc-size-*` steps are re-pointed) | |
+
+**The rules that make it look right**
+
+1. **Sizes in 16-bit pixels.** One 16-bit pixel is `--nc-px16` (half of
+   `--nc-u`: 1 px). Neon Pixel 16's line is fourteen of them, so the letters
+   are crisp at **14, 28, 42 and 56 px** only (`--nc-size16-1` … `-4`),
+   with line heights that leave whole pixels above and below (14 + an even
+   number: the dialog's pitch is 22). Set `--nc-px16: 2px` on any element
+   and everything 16-bit inside it doubles, still crisp.
+2. **Bands, not gradients.** A window's colour steps where the machine's
+   five-bit channel steps — hard stops, never a smooth CSS gradient. The
+   ramps are tokens (`--nc-win-hot`, `--nc-win-cool`, `--nc-win-plate`);
+   on canvas, `paintBands` knits band edges with an ordered dither.
+3. **Bevel, not notch.** 16-bit frames are the bevel with round corners and a
+   soft shadow; 8-bit frames are the notched neon edge. Do not put one
+   inside the other.
+4. **Coloured outlines.** Art at 16-bit density gets selout: a dark outline
+   takes the colour of what it holds (`<nc-sprite look="16">`, `selout()`).
+   Letters have a one-pixel drop (`--nc-drop16`), or a one-pixel rim all
+   round when they lie on the world or mark the chosen answer (`--nc-rim16`).
+5. **Never mix the two fonts in one window.** Neon Pixel 16 has the
+   letters, digits, Æ Ø Å É, – — …, ♥ × → ← ↑ ↓, and in the webfont also
+   ▶ ◀ ▲ ▼ ■ | [ ] @ ❚ ♪ (the canvas `drawText16` draws those as ?, as the
+   game's does). It does not have ◆ ★ ✓ ◈ ⌂ and the other 8-bit symbols; a
+   missing one falls back to the 5×7 font at a size where it blurs — leave
+   it out, or use a picture (the glove, the arrow, a heart).
+6. **Colour and contrast.** White letters by default; gold for names and
+   treasure, cyan for the chosen answer, dim for the others, pink only at
+   28 px and up. The CSS ramps start where all of these pass WCAG AA on the
+   lightest band (the hot ramp drops its top 10 %, the plate's 27 %); in a
+   cool window the answers are white, the chosen one cyan with its rim.
+7. **Motion.** The arrow bobs and the glove nudges in `steps()`; the
+   coast's clouds and ridges drift. All of it stops under
+   `prefers-reduced-motion`.
+
+**Tokens.** From `src/js/tokens.js`: `WIN16` (the hot and cool tones —
+top and bottom of the gradient, the bevel's `hi`/`lo`/`hi2`/`lo2` — the
+outline, the inner line, the shadow steps), `TEXT16` (the letters'
+colours, shadow and rim), `INK16` (the icons' palette) and `WIN16_RAMPS`.
+In CSS: `--nc-win-hot-top`, `--nc-win-hot-hi` …, `--nc-win-outline`,
+`--nc-win-inner`, `--nc-win-shadow-1` … `-3`, `--nc-win-hot` / `-cool` /
+`-plate` (the band gradients), `--nc-text16`, `--nc-text16-shadow`,
+`--nc-text16-prize` …, and the pictures the build draws from
+`src/js/ui16.js`: `--nc-win-frame-hot` / `-cool` (+ `-flat`),
+`--nc-glove16`, `--nc-more16`, `--nc-heart16-full` / `-half` / `-empty`.
+
+**Elements.** `<nc-scene look="16">` paints the coast at twice the pixels:
+the sky in knitted bands, the striped sun in a dithered halo, cloud streaks
+and two ridges that slide at their own speeds, a sea with the sun's broken
+reflection and glints; no light map or scanlines, a little bloom.
+`<nc-sprite look="16">` takes 8-bit art up with EPX and selout.
+
+**Canvas.** `drawWindow16`, `drawText16` and friends draw the same window
+and letters into a canvas (in 16-bit pixels; `unit: 0.5` on a canvas laid
+out in 8-bit pixels at twice the density, as the game does). The canvas
+window is the game's ramp exactly; only the CSS ramps are trimmed for
+contrast.
+
+```js
+import { drawWindow16, drawText16, wrapText16, drawGlove16, paintBands, ramp15, DUSK16, TEXT16 } from 'neon-coast'
+
+paintBands(g, 0, 0, w, h, ramp15(DUSK16.sky, 12))           // the sky in knitted bands
+drawWindow16(g, 8, h - 72, w - 16, 64, { tone: 'hot' })
+wrapText16(text, w - 48).forEach((line, i) => drawText16(g, line, 24, h - 59 + i * 22, TEXT16.text, TEXT16.shadow))
+```
+
+**Resyncing with the game.** The 16-bit pieces are copies, kept in the
+game's shape so a resync is a paste: the glyph table from
+`themes/base/pixel/font16.ts` (`G`, `ABOVE`, `BELOW`, `ALIAS` →
+`GLYPHS16`, `MARKS16_ABOVE`, `MARKS16_BELOW`, `ALIAS16` in
+`src/js/font16.js`; the webfont's stand-ins from the `extra` table in
+`scripts/make-pixel-font16.mjs` → `WEBFONT16_EXTRA`), the window's colours from
+`themes/zelda/render/hud16.ts` (`TONES`, the `paintWindow` outline, inner
+line and shadow, `SHADOW`, `RIM`, the skin's text colours, `INK` → `WIN16`,
+`TEXT16`, `INK16` in `src/js/tokens.js`), the bevel's boxes in
+`paintWindow` → `window16Rects` in `src/js/ui16.js` (if its thickness
+changes, also the inset and `border-image-slice` of `.nc-win` in
+`src/css/sixteen.css`), and the art (`HAND`, `HEART_*` → `GLOVE16`,
+`HEARTS16` in `src/js/ui16.js`). Then `npm run font16` and
+`npm run build`.
+
 ## The font
 
 **Neon Pixel** is the canvas font as a webfont: 5×7 capitals, digits,
@@ -300,6 +428,11 @@ symbols that work as icons — ♥ ★ ♪ ● ○ ■ ◆ ◈ ✓ × ☰ ⌂ �
 Lower case draws as upper case. The CSS carries it inline; `dist/fonts/`
 also has it as `.woff2`, `.woff` and `.ttf` (install the TTF to design
 with it in Figma or anywhere else — use sizes in 8 pt steps).
+
+**Neon Pixel 16** is the 16-bit language's face, built the same way from
+`src/js/font16.js`: proportional capitals twelve pixels high on a
+fourteen-pixel line (the em), so 14, 28, 42 and 56 pt are the crisp sizes.
+It is inline in the CSS too, and in `dist/fonts/neon-pixel-16.*`.
 
 Space Grotesk and Space Mono are by their authors under the SIL Open Font
 License (`dist/fonts/OFL.txt`); the CSS loads them from `dist/fonts/`.
@@ -313,6 +446,7 @@ npm run build       # src → dist (CSS bundle, JS bundle, types, tokens.json)
 npm test            # glyphs, tokens, sprites, and that dist matches src
 npm run typecheck   # strict TypeScript over the JSDoc
 npm run font        # rebuild Neon Pixel after editing src/js/font.js (pip install fonttools brotli)
+npm run font16      # rebuild Neon Pixel 16 after editing src/js/font16.js
 npm run fonts       # also re-copy Space Grotesk and Space Mono from @fontsource
 ```
 
@@ -322,10 +456,10 @@ it is stale. Colours live in `src/js/tokens.js` only; `src/css/colors.css`
 is generated from it.
 
 ```
-src/js/      tokens · font · sprites · stage · scenery · ui · elements · index
-src/css/     colors (generated) · tokens · fonts · base (classless) · type · box · button · form · data · effects · layout
+src/js/      tokens · font · sprites · stage · scenery · ui · font16 · pixel16 · ui16 · scenery16 · elements · index
+src/css/     colors (generated) · tokens · fonts · base (classless) · type · box · button · form · data · effects · layout · sixteen
 dist/        neon-coast.css · neon-coast.min.css · neon-coast.js · neon-coast.min.js · tokens.json · types/ · fonts/
-index.html   the style guide          examples/   hello.html · game.html
+index.html   the style guide          examples/   hello.html · game.html · dialog16.html
 ```
 
 ## Coming from phareim.no
