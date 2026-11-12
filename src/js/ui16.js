@@ -1,7 +1,7 @@
 /**
  * The 16-bit language's interface on canvas: the console RPG's window (a
  * gradient that changes on the scanlines where the machine's five-bit
- * colour steps, a bevelled two-pixel border with round corners, an inner
+ * colour steps, a bevelled three-pixel border with round corners, an inner
  * dark line and a soft shadow), the bobbing "more" arrow, the pointing
  * glove and the hearts, twice as fine as the 8-bit ones.
  *
@@ -48,7 +48,8 @@ export const WIN16_TRAIL = 5
 /**
  * A window of w × h pixels as rects, in paint order, on a canvas of
  * (w + 6) × (h + 6) with the window's body at (1, 1): shadow, outline, the
- * two rings of the bevel, the gradient (one rect per band, unless `fill` is
+ * bevel (two pixels of the brightest light and a softer one inside, each
+ * darker along the bottom and the right), the gradient (one rect per band, unless `fill` is
  * false) and the inner line. `shadow: false` leaves the shadow out.
  * @param {number} w
  * @param {number} h
@@ -68,26 +69,27 @@ export function window16Rects(w, h, tone = 'hot', opts = {}) {
     box(out, 1, 2, w + 2, h + 2, round, s1)
   }
   box(out, 0, 0, w + 2, h + 2, round, WIN16.outline)
+  // The border, three pixels of light: two of the brightest and a softer one inside, each darker along the bottom and the right.
   box(out, 1, 1, w, h, [2, 1], t.lo)
-  box(out, 1, 1, w - 1, h - 1, [2, 1], t.hi)
-  box(out, 2, 2, w - 2, h - 2, [1], t.lo2)
-  box(out, 2, 2, w - 3, h - 3, [1], t.hi2)
+  box(out, 1, 1, w - 2, h - 2, [2, 1], t.hi)
+  box(out, 3, 3, w - 4, h - 4, [1], t.lo2)
+  box(out, 3, 3, w - 5, h - 5, [1], t.hi2)
   if (opts.fill !== false) {
     // The gradient: a new colour wherever the five-bit value of a channel changes.
-    const rows = h - 4
+    const rows = h - 6
     let start = 0
     let color = ''
     for (let r = 0; r <= rows; r++) {
       const c = r < rows ? rampAt(t, rows > 1 ? r / (rows - 1) : 0) : ''
       if (c === color) continue
-      if (color) out.push([3, 3 + start, w - 4, r - start, color])
+      if (color) out.push([4, 4 + start, w - 6, r - start, color])
       color = c
       start = r
     }
   }
   // The dark line inside the border, heavier under the top and the left edge where the border's own shadow falls.
-  out.push([3, 3, w - 4, 1, WIN16.inner], [3, 4, 1, h - 5, WIN16.inner])
-  out.push([4, h - 2, w - 5, 1, WIN16.innerSoft], [w - 2, 4, 1, h - 6, WIN16.innerSoft])
+  out.push([4, 4, w - 6, 1, WIN16.inner], [4, 5, 1, h - 7, WIN16.inner])
+  out.push([5, h - 3, w - 7, 1, WIN16.innerSoft], [w - 3, 5, 1, h - 8, WIN16.innerSoft])
   return out
 }
 
@@ -188,16 +190,16 @@ export const HEARTS16 = {
   half: [
     '..kkkk...kkkk...',
     '.kmmppk.kuuuuk..',
-    'kmwwpppkKKKKKuk.',
-    'kmwppppkKKKKKKk.',
-    'kmpppppkKKKKKKk.',
-    'kppppppkKKKKKKk.',
-    'kppppppkKKKKKKk.',
-    '.kpppppkKKKKKk..',
-    '..kppppkKKKKk...',
-    '...kpppkKKKk....',
-    '....kppkKKk.....',
-    '.....kpkKk......',
+    'kmwwpppkuKKKKuk.',
+    'kmwppppkKKKKKuk.',
+    'kmpppppkKKKKKuk.',
+    'kppppppkKKKKKuk.',
+    'kppppppkKKKKKuk.',
+    '.kpppppkKKKKuk..',
+    '..kppppkKKKuk...',
+    '...kpppkKKuk....',
+    '....kppkKuk.....',
+    '.....kpkuk......',
     '......kkk.......',
     '.......k........',
     '................',
@@ -206,17 +208,17 @@ export const HEARTS16 = {
   empty: [
     '..kkkk...kkkk...',
     '.kuuuuk.kuuuuk..',
-    'kuuKKKKkKKKKKuk.',
-    'kuKKKKKKKKKKKKk.',
-    'kuKKKKKKKKKKKKk.',
-    'kKKKKKKKKKKKKKk.',
-    'kKKKKKKKKKKKKKk.',
-    '.kKKKKKKKKKKKk..',
-    '..kKKKKKKKKKk...',
-    '...kKKKKKKKk....',
-    '....kKKKKKk.....',
-    '.....kKKKk......',
-    '......kKk.......',
+    'kuKKKKukuKKKKuk.',
+    'kuKKKKKuKKKKKuk.',
+    'kuKKKKKKKKKKKuk.',
+    'kuKKKKKKKKKKKuk.',
+    'kuKKKKKKKKKKKuk.',
+    '.kuKKKKKKKKKuk..',
+    '..kuKKKKKKKuk...',
+    '...kuKKKKKuk....',
+    '....kuKKKuk.....',
+    '.....kuKuk......',
+    '......kuk.......',
     '.......k........',
     '................',
     '................',

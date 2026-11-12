@@ -130,10 +130,10 @@ export const UI = {
  * @typedef {object} Tone16
  * @property {readonly [number, number, number]} top the gradient's first scanline, rgb
  * @property {readonly [number, number, number]} bottom its last scanline, rgb
- * @property {string} hi the bevel's outer ring, top and left
- * @property {string} lo the bevel's outer ring, bottom and right
- * @property {string} hi2 the bevel's inner ring, top and left
- * @property {string} lo2 the bevel's inner ring, bottom and right
+ * @property {string} hi the bevel's two outer pixels, top and left
+ * @property {string} lo the bevel's two outer pixels, bottom and right
+ * @property {string} hi2 the bevel's softer inner pixel, top and left
+ * @property {string} lo2 the bevel's softer inner pixel, bottom and right
  */
 
 /**
@@ -161,7 +161,7 @@ export const TEXT16 = {
   text: '#ffffff',
   /** Under the letters in a window: right, below and the corner between. */
   shadow: '#0a0c38',
-  /** All the way round letters that lie straight on the world (and the chosen answer). */
+  /** A one-pixel line all the way round letters that lie straight on the world (and the chosen answer). */
   rim: '#06081f',
   dim: '#b8c6fa',
   faint: '#7482cc',
@@ -182,8 +182,8 @@ export const INK16 = {
   p: '#ff3aa8',
   P: '#c2187c', // the heart's shaded side
   D: '#7c0e58',
-  K: '#2a1a4a', // an empty heart
-  u: '#463672',
+  K: '#2c1e58', // an empty heart
+  u: '#7462b8', // the lighter line inside its rim that shows it against a dark sky
   g: '#c8cef4', // the glove's shade
 }
 

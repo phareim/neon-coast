@@ -481,7 +481,7 @@ requestAnimationFrame(frame)</code></pre>
       </div>
 
       <h3>Letters</h3>
-      <p>Neon Pixel 16: twelve-pixel capitals on a fourteen-pixel line, proportional, uppercase. One font pixel is a fourteenth of the size, so it is crisp at 14, 28, 42 and 56 px only.</p>
+      <p>Neon Pixel 16: twelve-pixel capitals on a fourteen-pixel line, proportional, uppercase. One font pixel is a fourteenth of the size, so it is crisp at 14, 28, 42 and 56 px only. The last eleven glyphs (▶ ◀ ▲ ▼ ■ | [ ] @ ❚ ♪) are in the webfont only.</p>
       <div class="s16-sizes">
         <p class="nc-text16" style="font-size:var(--nc-size16-4);line-height:var(--nc-size16-4)">56 Coast</p>
         <p class="nc-text16" style="font-size:var(--nc-size16-3);line-height:var(--nc-size16-3)">42 The coast</p>
@@ -495,7 +495,7 @@ requestAnimationFrame(frame)</code></pre>
       <h3>Buttons, choices, meters</h3>
       <div class="row">
         <button class="nc-btn16">Continue</button>
-        <button class="nc-btn16">Start</button>
+        <button class="nc-btn16">▶ Start</button>
         <button class="nc-btn16 nc-btn16--cool">Items</button>
         <button class="nc-btn16" aria-pressed="true">Pressed</button>
         <button class="nc-btn16" disabled>Locked</button>
@@ -535,7 +535,7 @@ requestAnimationFrame(frame)</code></pre>
         <div class="nc-16">
           <div class="nc-box"><p class="nc-hud">.nc-box</p><p>A dark panel with a cyan edge and open corners.</p></div>
           <div class="nc-dialog" style="margin-top:16px"><p>"Follow the road east." <span class="nc-more"></span></p></div>
-          <p style="margin-top:16px"><button class="nc-btn">Continue</button> <button class="nc-btn nc-btn--pink">Start</button></p>
+          <p style="margin-top:16px"><button class="nc-btn">Continue</button> <button class="nc-btn nc-btn--pink">▶ Start</button></p>
           <div class="nc-meter nc-meter--pink" style="--nc-value:.6" role="meter" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
@@ -574,7 +574,7 @@ const big = selout(scale2x(sprite(SPRITES.gem)))</code></pre>
 
   <script type="module">
     import { COLORS, PAL, SKY, SUN, ROLES, GLYPHS, ABOVE, SPRITES, createPixelStage, makeCanvas, sprite, drawText, drawHearts, drawMeter, drawBanner, paintSky, paintSun, paintSea, paintHeadland, drawStars, paintReflection, DUSK,
-      GLYPHS16, TEXT16, DUSK16, drawText16, wrapText16, drawWindow16, drawGlove16, drawHearts16, paintBands, ramp15, scale2x, selout } from './dist/neon-coast.js'
+      GLYPHS16, WEBFONT16_EXTRA, TEXT16, DUSK16, drawText16, wrapText16, drawWindow16, drawGlove16, drawHearts16, paintBands, ramp15, scale2x, selout } from './dist/neon-coast.js'
 
     const letterOf = hex => Object.keys(PAL).find(k => PAL[k] === hex) ?? ''
     const swatch = (name, hex, note) => `<div class="sw"><span class="chip" style="background:var(--nc-${name})"></span><code>--nc-${name}</code><span>${hex}${note ? ' · ' + note : ''}</span></div>`
@@ -646,7 +646,7 @@ const big = selout(scale2x(sprite(SPRITES.gem)))</code></pre>
     requestAnimationFrame(frame)
 
     // The 16-bit section.
-    const g16 = Object.keys(GLYPHS16).filter(c => c !== ' ')
+    const g16 = [...Object.keys(GLYPHS16).filter(c => c !== ' '), ...Object.keys(WEBFONT16_EXTRA)]
     document.getElementById('glyphs16').innerHTML = g16.map(c => `<span>${c.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')}</span>`).join('')
     document.getElementById('sprites16').innerHTML = ['heart', 'gem', 'star', 'key', 'bomb', 'coin'].map(n => `<figure><nc-sprite name="${n}" scale="6" label="${n}"></nc-sprite> <nc-sprite name="${n}" scale="6" look="16" label="${n}, 16-bit"></nc-sprite><figcaption>${n}</figcaption></figure>`).join('')
 

@@ -284,7 +284,7 @@ requestAnimationFrame(frame)
 | font | `drawText`, `drawBigText`, `textWidth`, `bigTextWidth`, `wrapText`, `glyphRows`, `glyphAbove`, `GLYPHS`, `GLYPH_H` |
 | scenery | `paintSky`, `drawStars`, `paintSun`, `paintRidge`, `paintHeadland`, `paintSea`, `paintReflection`, `paintBeach`, `paintPalm`, `paintTreeLine`, `paintHouse`, `paintGrass`, `paintLamp`, `ditherGradient`, `disc`, `rect`, `hash2`, `noise1`, `DUSK` |
 | ui | `drawBox`, `drawWindow` (the first 16-bit window sketch), `drawDialog`, `drawBanner`, `drawMeter`, `drawHearts` |
-| font16 | `drawText16`, `textWidth16`, `wrapText16`, `glyphRows16`, `glyphExtra16`, `GLYPHS16`, `MARKS16_ABOVE`, `MARKS16_BELOW`, `ALIAS16`, `CAP16`, `LINE16`, `ABOVE16`, `BELOW16` |
+| font16 | `drawText16`, `textWidth16`, `wrapText16`, `glyphRows16`, `glyphExtra16`, `GLYPHS16`, `MARKS16_ABOVE`, `MARKS16_BELOW`, `ALIAS16`, `WEBFONT16_EXTRA`, `WEBFONT16_ALIAS`, `CAP16`, `LINE16`, `ABOVE16`, `BELOW16` |
 | ui16 | `drawWindow16(ctx, x, y, w, h, { tone, unit })`, `drawMore16`, `drawGlove16`, `drawHearts16`, `window16Rects`, `more16Rects`, `rowsToRects`, `rectsToSvg`, `GLOVE16`, `HEARTS16`, `WIN16_LEAD`, `WIN16_TRAIL` |
 | pixel16 | `scale2x(canvas)` and `epx(pixels, w, h)` (EPX), `selout(canvas)` and `seloutPixels`, `quantize15(imageData, { dither })`, `paintBands(ctx, x, y, w, h, stops, { dither, knit })`, `ramp15(keys, n)` |
 | scenery16 | `paintSky16`, `paintSun16`, `paintRidge16`, `paintClouds16`, `paintSea16`, `paintGlints16`, `drawDrift`, `DUSK16` |
@@ -330,7 +330,7 @@ Two ways in:
 
 | Class | What | Variants |
 |---|---|---|
-| `.nc-win` | the window: the game's gradient in hard five-bit bands, a two-ring bevel with round corners, a dark line inside, a soft three-step shadow; 16-bit letters | `--cool` (pause screen, item box) · `--flat` (no shadow) |
+| `.nc-win` | the window: the game's gradient in hard five-bit bands, a three-pixel bevel with round corners (two of white, a softer one inside, each shaded bottom and right), a dark line inside, a soft three-step shadow; 16-bit letters | `--cool` (pause screen, item box) · `--flat` (no shadow) |
 | `.nc-plate16` | the speaker's name on a plate riding the window's top edge (first child of `.nc-win`) | |
 | `.nc-btn16` | a small window; under the pointer, on focus, pressed or current it turns cool with gold letters | `--cool` |
 | `.nc-choices16` | answers with the pointing glove at the chosen one (`aria-current`, `aria-selected`, `aria-checked`, hover, focus) | `--column` |
@@ -357,13 +357,14 @@ Two ways in:
    inside the other.
 4. **Coloured outlines.** Art at 16-bit density gets selout: a dark outline
    takes the colour of what it holds (`<nc-sprite look="16">`, `selout()`).
-   Letters have a one-pixel drop (`--nc-drop16`), or a rim all round when
-   they lie on the world or mark the chosen answer (`--nc-rim16`).
+   Letters have a one-pixel drop (`--nc-drop16`), or a one-pixel rim all
+   round when they lie on the world or mark the chosen answer (`--nc-rim16`).
 5. **Never mix the two fonts in one window.** Neon Pixel 16 has the
-   letters, digits, Æ Ø Å É and ♥ × → ← ↑ ↓; it does not have ▶ ◆ ★ ♪ ✓ and
-   the other 8-bit symbols. A missing one falls back to the 5×7 font at a
-   size where it blurs — leave it out, or use a picture (the glove, the
-   arrow, a heart).
+   letters, digits, Æ Ø Å É, – — …, ♥ × → ← ↑ ↓, and in the webfont also
+   ▶ ◀ ▲ ▼ ■ | [ ] @ ❚ ♪ (the canvas `drawText16` draws those as ?, as the
+   game's does). It does not have ◆ ★ ✓ ◈ ⌂ and the other 8-bit symbols; a
+   missing one falls back to the 5×7 font at a size where it blurs — leave
+   it out, or use a picture (the glove, the arrow, a heart).
 6. **Colour and contrast.** White letters by default; gold for names and
    treasure, cyan for the chosen answer, dim for the others, pink only at
    28 px and up. The CSS ramps start where all of these pass WCAG AA on the
@@ -408,11 +409,15 @@ wrapText16(text, w - 48).forEach((line, i) => drawText16(g, line, 24, h - 59 + i
 game's shape so a resync is a paste: the glyph table from
 `themes/base/pixel/font16.ts` (`G`, `ABOVE`, `BELOW`, `ALIAS` →
 `GLYPHS16`, `MARKS16_ABOVE`, `MARKS16_BELOW`, `ALIAS16` in
-`src/js/font16.js`), the window's colours from
+`src/js/font16.js`; the webfont's stand-ins from the `extra` table in
+`scripts/make-pixel-font16.mjs` → `WEBFONT16_EXTRA`), the window's colours from
 `themes/zelda/render/hud16.ts` (`TONES`, the `paintWindow` outline, inner
 line and shadow, `SHADOW`, `RIM`, the skin's text colours, `INK` → `WIN16`,
-`TEXT16`, `INK16` in `src/js/tokens.js`), and the art (`HAND`, `HEART_*`
-→ `GLOVE16`, `HEARTS16` in `src/js/ui16.js`). Then `npm run font16` and
+`TEXT16`, `INK16` in `src/js/tokens.js`), the bevel's boxes in
+`paintWindow` → `window16Rects` in `src/js/ui16.js` (if its thickness
+changes, also the inset and `border-image-slice` of `.nc-win` in
+`src/css/sixteen.css`), and the art (`HAND`, `HEART_*` → `GLOVE16`,
+`HEARTS16` in `src/js/ui16.js`). Then `npm run font16` and
 `npm run build`.
 
 ## The font

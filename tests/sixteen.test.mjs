@@ -1,14 +1,14 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { GLYPHS16, MARKS16_ABOVE, MARKS16_BELOW, ALIAS16, CAP16, ABOVE16, BELOW16, glyphRows16, textWidth16, wrapText16 } from '../src/js/font16.js'
+import { GLYPHS16, MARKS16_ABOVE, MARKS16_BELOW, ALIAS16, WEBFONT16_EXTRA, WEBFONT16_ALIAS, CAP16, ABOVE16, BELOW16, glyphRows16, textWidth16, wrapText16 } from '../src/js/font16.js'
 import { GLYPHS, textWidth } from '../src/js/font.js'
 import { WIN16, WIN16_RAMPS, TEXT16, INK16, ramp5, rampAt, contrast } from '../src/js/tokens.js'
 import { epx, quantize15, seloutPixels, ramp15 } from '../src/js/pixel16.js'
 import { window16Rects, GLOVE16, HEARTS16 } from '../src/js/ui16.js'
 
 test('every 16-bit glyph is twelve rows of one width, drawn with # and .', () => {
-  for (const [ch, rows] of Object.entries(GLYPHS16)) {
+  for (const [ch, rows] of Object.entries({ ...GLYPHS16, ...WEBFONT16_EXTRA })) {
     assert.equal(rows.length, CAP16, `${ch} has ${rows.length} rows`)
     for (const row of rows) {
       assert.equal(row.length, rows[0].length, `${ch} has ragged rows`)
@@ -26,7 +26,8 @@ test('marks fit their letters and every alias lands on a glyph', () => {
     assert.ok(rows.length <= BELOW16)
     for (const row of rows) assert.equal(row.length, glyphRows16(ch)[0].length, `${ch}'s tail`)
   }
-  for (const [ch, to] of Object.entries(ALIAS16)) assert.ok(GLYPHS16[to], `${ch} aliases to missing ${to}`)
+  for (const [ch, to] of Object.entries({ ...ALIAS16, ...WEBFONT16_ALIAS })) assert.ok(GLYPHS16[to], `${ch} aliases to missing ${to}`)
+  for (const ch of Object.keys(WEBFONT16_EXTRA)) assert.ok(!GLYPHS16[ch], `${ch} is in both tables`)
   assert.deepEqual(glyphRows16('a'), GLYPHS16.A)
   assert.deepEqual(glyphRows16('§'), GLYPHS16['?'])
 })

@@ -184,19 +184,19 @@ export type Tone16 = {
      */
     bottom: readonly [number, number, number];
     /**
-     * the bevel's outer ring, top and left
+     * the bevel's two outer pixels, top and left
      */
     hi: string;
     /**
-     * the bevel's outer ring, bottom and right
+     * the bevel's two outer pixels, bottom and right
      */
     lo: string;
     /**
-     * the bevel's inner ring, top and left
+     * the bevel's softer inner pixel, top and left
      */
     hi2: string;
     /**
-     * the bevel's inner ring, bottom and right
+     * the bevel's softer inner pixel, bottom and right
      */
     lo2: string;
 };

@@ -35,7 +35,7 @@
     calc(1em / 14) 0 0 var(--nc-text16-shadow),
     0 calc(1em / 14) 0 var(--nc-text16-shadow),
     calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-shadow);
-  /* A line all the way round, and the drop outside it: letters straight on the world, the chosen answer. */
+  /* A one-pixel line all the way round: letters straight on the world, the chosen answer. */
   --nc-rim16:
     calc(-1em / 14) calc(-1em / 14) 0 var(--nc-text16-rim),
     0 calc(-1em / 14) 0 var(--nc-text16-rim),
@@ -44,10 +44,7 @@
     calc(1em / 14) 0 0 var(--nc-text16-rim),
     calc(-1em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
     0 calc(1em / 14) 0 var(--nc-text16-rim),
-    calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
-    calc(2em / 14) calc(2em / 14) 0 var(--nc-text16-rim),
-    calc(2em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
-    calc(1em / 14) calc(2em / 14) 0 var(--nc-text16-rim);
+    calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-rim);
 }
 
 /*
@@ -71,7 +68,7 @@
 /*
  * .nc-text16 — the 16-bit letters on anything: 14 px, white, the drop.
  *   --dim --hot --cool --prize --ok   colours (all AA on a hot window and on the night)
- *   --rim                              a line all the way round, for text on the world
+ *   --rim                              a one-pixel line all the way round, for text on the world
  * .nc-h16 — a heading: 28 px.  .nc-label16 — a small dim label.
  */
 .nc-text16,
@@ -129,8 +126,8 @@
 /*
  * .nc-win — the 16-bit window. The gradient is the game's, in its hard
  * five-bit bands (a new colour wherever a channel steps), stretched over the
- * window like the machine's per-scanline colour; the frame (outline, two
- * rings of bevel, the inner dark line and the three-step shadow) is one
+ * window like the machine's per-scanline colour; the frame (outline, the
+ * three-pixel bevel, the inner dark line and the three-step shadow) is one
  * picture laid round it with border-image, so its round corners are whole
  * pixels. The outline reaches one pixel out and the shadow five; the
  * margin leaves them room.
@@ -147,20 +144,21 @@
   --nc-win-frame: var(--nc-win-frame-hot);
   position: relative;
   box-sizing: border-box;
-  min-height: calc(12 * var(--nc-px16));
+  min-height: calc(16 * var(--nc-px16));
   margin: var(--nc-px16) calc(5 * var(--nc-px16)) calc(5 * var(--nc-px16)) var(--nc-px16);
-  /* The gradient fills the window inside the two rings of the bevel. */
+  /* The gradient fills the window inside the three pixels of the bevel. */
   background:
     var(--nc-win-ramp)
-    calc(2 * var(--nc-px16)) calc(2 * var(--nc-px16)) /
-    calc(100% - 4 * var(--nc-px16)) calc(100% - 4 * var(--nc-px16))
+    calc(3 * var(--nc-px16)) calc(3 * var(--nc-px16)) /
+    calc(100% - 6 * var(--nc-px16)) calc(100% - 6 * var(--nc-px16))
     no-repeat border-box;
   background-color: transparent;
   border: 0 solid transparent;
   border-radius: 0;
   border-image-source: var(--nc-win-frame);
-  border-image-slice: 8;
-  border-image-width: calc(8 * var(--nc-px16));
+  /* Nine pixels from each edge of the picture hold the corners, the bevel and the inner line. */
+  border-image-slice: 9;
+  border-image-width: calc(9 * var(--nc-px16));
   border-image-outset: var(--nc-px16) calc(5 * var(--nc-px16)) calc(5 * var(--nc-px16)) var(--nc-px16);
   border-image-repeat: stretch;
   box-shadow: none;

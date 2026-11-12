@@ -89,13 +89,29 @@ export const MARKS16_ABOVE: Record<string, string[]>;
  */
 export const MARKS16_BELOW: Record<string, string[]>;
 /**
- * What a character without a drawing draws as. É keeps its accent.
+ * What a character without a drawing draws as. É keeps its accent; the
+ * dashes and the ellipsis have drawings of their own.
  * @type {Record<string, string>}
  */
 export const ALIAS16: Record<string, string>;
 /**
+ * Stand-ins only the webfont has (the canvas font lacks them, as in the
+ * game): panel marks and what an address or a headline may hold, drawn in
+ * the same grid. A copy of the `extra` table in phareim.no's
+ * scripts/make-pixel-font16.mjs.
+ * @type {Record<string, string[]>}
+ */
+export const WEBFONT16_EXTRA: Record<string, string[]>;
+/**
+ * Characters the webfont draws with another one's glyph, besides ALIAS16
+ * (from the game's make-pixel-font16.py; its '–' → '-' is left out, since
+ * '–' has a drawing of its own now).
+ * @type {Record<string, string>}
+ */
+export const WEBFONT16_ALIAS: Record<string, string>;
+/**
  * How the dark under the letters lies: 'drop' is the text box's shadow
- * (right, below and the corner between), 'rim' a line all the way round and
- * the drop outside it, for text that lies straight on the world.
+ * (right, below and the corner between), 'rim' a one-pixel line all the way
+ * round, for text that lies straight on the world.
  */
 export type Edge16 = "drop" | "rim";

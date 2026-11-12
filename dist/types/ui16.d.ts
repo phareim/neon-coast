@@ -1,7 +1,8 @@
 /**
  * A window of w × h pixels as rects, in paint order, on a canvas of
  * (w + 6) × (h + 6) with the window's body at (1, 1): shadow, outline, the
- * two rings of the bevel, the gradient (one rect per band, unless `fill` is
+ * bevel (two pixels of the brightest light and a softer one inside, each
+ * darker along the bottom and the right), the gradient (one rect per band, unless `fill` is
  * false) and the inner line. `shadow: false` leaves the shadow out.
  * @param {number} w
  * @param {number} h
