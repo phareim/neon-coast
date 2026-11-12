@@ -9,6 +9,8 @@
  */
 import { createPixelStage, makeCanvas } from './stage.js'
 import { sprite, shade, SPRITES } from './sprites.js'
+import { scale2x, selout } from './pixel16.js'
+import { DUSK16, paintSky16, paintSun16, paintRidge16, paintClouds16, paintSea16, paintGlints16, drawDrift } from './scenery16.js'
 import {
   DUSK, paintSky, drawStars, paintSun, paintRidge, paintHeadland, paintSea, paintReflection, paintBeach,
   paintPalm, paintTreeLine, paintHouse, paintGrass, paintLamp, rect,
@@ -29,6 +31,8 @@ const ctx2d = c => /** @type {CanvasRenderingContext2D} */ (c.getContext('2d'))
  *   draws the moving parts and asks for lights
  * @property {(g: CanvasRenderingContext2D, t: number) => void} [glow] drawn after the light map, at full brightness
  * @property {number} horizon
+ * @property {number} [stars] star density (default 1)
+ * @property {import('./stage.js').PresentOptions} [finish] how the frame is presented, in place of the 8-bit look's
  */
 
 /** @type {Record<string, (w: number, h: number, o: { horizon: number, sunX: number | null }) => Layout>} */
@@ -154,6 +158,48 @@ const SCENES = {
 }
 
 /**
+ * The coast at dusk in the 16-bit language (`look="16"`), at twice the
+ * pixels: the sky in knitted bands, the striped sun in its halo, cloud
+ * streaks and two ridges that slide at their own speeds, and a sea that
+ * glints. No light map and no scanlines: the 16-bit machine's picture is
+ * clean, with a little bloom round the sun.
+ * @param {number} w
+ * @param {number} h
+ * @param {{ horizon: number, sunX: number | null }} o
+ * @returns {Layout}
+ */
+function coast16(w, h, o) {
+  const horizon = Math.round(h * o.horizon)
+  const r = Math.max(8, Math.round(Math.min(h * 0.2, w * 0.24)))
+  const sunX = o.sunX == null ? null : Math.round(w * o.sunX)
+  const back = makeCanvas(w, h)
+  paintSky16(ctx2d(back), w, horizon)
+  const front = makeCanvas(w, h)
+  const f = ctx2d(front)
+  if (sunX != null) paintSun16(f, sunX, horizon, r)
+  paintSea16(f, w, horizon, h)
+  // The layers that slide: seamless end to end, painted once.
+  const clouds = makeCanvas(w, horizon)
+  paintClouds16(ctx2d(clouds), w, Math.round(horizon * 0.3), Math.round(horizon * 0.82), { salt: 3 })
+  const far = makeCanvas(w, horizon + 1)
+  paintRidge16(ctx2d(far), w, horizon, Math.round(h * 0.08), { body: DUSK16.ridgeFar, rim: DUSK16.ridgeFarRim, haze: 0.35, salt: 4, sunX: sunX ?? undefined })
+  const near = makeCanvas(w, horizon + 1)
+  paintRidge16(ctx2d(near), w, horizon, Math.round(h * 0.035), { body: DUSK16.ridge, rim: DUSK16.ridgeRim, salt: 9, sunX: sunX ?? undefined })
+  return {
+    back, front, sun: null, horizon, stars: 0.3,
+    finish: { ambient: null, bloom: 0.8, overlay: false },
+    live(g, t, stage) {
+      // A gentle drift, in pixels a second: the far things slowest.
+      drawDrift(g, clouds, t * 4)
+      drawDrift(g, far, t * 1.5)
+      drawDrift(g, near, t * 3)
+      paintGlints16(g, w, horizon + 1, h, sunX, r, t)
+      if (sunX != null) stage.light(sunX, horizon - r * 0.4, r * 3, DUSK16.sun[3], 0.5)
+    },
+  }
+}
+
+/**
  * The sun sitting on the horizon, clipped there, alone on a layer.
  * @param {number} w
  * @param {number} horizon
@@ -187,12 +233,14 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block
  *   still    draw one frame and stop (always the case with reduced motion)
  *   bare     no light map, bloom, scanlines or vignette: just the pixels
  *   fixed    fill the viewport behind the page (position: fixed; z-index: -1)
+ *   look     "16": the coast in the 16-bit language, at twice the pixels
+ *            (`pixels` still counts 8-bit pixels; `scene` is ignored)
  *
  * Without a height of its own it is half as tall as it is wide
  * (--nc-scene-ratio: 50%). Give it a height, or insets, to size it.
  */
 export class NcScene extends Base {
-  static get observedAttributes() { return ['scene', 'pixels', 'horizon', 'sun', 'still', 'bare'] }
+  static get observedAttributes() { return ['scene', 'pixels', 'horizon', 'sun', 'still', 'bare', 'look'] }
 
   constructor() {
     super()
@@ -246,7 +294,11 @@ export class NcScene extends Base {
 
   _pixels() {
     const n = Number(this.getAttribute('pixels'))
-    return n >= 32 ? Math.round(n) : 180
+    return (n >= 32 ? Math.round(n) : 180) * (this._is16() ? 2 : 1)
+  }
+
+  _is16() {
+    return this.getAttribute('look') === '16'
   }
 
   _animated() {
@@ -270,7 +322,7 @@ export class NcScene extends Base {
       const sunAttr = this.getAttribute('sun')
       const sunX = sunAttr === 'none' ? null : clamp01(Number(sunAttr ?? 0.5), 0.5)
       const horizon = Math.min(0.85, Math.max(0.3, clamp01(Number(this.getAttribute('horizon') ?? 0.6), 0.6)))
-      const make = SCENES[this.getAttribute('scene') ?? 'coast'] ?? SCENES.coast
+      const make = this._is16() ? coast16 : SCENES[this.getAttribute('scene') ?? 'coast'] ?? SCENES.coast
       this._layout = make(stage.vw, stage.vh, { horizon, sunX })
       this._last = 0
     }
@@ -286,7 +338,7 @@ export class NcScene extends Base {
     const L = this._layout
     const g = stage.begin()
     g.drawImage(L.back, 0, 0)
-    drawStars(g, stage.vw, Math.max(4, L.horizon - 6), t, 1, 11)
+    drawStars(g, stage.vw, Math.max(4, L.horizon - 6), t, L.stars ?? 1, 11)
     g.drawImage(L.front, 0, 0)
     L.live(g, t, stage)
     if (L.sun) stage.emitImage(L.sun)
@@ -296,6 +348,7 @@ export class NcScene extends Base {
       ambient: bare ? null : '#b0a4dc',
       bloom: bare ? 0 : 1,
       overlay: !bare,
+      ...(L.finish && !bare ? L.finish : {}),
       afterLight: glow ? gg => glow(gg, t) : undefined,
     })
     if (animated && this._visible && !document.hidden) this._schedule()
@@ -333,9 +386,12 @@ canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edge
  *   shade   "body hi lo": outline and shade an 'X' map (e.g. "c w C")
  *   flip    mirror horizontally
  *   label   accessible name; without it the sprite is decorative
+ *   look    "16": the 16-bit treatment — taken up to twice the pixels with
+ *           EPX and selectively outlined (dark outlines take the colour they
+ *           hold); `scale` still counts source pixels, so keep it even
  */
 export class NcSprite extends Base {
-  static get observedAttributes() { return ['name', 'scale', 'colors', 'shade', 'flip', 'label'] }
+  static get observedAttributes() { return ['name', 'scale', 'colors', 'shade', 'flip', 'label', 'look'] }
 
   constructor() {
     super()
@@ -383,13 +439,15 @@ export class NcSprite extends Base {
     const w = rows[0].length
     const h = rows.length
     const scale = Math.max(1, Number(this.getAttribute('scale')) || 4)
-    canvas.width = w
-    canvas.height = h
+    const art = sprite(rows, parseColors(this.getAttribute('colors')), this.hasAttribute('flip'))
+    const hi = this.getAttribute('look') === '16'
+    canvas.width = hi ? w * 2 : w
+    canvas.height = hi ? h * 2 : h
     canvas.style.width = `${w * scale}px`
     canvas.style.height = `${h * scale}px`
     const g = ctx2d(canvas)
-    g.clearRect(0, 0, w, h)
-    g.drawImage(sprite(rows, parseColors(this.getAttribute('colors')), this.hasAttribute('flip')), 0, 0)
+    g.clearRect(0, 0, canvas.width, canvas.height)
+    g.drawImage(hi ? selout(scale2x(art)) : art, 0, 0)
   }
 }
 

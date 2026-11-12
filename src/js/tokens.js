@@ -119,6 +119,172 @@ export const UI = {
   'window-hi': 'rgba(160, 190, 255, 0.5)',
 }
 
+// ---------------------------------------------------------------------------
+// The 16-bit language
+// ---------------------------------------------------------------------------
+// Copied from phareim.no, themes/zelda/render/hud16.ts (TONES, SHADOW, RIM,
+// HIRES_WINDOW_SKIN, INK and the paintWindow colours). The game is the source:
+// to resync, copy the values again and run `npm run build`.
+
+/**
+ * @typedef {object} Tone16
+ * @property {readonly [number, number, number]} top the gradient's first scanline, rgb
+ * @property {readonly [number, number, number]} bottom its last scanline, rgb
+ * @property {string} hi the bevel's outer ring, top and left
+ * @property {string} lo the bevel's outer ring, bottom and right
+ * @property {string} hi2 the bevel's inner ring, top and left
+ * @property {string} lo2 the bevel's inner ring, bottom and right
+ */
+
+/**
+ * The 16-bit window: its two tones, and what lies round and under it.
+ * `hot` (deep blue down to indigo) is the dialog box, a label, the thing in
+ * use; `cool` (sea green down to night blue) is the pause screen, the item
+ * box, a name plate. CSS: `--nc-win-hot-top`, `--nc-win-outline`, …
+ */
+export const WIN16 = {
+  /** @type {Tone16} */
+  hot: { top: [58, 74, 204], bottom: [36, 14, 104], hi: '#ffffff', lo: '#aab2ea', hi2: '#c8d0ff', lo2: '#6c74c4' },
+  /** @type {Tone16} */
+  cool: { top: [34, 132, 164], bottom: [12, 44, 92], hi: '#ffffff', lo: '#a4c8e4', hi2: '#c4ecff', lo2: '#5c98c0' },
+  /** The dark line round the bevel. */
+  outline: '#070a2c',
+  /** The line inside the bevel: heavier under the top and left edge, lighter along the bottom and right. */
+  inner: 'rgba(6,8,44,0.62)',
+  innerSoft: 'rgba(6,8,44,0.36)',
+  /** The shadow on the world, in three steps that soften its edge (nearest first). */
+  shadow: ['rgba(4,4,30,0.22)', 'rgba(4,4,30,0.2)', 'rgba(4,4,30,0.14)'],
+}
+
+/** The 16-bit letters' colours (HIRES_WINDOW_SKIN). CSS: `--nc-text16`, `--nc-text16-<name>`. */
+export const TEXT16 = {
+  text: '#ffffff',
+  /** Under the letters in a window: right, below and the corner between. */
+  shadow: '#0a0c38',
+  /** All the way round letters that lie straight on the world (and the chosen answer). */
+  rim: '#06081f',
+  dim: '#b8c6fa',
+  faint: '#7482cc',
+  hot: '#ff8fd4',
+  cool: '#8cecff',
+  prize: '#ffe070',
+  ok: '#aaf472',
+  /** The "more" arrow: its top row and the rest. */
+  more: '#e4fbff',
+  moreLo: '#8cecff',
+}
+
+/** The 16-bit icons' palette: the hearts and the pointing glove (hud16.ts INK). One letter per colour, as PAL. */
+export const INK16 = {
+  k: '#12061c', // rim
+  w: '#ffffff',
+  m: '#ffa0e4', // light on the heart
+  p: '#ff3aa8',
+  P: '#c2187c', // the heart's shaded side
+  D: '#7c0e58',
+  K: '#2a1a4a', // an empty heart
+  u: '#463672',
+  g: '#c8cef4', // the glove's shade
+}
+
+/** One channel in the machine's five bits (hud16.ts `five`). @param {number} v */
+export const five = v => Math.min(248, Math.round(v / 8) * 8)
+
+/** @param {number} n */
+const hex2 = n => n.toString(16).padStart(2, '0')
+/** @param {readonly number[]} c */
+const rgbHex = c => '#' + c.map(hex2).join('')
+
+/**
+ * The colour of a tone's gradient at `f` (0 top, 1 bottom), each channel
+ * quantised to five bits, as the window painter does per scanline.
+ * @param {Tone16} tone
+ * @param {number} f
+ * @returns {string}
+ */
+export function rampAt(tone, f) {
+  return rgbHex([0, 1, 2].map(i => five(tone.top[i] + (tone.bottom[i] - tone.top[i]) * f)))
+}
+
+/**
+ * The bands of a tone's gradient: where the five-bit value of any channel
+ * changes, a new band starts. `from` drops the top of the ramp (0–1) and
+ * stretches the rest over the window; `at` is where each band starts, 0–1.
+ * @param {Tone16} tone
+ * @param {number} [from]
+ * @returns {{ color: string, at: number }[]}
+ */
+export function ramp5(tone, from = 0) {
+  /** @type {number[]} */
+  const cuts = []
+  for (let i = 0; i < 3; i++) {
+    const a = tone.top[i]
+    const d = tone.bottom[i] - a
+    if (!d) continue
+    // A channel steps where its value crosses a half-step: 8k + 4.
+    for (let k = 0; k < 32; k++) {
+      const f = (8 * k + 4 - a) / d
+      if (f > from && f < 1) cuts.push(f)
+    }
+  }
+  const edges = [from, ...[...new Set(cuts)].sort((x, y) => x - y), 1]
+  /** @type {{ color: string, at: number }[]} */
+  const out = []
+  for (let j = 0; j < edges.length - 1; j++) {
+    const color = rampAt(tone, (edges[j] + edges[j + 1]) / 2)
+    if (out.length && out[out.length - 1].color === color) continue
+    out.push({ color, at: Math.round(((edges[j] - from) / (1 - from)) * 1e4) / 1e4 })
+  }
+  return out
+}
+
+/**
+ * WCAG contrast ratio of two #rrggbb colours.
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
+export function contrast(a, b) {
+  /** @param {string} h */
+  const lum = h => {
+    const [r, g, bl] = [1, 3, 5].map(i => {
+      const c = parseInt(h.slice(i, i + 2), 16) / 255
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+    })
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl
+  }
+  const x = lum(a)
+  const y = lum(b)
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05)
+}
+
+/**
+ * How far down a tone's ramp every one of `texts` first reads at WCAG AA
+ * (4.5:1), in 1/256 steps. The ramps darken downwards, so the rest passes too.
+ * @param {Tone16} tone
+ * @param {readonly string[]} texts
+ * @returns {number}
+ */
+export function readableFrom(tone, texts) {
+  for (let s = 0; s <= 256; s++) {
+    const bg = rampAt(tone, s / 256)
+    if (texts.every(t => contrast(t, bg) >= 4.5)) return s / 256
+  }
+  return 1
+}
+
+/**
+ * The ramps the CSS paints: the game's, started where the text on them
+ * passes AA. In a hot window that is white, dim, cyan, gold and lime text
+ * (pink only at 28 px and up); in a cool one white; on a name plate gold.
+ * CSS: `--nc-win-hot`, `--nc-win-cool`, `--nc-win-plate` (gradients).
+ */
+export const WIN16_RAMPS = {
+  hot: ramp5(WIN16.hot, readableFrom(WIN16.hot, [TEXT16.text, TEXT16.dim, TEXT16.cool, TEXT16.prize, TEXT16.ok])),
+  cool: ramp5(WIN16.cool, readableFrom(WIN16.cool, [TEXT16.text])),
+  plate: ramp5(WIN16.cool, readableFrom(WIN16.cool, [TEXT16.prize])),
+}
+
 /**
  * What each colour is for. CSS: `--nc-<role>: var(--nc-<colour>)`.
  * Cyan is the interface, pink is the call to action (and "you"), gold is

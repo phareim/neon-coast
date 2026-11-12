@@ -18,6 +18,8 @@ export function defineElements(): void;
  *   still    draw one frame and stop (always the case with reduced motion)
  *   bare     no light map, bloom, scanlines or vignette: just the pixels
  *   fixed    fill the viewport behind the page (position: fixed; z-index: -1)
+ *   look     "16": the coast in the 16-bit language, at twice the pixels
+ *            (`pixels` still counts 8-bit pixels; `scene` is ignored)
  *
  * Without a height of its own it is half as tall as it is wide
  * (--nc-scene-ratio: 50%). Give it a height, or insets, to size it.
@@ -39,6 +41,7 @@ export class NcScene extends HTMLElement {
     disconnectedCallback(): void;
     attributeChangedCallback(): void;
     _pixels(): number;
+    _is16(): boolean;
     _animated(): boolean;
     _schedule(): void;
     /** @param {number} now */
@@ -64,6 +67,9 @@ export class NcScene extends HTMLElement {
  *   shade   "body hi lo": outline and shade an 'X' map (e.g. "c w C")
  *   flip    mirror horizontally
  *   label   accessible name; without it the sprite is decorative
+ *   look    "16": the 16-bit treatment — taken up to twice the pixels with
+ *           EPX and selectively outlined (dark outlines take the colour they
+ *           hold); `scale` still counts source pixels, so keep it even
  */
 export class NcSprite extends HTMLElement {
     static get observedAttributes(): string[];
@@ -97,4 +103,12 @@ export type Layout = {
      */
     glow?: ((g: CanvasRenderingContext2D, t: number) => void) | undefined;
     horizon: number;
+    /**
+     * star density (default 1)
+     */
+    stars?: number | undefined;
+    /**
+     * how the frame is presented, in place of the 8-bit look's
+     */
+    finish?: import("./stage.js").PresentOptions | undefined;
 };

@@ -3,6 +3,9 @@
  *   Neon Pixel     the 5×7 letters — the interface's voice. Built from the
  *                  canvas font (src/js/font.js) by `npm run font`; the
  *                  bundled CSS carries it inline, so it never flashes.
+ *   Neon Pixel 16  the 16-bit language's letters, twice as fine (opt-in,
+ *                  see sixteen.css). Built from src/js/font16.js by
+ *                  `npm run font16`; inline in the bundle as well.
  *   Space Grotesk  the human voice: prose and long text.
  *   Space Mono     the machine voice: code, numbers, what people type.
  * Paths are relative to this file in the repo; the build points them at
@@ -15,6 +18,15 @@
   /* block, not swap: the grid must never be drawn in a fallback face. */
   font-display: block;
   src: url("../../dist/fonts/neon-pixel.woff2") format("woff2"), url("../../dist/fonts/neon-pixel.woff") format("woff");
+}
+
+/* Neon Pixel 16: the 16-bit letters (src/js/font16.js, `npm run font16`), inline in the bundle too. */
+@font-face {
+  font-family: "Neon Pixel 16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../../dist/fonts/neon-pixel-16.woff2") format("woff2"), url("../../dist/fonts/neon-pixel-16.woff") format("woff");
 }
 
 @font-face {

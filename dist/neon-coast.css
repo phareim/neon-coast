@@ -78,6 +78,55 @@
   --nc-ok: var(--nc-lime);
   --nc-warn: var(--nc-orange);
   --nc-danger: var(--nc-red);
+
+  /* The 16-bit window (WIN16): its two tones, the line round it, the line inside it and its shadow */
+  --nc-win-hot-top: #3a4acc;
+  --nc-win-hot-bottom: #240e68;
+  --nc-win-hot-hi: #ffffff;
+  --nc-win-hot-lo: #aab2ea;
+  --nc-win-hot-hi2: #c8d0ff;
+  --nc-win-hot-lo2: #6c74c4;
+  --nc-win-cool-top: #2284a4;
+  --nc-win-cool-bottom: #0c2c5c;
+  --nc-win-cool-hi: #ffffff;
+  --nc-win-cool-lo: #a4c8e4;
+  --nc-win-cool-hi2: #c4ecff;
+  --nc-win-cool-lo2: #5c98c0;
+  --nc-win-outline: #070a2c;
+  --nc-win-inner: rgba(6,8,44,0.62);
+  --nc-win-inner-soft: rgba(6,8,44,0.36);
+  --nc-win-shadow-1: rgba(4,4,30,0.22);
+  --nc-win-shadow-2: rgba(4,4,30,0.2);
+  --nc-win-shadow-3: rgba(4,4,30,0.14);
+
+  /* The ramps the CSS paints, in hard five-bit bands (WIN16_RAMPS) */
+  --nc-win-hot: linear-gradient(180deg, #3840c0 0% 6.5%, #3840b8 6.5% 14.67%, #3838b8 14.67% 15.41%, #3838b0 15.41% 19.05%, #3038b0 19.05% 24.31%, #3038a8 24.31% 29.51%, #3030a8 29.51% 33.22%, #3030a0 33.22% 42.12%, #303098 42.12% 44.35%, #302898 44.35% 51.03%, #302890 51.03% 59.19%, #302090 59.19% 59.53%, #282090 59.53% 59.93%, #282088 59.93% 68.83%, #282080 68.83% 74.03%, #281880 74.03% 77.74%, #281878 77.74% 86.64%, #281870 86.64% 88.87%, #281070 88.87% 95.55%, #281068 95.55% 100%);
+  --nc-win-cool: linear-gradient(180deg, #2080a0 0% 8.73%, #2078a0 8.73% 10.76%, #207898 10.76% 17.86%, #207098 17.86% 21.92%, #207090 21.92% 26.99%, #186890 26.99% 33.07%, #186888 33.07% 36.11%, #186088 36.11% 44.23%, #186080 44.23% 45.24%, #185880 45.24% 54.37%, #185080 54.37% 55.38%, #185078 55.38% 63.49%, #104878 63.49% 66.54%, #104870 66.54% 72.62%, #104070 72.62% 77.69%, #104068 77.69% 81.75%, #103868 81.75% 88.85%, #103860 88.85% 90.87%, #103060 90.87% 100%);
+  --nc-win-plate: linear-gradient(180deg, #186890 0% 8.24%, #186888 8.24% 12.41%, #186088 12.41% 23.54%, #186080 23.54% 24.93%, #185880 24.93% 37.44%, #185080 37.44% 38.83%, #185078 38.83% 49.95%, #104878 49.95% 54.12%, #104870 54.12% 62.46%, #104070 62.46% 69.41%, #104068 69.41% 74.98%, #103868 74.98% 84.71%, #103860 84.71% 87.49%, #103060 87.49% 100%);
+
+  /* The 16-bit letters (TEXT16) */
+  --nc-text16: #ffffff;
+  --nc-text16-shadow: #0a0c38;
+  --nc-text16-rim: #06081f;
+  --nc-text16-dim: #b8c6fa;
+  --nc-text16-faint: #7482cc;
+  --nc-text16-hot: #ff8fd4;
+  --nc-text16-cool: #8cecff;
+  --nc-text16-prize: #ffe070;
+  --nc-text16-ok: #aaf472;
+  --nc-text16-more: #e4fbff;
+  --nc-text16-more-lo: #8cecff;
+
+  /* Pictures drawn from src/js/ui16.js: the window frame (outline, bevel, inner line, shadow), the glove, the arrow, the hearts */
+  --nc-win-frame-hot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30' shape-rendering='crispEdges'%3E%3Crect x='7' y='4' width='18' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='7' y='29' width='18' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='5' y='5' width='22' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='5' y='28' width='22' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='6' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='27' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='7' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='26' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='3' y='8' width='26' height='18' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='5' y='3' width='20' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='5' y='28' width='20' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='4' y='4' width='22' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='4' y='27' width='22' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='3' y='5' width='24' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='3' y='26' width='24' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='2' y='6' width='26' height='20' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='4' y='2' width='20' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='4' y='27' width='20' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='3' y='3' width='22' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='3' y='26' width='22' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='2' y='4' width='24' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='2' y='25' width='24' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='1' y='5' width='26' height='20' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='3' y='0' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='3' y='25' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='1' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='24' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='2' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='23' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='0' y='3' width='26' height='20' fill='%23070a2c'/%3E%3Crect x='3' y='1' width='20' height='1' fill='%23aab2ea'/%3E%3Crect x='3' y='24' width='20' height='1' fill='%23aab2ea'/%3E%3Crect x='2' y='2' width='22' height='1' fill='%23aab2ea'/%3E%3Crect x='2' y='23' width='22' height='1' fill='%23aab2ea'/%3E%3Crect x='1' y='3' width='24' height='20' fill='%23aab2ea'/%3E%3Crect x='3' y='1' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='3' y='23' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='2' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='22' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='3' width='23' height='19' fill='%23ffffff'/%3E%3Crect x='3' y='2' width='20' height='1' fill='%236c74c4'/%3E%3Crect x='3' y='23' width='20' height='1' fill='%236c74c4'/%3E%3Crect x='2' y='3' width='22' height='20' fill='%236c74c4'/%3E%3Crect x='3' y='2' width='19' height='1' fill='%23c8d0ff'/%3E%3Crect x='3' y='22' width='19' height='1' fill='%23c8d0ff'/%3E%3Crect x='2' y='3' width='21' height='19' fill='%23c8d0ff'/%3E%3Crect x='3' y='3' width='20' height='1' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='3' y='4' width='1' height='19' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='4' y='22' width='19' height='1' fill='rgba(6,8,44,0.36)'/%3E%3Crect x='22' y='4' width='1' height='18' fill='rgba(6,8,44,0.36)'/%3E%3C/svg%3E");
+  --nc-win-frame-cool: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30' shape-rendering='crispEdges'%3E%3Crect x='7' y='4' width='18' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='7' y='29' width='18' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='5' y='5' width='22' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='5' y='28' width='22' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='6' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='27' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='7' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='4' y='26' width='24' height='1' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='3' y='8' width='26' height='18' fill='rgba(4,4,30,0.14)'/%3E%3Crect x='5' y='3' width='20' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='5' y='28' width='20' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='4' y='4' width='22' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='4' y='27' width='22' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='3' y='5' width='24' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='3' y='26' width='24' height='1' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='2' y='6' width='26' height='20' fill='rgba(4,4,30,0.2)'/%3E%3Crect x='4' y='2' width='20' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='4' y='27' width='20' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='3' y='3' width='22' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='3' y='26' width='22' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='2' y='4' width='24' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='2' y='25' width='24' height='1' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='1' y='5' width='26' height='20' fill='rgba(4,4,30,0.22)'/%3E%3Crect x='3' y='0' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='3' y='25' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='1' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='24' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='2' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='23' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='0' y='3' width='26' height='20' fill='%23070a2c'/%3E%3Crect x='3' y='1' width='20' height='1' fill='%23a4c8e4'/%3E%3Crect x='3' y='24' width='20' height='1' fill='%23a4c8e4'/%3E%3Crect x='2' y='2' width='22' height='1' fill='%23a4c8e4'/%3E%3Crect x='2' y='23' width='22' height='1' fill='%23a4c8e4'/%3E%3Crect x='1' y='3' width='24' height='20' fill='%23a4c8e4'/%3E%3Crect x='3' y='1' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='3' y='23' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='2' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='22' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='3' width='23' height='19' fill='%23ffffff'/%3E%3Crect x='3' y='2' width='20' height='1' fill='%235c98c0'/%3E%3Crect x='3' y='23' width='20' height='1' fill='%235c98c0'/%3E%3Crect x='2' y='3' width='22' height='20' fill='%235c98c0'/%3E%3Crect x='3' y='2' width='19' height='1' fill='%23c4ecff'/%3E%3Crect x='3' y='22' width='19' height='1' fill='%23c4ecff'/%3E%3Crect x='2' y='3' width='21' height='19' fill='%23c4ecff'/%3E%3Crect x='3' y='3' width='20' height='1' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='3' y='4' width='1' height='19' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='4' y='22' width='19' height='1' fill='rgba(6,8,44,0.36)'/%3E%3Crect x='22' y='4' width='1' height='18' fill='rgba(6,8,44,0.36)'/%3E%3C/svg%3E");
+  --nc-win-frame-hot-flat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26' shape-rendering='crispEdges'%3E%3Crect x='3' y='0' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='3' y='25' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='1' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='24' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='2' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='23' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='0' y='3' width='26' height='20' fill='%23070a2c'/%3E%3Crect x='3' y='1' width='20' height='1' fill='%23aab2ea'/%3E%3Crect x='3' y='24' width='20' height='1' fill='%23aab2ea'/%3E%3Crect x='2' y='2' width='22' height='1' fill='%23aab2ea'/%3E%3Crect x='2' y='23' width='22' height='1' fill='%23aab2ea'/%3E%3Crect x='1' y='3' width='24' height='20' fill='%23aab2ea'/%3E%3Crect x='3' y='1' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='3' y='23' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='2' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='22' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='3' width='23' height='19' fill='%23ffffff'/%3E%3Crect x='3' y='2' width='20' height='1' fill='%236c74c4'/%3E%3Crect x='3' y='23' width='20' height='1' fill='%236c74c4'/%3E%3Crect x='2' y='3' width='22' height='20' fill='%236c74c4'/%3E%3Crect x='3' y='2' width='19' height='1' fill='%23c8d0ff'/%3E%3Crect x='3' y='22' width='19' height='1' fill='%23c8d0ff'/%3E%3Crect x='2' y='3' width='21' height='19' fill='%23c8d0ff'/%3E%3Crect x='3' y='3' width='20' height='1' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='3' y='4' width='1' height='19' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='4' y='22' width='19' height='1' fill='rgba(6,8,44,0.36)'/%3E%3Crect x='22' y='4' width='1' height='18' fill='rgba(6,8,44,0.36)'/%3E%3C/svg%3E");
+  --nc-win-frame-cool-flat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26' shape-rendering='crispEdges'%3E%3Crect x='3' y='0' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='3' y='25' width='20' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='1' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='2' y='24' width='22' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='2' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='1' y='23' width='24' height='1' fill='%23070a2c'/%3E%3Crect x='0' y='3' width='26' height='20' fill='%23070a2c'/%3E%3Crect x='3' y='1' width='20' height='1' fill='%23a4c8e4'/%3E%3Crect x='3' y='24' width='20' height='1' fill='%23a4c8e4'/%3E%3Crect x='2' y='2' width='22' height='1' fill='%23a4c8e4'/%3E%3Crect x='2' y='23' width='22' height='1' fill='%23a4c8e4'/%3E%3Crect x='1' y='3' width='24' height='20' fill='%23a4c8e4'/%3E%3Crect x='3' y='1' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='3' y='23' width='19' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='2' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='2' y='22' width='21' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='3' width='23' height='19' fill='%23ffffff'/%3E%3Crect x='3' y='2' width='20' height='1' fill='%235c98c0'/%3E%3Crect x='3' y='23' width='20' height='1' fill='%235c98c0'/%3E%3Crect x='2' y='3' width='22' height='20' fill='%235c98c0'/%3E%3Crect x='3' y='2' width='19' height='1' fill='%23c4ecff'/%3E%3Crect x='3' y='22' width='19' height='1' fill='%23c4ecff'/%3E%3Crect x='2' y='3' width='21' height='19' fill='%23c4ecff'/%3E%3Crect x='3' y='3' width='20' height='1' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='3' y='4' width='1' height='19' fill='rgba(6,8,44,0.62)'/%3E%3Crect x='4' y='22' width='19' height='1' fill='rgba(6,8,44,0.36)'/%3E%3Crect x='22' y='4' width='1' height='18' fill='rgba(6,8,44,0.36)'/%3E%3C/svg%3E");
+  --nc-glove16: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='11' viewBox='0 0 14 11' shape-rendering='crispEdges'%3E%3Crect x='5' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='4' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='1' width='4' height='1' fill='%23ffffff'/%3E%3Crect x='9' y='1' width='4' height='1' fill='%2312061c'/%3E%3Crect x='1' y='2' width='3' height='1' fill='%2312061c'/%3E%3Crect x='4' y='2' width='9' height='1' fill='%23ffffff'/%3E%3Crect x='13' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='3' width='12' height='1' fill='%23ffffff'/%3E%3Crect x='13' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='4' width='6' height='1' fill='%23ffffff'/%3E%3Crect x='7' y='4' width='6' height='1' fill='%2312061c'/%3E%3Crect x='0' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='5' width='8' height='1' fill='%23ffffff'/%3E%3Crect x='9' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='6' width='6' height='1' fill='%23ffffff'/%3E%3Crect x='7' y='6' width='1' height='1' fill='%23c8cef4'/%3E%3Crect x='8' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='7' width='8' height='1' fill='%23ffffff'/%3E%3Crect x='9' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='8' width='5' height='1' fill='%23ffffff'/%3E%3Crect x='7' y='8' width='1' height='1' fill='%23c8cef4'/%3E%3Crect x='8' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='9' width='4' height='1' fill='%23c8cef4'/%3E%3Crect x='7' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='10' width='4' height='1' fill='%2312061c'/%3E%3C/svg%3E");
+  --nc-more16: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='6' viewBox='0 0 11 6' shape-rendering='crispEdges'%3E%3Crect x='1' y='1' width='10' height='1' fill='%230a0c38'/%3E%3Crect x='2' y='2' width='8' height='1' fill='%230a0c38'/%3E%3Crect x='3' y='3' width='6' height='1' fill='%230a0c38'/%3E%3Crect x='4' y='4' width='4' height='1' fill='%230a0c38'/%3E%3Crect x='5' y='5' width='2' height='1' fill='%230a0c38'/%3E%3Crect x='0' y='0' width='10' height='1' fill='%23e4fbff'/%3E%3Crect x='1' y='1' width='8' height='1' fill='%238cecff'/%3E%3Crect x='2' y='2' width='6' height='1' fill='%238cecff'/%3E%3Crect x='3' y='3' width='4' height='1' fill='%238cecff'/%3E%3Crect x='4' y='4' width='2' height='1' fill='%238cecff'/%3E%3C/svg%3E");
+  --nc-heart16-full: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='9' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='1' width='2' height='1' fill='%23ffa0e4'/%3E%3Crect x='4' y='1' width='2' height='1' fill='%23ff3aa8'/%3E%3Crect x='6' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='9' y='1' width='4' height='1' fill='%23ff3aa8'/%3E%3Crect x='13' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='2' width='1' height='1' fill='%23ffa0e4'/%3E%3Crect x='2' y='2' width='2' height='1' fill='%23ffffff'/%3E%3Crect x='4' y='2' width='3' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='2' width='5' height='1' fill='%23ff3aa8'/%3E%3Crect x='13' y='2' width='1' height='1' fill='%23c2187c'/%3E%3Crect x='14' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23ffa0e4'/%3E%3Crect x='2' y='3' width='1' height='1' fill='%23ffffff'/%3E%3Crect x='3' y='3' width='9' height='1' fill='%23ff3aa8'/%3E%3Crect x='12' y='3' width='2' height='1' fill='%23c2187c'/%3E%3Crect x='14' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='4' width='1' height='1' fill='%23ffa0e4'/%3E%3Crect x='2' y='4' width='10' height='1' fill='%23ff3aa8'/%3E%3Crect x='12' y='4' width='2' height='1' fill='%23c2187c'/%3E%3Crect x='14' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='5' width='11' height='1' fill='%23ff3aa8'/%3E%3Crect x='12' y='5' width='2' height='1' fill='%23c2187c'/%3E%3Crect x='14' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='6' width='10' height='1' fill='%23ff3aa8'/%3E%3Crect x='11' y='6' width='2' height='1' fill='%23c2187c'/%3E%3Crect x='13' y='6' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='14' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='7' width='9' height='1' fill='%23ff3aa8'/%3E%3Crect x='11' y='7' width='1' height='1' fill='%23c2187c'/%3E%3Crect x='12' y='7' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='13' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='8' width='7' height='1' fill='%23ff3aa8'/%3E%3Crect x='10' y='8' width='1' height='1' fill='%23c2187c'/%3E%3Crect x='11' y='8' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='12' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='4' y='9' width='5' height='1' fill='%23ff3aa8'/%3E%3Crect x='9' y='9' width='1' height='1' fill='%23c2187c'/%3E%3Crect x='10' y='9' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='11' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='4' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='10' width='3' height='1' fill='%23ff3aa8'/%3E%3Crect x='8' y='10' width='1' height='1' fill='%23c2187c'/%3E%3Crect x='9' y='10' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='10' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='6' y='11' width='1' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='11' width='1' height='1' fill='%23c2187c'/%3E%3Crect x='8' y='11' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='9' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='6' y='12' width='1' height='1' fill='%2312061c'/%3E%3Crect x='7' y='12' width='1' height='1' fill='%237c0e58'/%3E%3Crect x='8' y='12' width='1' height='1' fill='%2312061c'/%3E%3Crect x='7' y='13' width='1' height='1' fill='%2312061c'/%3E%3C/svg%3E");
+  --nc-heart16-half: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='9' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='1' width='2' height='1' fill='%23ffa0e4'/%3E%3Crect x='4' y='1' width='2' height='1' fill='%23ff3aa8'/%3E%3Crect x='6' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='9' y='1' width='4' height='1' fill='%23463672'/%3E%3Crect x='13' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='2' width='1' height='1' fill='%23ffa0e4'/%3E%3Crect x='2' y='2' width='2' height='1' fill='%23ffffff'/%3E%3Crect x='4' y='2' width='3' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='2' width='5' height='1' fill='%232a1a4a'/%3E%3Crect x='13' y='2' width='1' height='1' fill='%23463672'/%3E%3Crect x='14' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23ffa0e4'/%3E%3Crect x='2' y='3' width='1' height='1' fill='%23ffffff'/%3E%3Crect x='3' y='3' width='4' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='3' width='6' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='4' width='1' height='1' fill='%23ffa0e4'/%3E%3Crect x='2' y='4' width='5' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='4' width='6' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='5' width='6' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='5' width='6' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='6' width='6' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='6' width='6' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='7' width='5' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='7' width='5' height='1' fill='%232a1a4a'/%3E%3Crect x='13' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='8' width='4' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='8' width='4' height='1' fill='%232a1a4a'/%3E%3Crect x='12' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='4' y='9' width='3' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='9' width='3' height='1' fill='%232a1a4a'/%3E%3Crect x='11' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='4' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='10' width='2' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='10' width='2' height='1' fill='%232a1a4a'/%3E%3Crect x='10' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='6' y='11' width='1' height='1' fill='%23ff3aa8'/%3E%3Crect x='7' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='11' width='1' height='1' fill='%232a1a4a'/%3E%3Crect x='9' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='6' y='12' width='3' height='1' fill='%2312061c'/%3E%3Crect x='7' y='13' width='1' height='1' fill='%2312061c'/%3E%3C/svg%3E");
+  --nc-heart16-empty: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='9' y='0' width='4' height='1' fill='%2312061c'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='1' width='4' height='1' fill='%23463672'/%3E%3Crect x='6' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='9' y='1' width='4' height='1' fill='%23463672'/%3E%3Crect x='13' y='1' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='2' width='2' height='1' fill='%23463672'/%3E%3Crect x='3' y='2' width='4' height='1' fill='%232a1a4a'/%3E%3Crect x='7' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='8' y='2' width='5' height='1' fill='%232a1a4a'/%3E%3Crect x='13' y='2' width='1' height='1' fill='%23463672'/%3E%3Crect x='14' y='2' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23463672'/%3E%3Crect x='2' y='3' width='12' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='3' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='4' width='1' height='1' fill='%23463672'/%3E%3Crect x='2' y='4' width='12' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='4' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='5' width='13' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='5' width='1' height='1' fill='%2312061c'/%3E%3Crect x='0' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='6' width='13' height='1' fill='%232a1a4a'/%3E%3Crect x='14' y='6' width='1' height='1' fill='%2312061c'/%3E%3Crect x='1' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='7' width='11' height='1' fill='%232a1a4a'/%3E%3Crect x='13' y='7' width='1' height='1' fill='%2312061c'/%3E%3Crect x='2' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='8' width='9' height='1' fill='%232a1a4a'/%3E%3Crect x='12' y='8' width='1' height='1' fill='%2312061c'/%3E%3Crect x='3' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='4' y='9' width='7' height='1' fill='%232a1a4a'/%3E%3Crect x='11' y='9' width='1' height='1' fill='%2312061c'/%3E%3Crect x='4' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='10' width='5' height='1' fill='%232a1a4a'/%3E%3Crect x='10' y='10' width='1' height='1' fill='%2312061c'/%3E%3Crect x='5' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='6' y='11' width='3' height='1' fill='%232a1a4a'/%3E%3Crect x='9' y='11' width='1' height='1' fill='%2312061c'/%3E%3Crect x='6' y='12' width='1' height='1' fill='%2312061c'/%3E%3Crect x='7' y='12' width='1' height='1' fill='%232a1a4a'/%3E%3Crect x='8' y='12' width='1' height='1' fill='%2312061c'/%3E%3Crect x='7' y='13' width='1' height='1' fill='%2312061c'/%3E%3C/svg%3E");
 }
 
 /* ---- tokens.css ---- */
@@ -130,6 +179,9 @@
  *   Neon Pixel     the 5×7 letters — the interface's voice. Built from the
  *                  canvas font (src/js/font.js) by `npm run font`; the
  *                  bundled CSS carries it inline, so it never flashes.
+ *   Neon Pixel 16  the 16-bit language's letters, twice as fine (opt-in,
+ *                  see sixteen.css). Built from src/js/font16.js by
+ *                  `npm run font16`; inline in the bundle as well.
  *   Space Grotesk  the human voice: prose and long text.
  *   Space Mono     the machine voice: code, numbers, what people type.
  * Paths are relative to this file in the repo; the build points them at
@@ -142,6 +194,15 @@
   /* block, not swap: the grid must never be drawn in a fallback face. */
   font-display: block;
   src: url("data:font/woff2;base64,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") format("woff2");
+}
+
+/* Neon Pixel 16: the 16-bit letters (src/js/font16.js, `npm run font16`), inline in the bundle too. */
+@font-face {
+  font-family: "Neon Pixel 16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("data:font/woff2;base64,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") format("woff2");
 }
 
 @font-face {
@@ -1763,4 +1824,545 @@ nc-sprite:not(:defined) { visibility: hidden; font-size: 0; }
   align-items: center;
   justify-content: space-between;
   gap: var(--nc-gap, var(--nc-space-3));
+}
+
+/* ---- sixteen.css ---- */
+/*
+ * The 16-bit language — opt-in, next to the 8-bit one, never instead of it.
+ * The next machine's look from phareim.no's isometric view: windows with a
+ * gradient in hard five-bit bands, a bevelled border with round corners, a
+ * dark line inside and a soft shadow under them; proportional letters twice
+ * as fine (Neon Pixel 16) with a one-pixel drop shadow; the pointing glove;
+ * the bobbing "more" arrow.
+ *
+ * Two ways in:
+ *   .nc-win, .nc-btn16, .nc-text16, …   components that work anywhere
+ *   .nc-16 (on body or any container)   re-dresses the 8-bit components
+ *                                       inside it: boxes, dialogs and alerts
+ *                                       become windows, buttons 16-bit
+ *                                       buttons, pixel text the 16-bit font
+ *
+ * One 16-bit pixel is --nc-px16 (half of --nc-u: 1 px). Every size here is a
+ * whole number of them, written out as calc(n * var(--nc-px16)) so that
+ * setting --nc-px16 on any element (2px: every 16-bit pixel two) scales
+ * everything inside it. The letters are crisp at 14, 28, 42 and 56 px
+ * (--nc-size16-1 … -4, the sizes at the root's --nc-px16). The window's colours and the
+ * pictures (frame, glove, arrow, hearts) are generated into colors.css from
+ * src/js/tokens.js and src/js/ui16.js.
+ */
+:root {
+  --nc-px16: calc(var(--nc-u) / 2);
+  --nc-font-16: "Neon Pixel 16", "Neon Pixel", "Space Mono", ui-monospace, monospace;
+  --nc-size16-1: calc(14 * var(--nc-px16));
+  --nc-size16-2: calc(28 * var(--nc-px16));
+  --nc-size16-3: calc(42 * var(--nc-px16));
+  --nc-size16-4: calc(56 * var(--nc-px16));
+  /* The dialog's line pitch: twelve-pixel capitals and ten between. */
+  --nc-line16: calc(22 * var(--nc-px16));
+  /* The letters' shadow: one font pixel right, below and the corner between, at any size. */
+  --nc-drop16:
+    calc(1em / 14) 0 0 var(--nc-text16-shadow),
+    0 calc(1em / 14) 0 var(--nc-text16-shadow),
+    calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-shadow);
+  /* A line all the way round, and the drop outside it: letters straight on the world, the chosen answer. */
+  --nc-rim16:
+    calc(-1em / 14) calc(-1em / 14) 0 var(--nc-text16-rim),
+    0 calc(-1em / 14) 0 var(--nc-text16-rim),
+    calc(1em / 14) calc(-1em / 14) 0 var(--nc-text16-rim),
+    calc(-1em / 14) 0 0 var(--nc-text16-rim),
+    calc(1em / 14) 0 0 var(--nc-text16-rim),
+    calc(-1em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
+    0 calc(1em / 14) 0 var(--nc-text16-rim),
+    calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
+    calc(2em / 14) calc(2em / 14) 0 var(--nc-text16-rim),
+    calc(2em / 14) calc(1em / 14) 0 var(--nc-text16-rim),
+    calc(1em / 14) calc(2em / 14) 0 var(--nc-text16-rim);
+}
+
+/*
+ * The scope: inside .nc-16 the 8-bit letters become the 16-bit ones. The
+ * pixel font, its sizes (rounded to the 16-bit steps so they stay crisp)
+ * and the drop shadow are tokens, so everything that reads them follows.
+ */
+.nc-16 {
+  --nc-font-pixel: var(--nc-font-16);
+  --nc-size-0: calc(14 * var(--nc-px16));
+  --nc-size-1: calc(14 * var(--nc-px16));
+  --nc-size-2: calc(28 * var(--nc-px16));
+  --nc-size-3: calc(28 * var(--nc-px16));
+  --nc-size-4: calc(42 * var(--nc-px16));
+  --nc-size-5: calc(56 * var(--nc-px16));
+  --nc-drop: calc(1em / 14) calc(1em / 14) 0 var(--nc-text16-shadow);
+}
+
+/* ---- letters --------------------------------------------------------------- */
+
+/*
+ * .nc-text16 — the 16-bit letters on anything: 14 px, white, the drop.
+ *   --dim --hot --cool --prize --ok   colours (all AA on a hot window and on the night)
+ *   --rim                              a line all the way round, for text on the world
+ * .nc-h16 — a heading: 28 px.  .nc-label16 — a small dim label.
+ */
+.nc-text16,
+.nc-h16,
+.nc-label16,
+.nc-win,
+.nc-plate16,
+.nc-btn16,
+.nc-choices16,
+.nc-16 :is(.nc-dialog, .nc-btn),
+:where(.nc-16) :where(dialog, button, input:is([type="button"], [type="submit"], [type="reset"])) {
+  font-family: var(--nc-font-16);
+  font-weight: 400;
+  font-synthesis: none;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+.nc-text16 {
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(22 * var(--nc-px16));
+  color: var(--nc-text16);
+  text-shadow: var(--nc-drop16);
+}
+
+.nc-h16 {
+  margin: calc(24 * var(--nc-px16)) 0 calc(12 * var(--nc-px16));
+  font-size: calc(28 * var(--nc-px16));
+  /* 36 = 28 + 4 + 4: the baseline stays on a whole font pixel. */
+  line-height: calc(36 * var(--nc-px16));
+  color: var(--nc-text16);
+  text-shadow: var(--nc-drop16);
+  text-wrap: balance;
+}
+
+.nc-label16 {
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(14 * var(--nc-px16));
+  color: var(--nc-text16-dim);
+  text-shadow: var(--nc-drop16);
+}
+
+.nc-text16--dim { color: var(--nc-text16-dim); }
+.nc-text16--hot { color: var(--nc-text16-hot); }
+.nc-text16--cool { color: var(--nc-text16-cool); }
+.nc-text16--prize { color: var(--nc-text16-prize); }
+.nc-text16--ok { color: var(--nc-text16-ok); }
+.nc-text16--rim { text-shadow: var(--nc-rim16); }
+
+/* ---- the window ------------------------------------------------------------ */
+
+/*
+ * .nc-win — the 16-bit window. The gradient is the game's, in its hard
+ * five-bit bands (a new colour wherever a channel steps), stretched over the
+ * window like the machine's per-scanline colour; the frame (outline, two
+ * rings of bevel, the inner dark line and the three-step shadow) is one
+ * picture laid round it with border-image, so its round corners are whole
+ * pixels. The outline reaches one pixel out and the shadow five; the
+ * margin leaves them room.
+ *   --cool   sea green down to night blue: the pause screen, the item box
+ *   --flat   no shadow (windows inside windows)
+ * Long prose can go back to the body face with .nc-prose inside.
+ */
+.nc-win,
+.nc-plate16,
+.nc-btn16,
+.nc-16 :is(.nc-box, .nc-dialog, .nc-alert, .nc-btn),
+:where(.nc-16) :where(dialog, button, input:is([type="button"], [type="submit"], [type="reset"])) {
+  --nc-win-ramp: var(--nc-win-hot);
+  --nc-win-frame: var(--nc-win-frame-hot);
+  position: relative;
+  box-sizing: border-box;
+  min-height: calc(12 * var(--nc-px16));
+  margin: var(--nc-px16) calc(5 * var(--nc-px16)) calc(5 * var(--nc-px16)) var(--nc-px16);
+  /* The gradient fills the window inside the two rings of the bevel. */
+  background:
+    var(--nc-win-ramp)
+    calc(2 * var(--nc-px16)) calc(2 * var(--nc-px16)) /
+    calc(100% - 4 * var(--nc-px16)) calc(100% - 4 * var(--nc-px16))
+    no-repeat border-box;
+  background-color: transparent;
+  border: 0 solid transparent;
+  border-radius: 0;
+  border-image-source: var(--nc-win-frame);
+  border-image-slice: 8;
+  border-image-width: calc(8 * var(--nc-px16));
+  border-image-outset: var(--nc-px16) calc(5 * var(--nc-px16)) calc(5 * var(--nc-px16)) var(--nc-px16);
+  border-image-repeat: stretch;
+  box-shadow: none;
+  outline: 0;
+  image-rendering: pixelated;
+}
+
+.nc-win,
+.nc-16 :is(.nc-box, .nc-dialog, .nc-alert),
+:where(.nc-16) :where(dialog) {
+  padding: calc(12 * var(--nc-px16)) calc(16 * var(--nc-px16)) calc(14 * var(--nc-px16));
+  color: var(--nc-text16);
+}
+
+.nc-win,
+.nc-16 .nc-dialog,
+:where(.nc-16) :where(dialog) {
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(22 * var(--nc-px16));
+  text-shadow: var(--nc-drop16);
+}
+
+.nc-win > :first-child { margin-top: 0; }
+.nc-win > :last-child { margin-bottom: 0; }
+.nc-win :where(p) { margin: 0 0 calc(8 * var(--nc-px16)); }
+.nc-win :where(p):last-child,
+.nc-win :where(p):has(+ .nc-more16:last-child) { margin-bottom: 0; }
+
+.nc-win--cool,
+.nc-16 :is(.nc-box--quiet, .nc-box--violet) {
+  --nc-win-ramp: var(--nc-win-cool);
+  --nc-win-frame: var(--nc-win-frame-cool);
+}
+
+.nc-win--flat {
+  --nc-win-frame: var(--nc-win-frame-hot-flat);
+  margin: var(--nc-px16);
+  border-image-outset: var(--nc-px16);
+}
+
+.nc-win--flat.nc-win--cool { --nc-win-frame: var(--nc-win-frame-cool-flat); }
+
+/* In the scope, the 8-bit boxes drop their inner cyan rule and their edge. */
+.nc-16 .nc-box::before { display: none; }
+.nc-16 .nc-alert::before { color: var(--nc-text16-cool); text-shadow: var(--nc-drop16); }
+.nc-16 .nc-alert--ok::before { color: var(--nc-text16-ok); }
+.nc-16 .nc-alert--warn::before { color: var(--nc-text16-prize); }
+.nc-16 .nc-alert--danger::before { color: var(--nc-text16-hot); }
+
+/*
+ * .nc-plate16 — the speaker's name on a plate riding the window's top edge
+ * (first child of a .nc-win): a cool window, gold letters.
+ */
+.nc-plate16 {
+  --nc-win-ramp: var(--nc-win-plate);
+  --nc-win-frame: var(--nc-win-frame-cool);
+  display: inline-block;
+  min-height: 0;
+  padding: calc(6 * var(--nc-px16)) calc(12 * var(--nc-px16));
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(14 * var(--nc-px16));
+  color: var(--nc-text16-prize);
+  text-shadow: var(--nc-drop16);
+  white-space: nowrap;
+}
+
+.nc-win > .nc-plate16 {
+  position: absolute;
+  top: calc(-18 * var(--nc-px16));
+  left: calc(12 * var(--nc-px16));
+  z-index: 1;
+  margin: 0;
+}
+
+/* A window with a plate makes room for it above, and starts its text under it. */
+.nc-win:has(> .nc-plate16) {
+  margin-top: calc(19 * var(--nc-px16));
+  padding-top: calc(16 * var(--nc-px16));
+}
+
+/*
+ * .nc-more16 — the "more" arrow: dips a pixel, comes back, and is gone for a
+ * moment in between, in steps. In a window it sits in the bottom-right.
+ * In the scope, .nc-more becomes it.
+ */
+.nc-more16,
+.nc-16 .nc-more {
+  display: inline-block;
+  width: calc(11 * var(--nc-px16));
+  height: calc(6 * var(--nc-px16));
+  vertical-align: middle;
+  background: var(--nc-more16) 0 0 / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  animation: nc-more16 0.625s steps(1) infinite;
+}
+
+.nc-16 .nc-more::after { content: none; }
+
+.nc-win .nc-more16,
+.nc-16 :is(.nc-dialog, .nc-box) .nc-more {
+  position: absolute;
+  right: calc(12 * var(--nc-px16));
+  bottom: calc(8 * var(--nc-px16));
+  float: none;
+}
+
+@keyframes nc-more16 {
+  0% { transform: none; visibility: visible; }
+  36% { transform: translateY(var(--nc-px16)); }
+  72% { visibility: hidden; }
+}
+
+/* ---- buttons --------------------------------------------------------------- */
+
+/*
+ * .nc-btn16 — a small window with white letters. Under the pointer, on
+ * focus, pressed or current it turns to the cool tone with gold letters;
+ * pressing it sinks the letters a pixel. In the scope every .nc-btn and
+ * plain button is one.
+ *   --cool   cool at rest (it lights hot)
+ */
+.nc-btn16,
+.nc-16 .nc-btn,
+:where(.nc-16) :where(button, input:is([type="button"], [type="submit"], [type="reset"])):where(:not(.nc-menu *, .nc-choices16 *)) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(6 * var(--nc-px16));
+  min-height: calc(28 * var(--nc-px16));
+  padding: calc(7 * var(--nc-px16)) calc(12 * var(--nc-px16));
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(14 * var(--nc-px16));
+  white-space: nowrap;
+  vertical-align: middle;
+  text-decoration: none;
+  text-shadow: var(--nc-drop16);
+  color: var(--nc-text16);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nc-btn16--cool {
+  --nc-win-ramp: var(--nc-win-cool);
+  --nc-win-frame: var(--nc-win-frame-cool);
+}
+
+.nc-btn16:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-active),
+.nc-16 .nc-btn:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-active),
+:where(.nc-16) :where(button:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"])):where(:not(.nc-menu *, .nc-choices16 *)) {
+  --nc-win-ramp: var(--nc-win-plate);
+  --nc-win-frame: var(--nc-win-frame-cool);
+  color: var(--nc-text16-prize);
+  background-color: transparent;
+}
+
+.nc-btn16--cool:is(:focus-visible, [aria-pressed="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-active) {
+  --nc-win-ramp: var(--nc-win-hot);
+  --nc-win-frame: var(--nc-win-frame-hot);
+}
+
+@media (hover: hover) {
+  .nc-btn16:hover,
+  .nc-16 .nc-btn:hover,
+  :where(.nc-16) :where(button:hover):where(:not(.nc-menu *, .nc-choices16 *)) {
+    --nc-win-ramp: var(--nc-win-plate);
+    --nc-win-frame: var(--nc-win-frame-cool);
+    color: var(--nc-text16-prize);
+    background-color: transparent;
+  }
+
+  .nc-btn16--cool:hover {
+    --nc-win-ramp: var(--nc-win-hot);
+    --nc-win-frame: var(--nc-win-frame-hot);
+  }
+}
+
+.nc-btn16:active,
+.nc-16 .nc-btn:active,
+:where(.nc-16) :where(button:active):where(:not(.nc-menu *, .nc-choices16 *)) {
+  color: var(--nc-text16-prize);
+  padding-top: calc(8 * var(--nc-px16));
+  padding-bottom: calc(6 * var(--nc-px16));
+  background-color: transparent;
+}
+
+.nc-btn16:is(:disabled, [aria-disabled="true"]),
+.nc-16 .nc-btn:is(:disabled, [aria-disabled="true"]),
+:where(.nc-16) :where(button:disabled) {
+  --nc-win-ramp: var(--nc-win-hot);
+  --nc-win-frame: var(--nc-win-frame-hot);
+  color: var(--nc-text16-faint);
+  cursor: not-allowed;
+}
+
+/* ---- choices ---------------------------------------------------------------- */
+
+/*
+ * .nc-choices16 — the answers to a question, with the pointing glove at the
+ * chosen one (aria-current, aria-selected, aria-checked, hover or focus):
+ * a list of buttons or links, in a row (YES / NO) or, with --column, under
+ * each other. The chosen one is cyan with a dark line round it; the glove
+ * nudges toward it in steps. In the scope, .nc-menu takes the glove too.
+ */
+.nc-choices16 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 0 calc(24 * var(--nc-px16));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: calc(14 * var(--nc-px16));
+  line-height: calc(22 * var(--nc-px16));
+}
+
+.nc-choices16--column { flex-direction: column; align-items: flex-start; }
+.nc-choices16 > li { margin: 0; }
+.nc-choices16 > li::marker { content: none; }
+
+.nc-choices16 :is(a, button),
+.nc-16 .nc-menu :is(a, button) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(22 * var(--nc-px16));
+  margin: 0;
+  /* Room on the left for the glove (14 pixels and 4 between). */
+  padding: 0 0 0 calc(18 * var(--nc-px16));
+  font: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+  text-shadow: var(--nc-drop16);
+  color: var(--nc-text16-dim);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.nc-choices16 :is(a, button)::before,
+.nc-16 .nc-menu :is(a, button)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: calc(14 * var(--nc-px16));
+  height: calc(11 * var(--nc-px16));
+  margin-top: calc(-5 * var(--nc-px16));
+  background: var(--nc-glove16) 0 0 / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  visibility: hidden;
+  animation: nc-glove16 0.667s steps(1) infinite;
+}
+
+.nc-16 .nc-menu :is(a, button) {
+  width: auto;
+  min-height: calc(28 * var(--nc-px16));
+  padding-left: calc(28 * var(--nc-px16));
+  color: var(--nc-text16);
+}
+
+.nc-16 .nc-menu :is(a, button)::before { left: calc(8 * var(--nc-px16)); }
+
+.nc-choices16 :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-checked="true"], .is-active),
+.nc-16 .nc-menu :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], .is-active) {
+  outline: none;
+  color: var(--nc-text16-cool);
+  text-shadow: var(--nc-rim16);
+  background: none;
+}
+
+.nc-choices16 :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-checked="true"], .is-active)::before,
+.nc-16 .nc-menu :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], .is-active)::before {
+  visibility: visible;
+}
+
+/* In a cool window the answers not chosen are white (dim would not read on it); the chosen one keeps its rim. */
+.nc-win--cool .nc-choices16 :is(a, button):not(:disabled) { color: var(--nc-text16); }
+.nc-win--cool .nc-choices16 :is(a, button):is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-checked="true"], .is-active) { color: var(--nc-text16-cool); }
+
+.nc-choices16 :is(a, button):disabled,
+.nc-16 .nc-menu :is(a, button):disabled { color: var(--nc-text16-faint); text-shadow: var(--nc-drop16); cursor: not-allowed; }
+
+@keyframes nc-glove16 {
+  50% { transform: translateX(var(--nc-px16)); }
+}
+
+/* ---- meters and hearts ---------------------------------------------------- */
+
+/*
+ * .nc-meter16 — a bar in a dark trough with a bevel: the fill has a light
+ * top row and a dark bottom one, and ends on a whole pixel.
+ * style="--nc-value: .6".  --hot --prize --ok  (cyan by default)
+ * In the scope, .nc-meter becomes it.
+ */
+.nc-meter16,
+.nc-16 .nc-meter {
+  --nc-fill16: var(--nc-text16-cool);
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: calc(240 * var(--nc-px16));
+  height: calc(10 * var(--nc-px16));
+  margin: var(--nc-px16) var(--nc-px16) calc(2 * var(--nc-px16));
+  padding: 0;
+  border: var(--nc-px16) solid var(--nc-win-outline);
+  border-radius: 0;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--nc-fill16) 55%, white) 0 var(--nc-px16),
+      var(--nc-fill16) var(--nc-px16) calc(100% - 2 * var(--nc-px16)),
+      color-mix(in srgb, var(--nc-fill16) 55%, var(--nc-win-outline)) calc(100% - 2 * var(--nc-px16)))
+      0 0 / calc(var(--nc-value, 0) * 100%) 100% no-repeat,
+    linear-gradient(180deg, var(--nc-win-outline) 0 var(--nc-px16), color-mix(in srgb, var(--nc-win-hot-bottom) 50%, var(--nc-win-outline)) var(--nc-px16) calc(100% - var(--nc-px16)), var(--nc-win-hot-lo2) calc(100% - var(--nc-px16)));
+  box-shadow: calc(2 * var(--nc-px16)) calc(2 * var(--nc-px16)) 0 0 var(--nc-win-shadow-1);
+}
+
+/* The fill ends on a whole pixel. */
+@supports (width: round(down, 2.5px, 1px)) {
+  .nc-meter16,
+  .nc-16 .nc-meter {
+    background-size: round(down, calc(var(--nc-value, 0) * 100%), var(--nc-px16)) 100%, 100% 100%;
+  }
+}
+
+.nc-meter16--hot, .nc-16 .nc-meter--pink { --nc-fill16: var(--nc-text16-hot); }
+.nc-meter16--prize, .nc-16 .nc-meter--gold { --nc-fill16: var(--nc-text16-prize); }
+.nc-meter16--ok, .nc-16 .nc-meter--lime { --nc-fill16: var(--nc-text16-ok); }
+
+/*
+ * .nc-hearts16 — a row of hearts twice as fine as the 8-bit ones:
+ * <span class="nc-hearts16"><i class="nc-heart16"></i><i class="nc-heart16 nc-heart16--half"></i><i class="nc-heart16 nc-heart16--empty"></i></span>
+ * Give the row an aria-label ("Life: 3 of 6"); the hearts are pictures.
+ */
+.nc-hearts16 {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: calc(2 * var(--nc-px16));
+  vertical-align: middle;
+}
+
+.nc-heart16 {
+  display: inline-block;
+  width: calc(16 * var(--nc-px16));
+  height: calc(16 * var(--nc-px16));
+  background: var(--nc-heart16-full) 0 0 / 100% 100% no-repeat;
+  image-rendering: pixelated;
+}
+
+.nc-heart16--half { background-image: var(--nc-heart16-half); }
+.nc-heart16--empty { background-image: var(--nc-heart16-empty); }
+
+/* ---- the scope's text ------------------------------------------------------ */
+
+/* Titles and HUD text keep their colours and take the 16-bit shadow; the neon glow goes. */
+.nc-16 :is(.nc-title, .nc-hud, .nc-hint) { text-shadow: var(--nc-drop16); }
+:where(.nc-16) :where(h1, h2, h3, h4, h5, h6) { text-shadow: var(--nc-drop16); }
+
+/* ---- motion and forced colours -------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-more16,
+  .nc-16 .nc-more,
+  .nc-choices16 :is(a, button)::before,
+  .nc-16 .nc-menu :is(a, button)::before { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .nc-win, .nc-plate16, .nc-btn16, .nc-meter16,
+  .nc-16 :is(.nc-box, .nc-dialog, .nc-alert, .nc-btn, .nc-meter) {
+    border-image: none;
+    outline: var(--nc-px16) solid;
+  }
 }
